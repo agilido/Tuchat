@@ -1,0 +1,12 @@
+@import "~fontsource-roboto/index.css";
+@import "~fontsource-roboto/300-italic.css";
+body {
+  margin: 0;
+  font-family: "Roboto";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: "Roboto";
+}
