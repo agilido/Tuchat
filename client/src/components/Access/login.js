@@ -60,10 +60,10 @@ export default function Login() {
       style={{ minHeight: "100vh" }}
     >
         <div className="loginBox">
-            <Typography component="h1" variant="h4">
+            {/* <Typography component="h1" variant="h4">
               LOGO
-            </Typography>
-
+            </Typography> */}
+            <Grid ></Grid>
             {/* LOGIN PAD ONLY ON PCS, NO ON MOBILE */}
 
             <div className="loginForm">
