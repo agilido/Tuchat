@@ -1,0 +1,18 @@
+body,
+html {
+  background-color: #003d7b;
+}
+.loginBox {
+  display: flex;
+  float: right;
+  border-radius: 5px;
+  background: white;
+}
+.loginForm {
+  margin-left: 30vh;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border-radius: 5px;
+  z-index: 2;
+}
