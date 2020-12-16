@@ -9,7 +9,6 @@ html {
   background: white;
 }
 .loginForm {
-  margin-left: 30vh;
   display: flex;
   flex-direction: column;
   background-color: white;
