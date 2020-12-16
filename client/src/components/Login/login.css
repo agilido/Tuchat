@@ -1,9 +1,0 @@
-body,
-html {
-  background-color: #003d7b;
-}
-.loginBox {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
