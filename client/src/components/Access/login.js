@@ -59,105 +59,107 @@ export default function Login() {
       justify="center"
       style={{ minHeight: "100vh" }}
     >
-        <div className="loginBox">
-            {/* <Typography component="h1" variant="h4">
+      <div className="loginBox">
+        {/* <Typography component="h1" variant="h4">
               LOGO
             </Typography> */}
-            <Grid ></Grid>
-            {/* LOGIN PAD ONLY ON PCS, NO ON MOBILE */}
+        <Grid></Grid>
+        {/* LOGIN PAD ONLY ON PCS, NO ON MOBILE */}
 
-            <div className="loginForm">
-              <Typography
-                className={classes.margin}
-                component="h1"
-                variant="h4"
-              >
-                Sign in
-              </Typography>
-              <form noValidate autoComplete="off">
-                <Grid
-                  className={classes.margin}
-                  container
-                  spacing={1}
-                  alignItems="flex-end"
-                >
-                  {/* LOGIN */}
+        <div className="loginForm">
+          <Typography className={classes.margin} component="h1" variant="h4">
+            Sign in
+          </Typography>
+          <form noValidate autoComplete="off">
+            <Grid
+              className={classes.margin}
+              container
+              spacing={1}
+              alignItems="flex-end"
+            >
+              {/* LOGIN */}
 
-                  <Grid item>
-                    <AccountCircle />
-                  </Grid>
-                  <Grid item>
-                    <TextField
-                      id="login"
-                      label="Username or e-mail address"
-                      onChange={handleChange("login")}
-                      className={classes.textFld}
-                      value={LoginData.login}
-                      // helper text for an error
-                    />
-                  </Grid>
-                </Grid>
-                <Grid
-                  className={classes.margin}
-                  container
-                  spacing={1}
-                  alignItems="flex-end"
-                >
-                  {/* PASSWORD */}
-
-                  <Grid item>
-                    <VpnKeySharp />
-                  </Grid>
-
-                  <Grid item>
-                    <FormControl>
-                      <InputLabel htmlFor="standard-adornment-password">
-                        Password
-                      </InputLabel>
-                      <Input
-                        id="password"
-                        className={classes.textFld}
-                        type={LoginData.showPassword ? "text" : "password"}
-                        value={LoginData.password}
-                        onChange={handleChange("password")}
-                        // helper text for an error
-                        endAdornment={
-                          <InputAdornment position="end">
-                            <IconButton
-                              aria-label="toggle password visibility"
-                              onClick={handleClickShowPassword}
-                              onMouseDown={handleMouseDownPassword}
-                            >
-                              {LoginData.showPassword ? (
-                                <Visibility />
-                              ) : (
-                                <VisibilityOff />
-                              )}
-                            </IconButton>
-                          </InputAdornment>
-                        }
-                      />
-                    </FormControl>
-                  </Grid>
-                </Grid>
-                <Button
-                  className={classes.margin}
-                  color="primary"
-                  variant="contained"
-                >
-                  Sign In
-                </Button>
-              </form>
-              <Grid className="loginSignup">
-                <Typography variant="body1">
-                  <p>
-                    Don't have an account?{" "}
-                    <Button color="primary">Sign up</Button>
-                  </p>
-                </Typography>
+              <Grid item>
+                <AccountCircle />
               </Grid>
-            </div>
-          </div>
+              <Grid item>
+                <TextField
+                  id="login"
+                  label="Username or e-mail address"
+                  onChange={handleChange("login")}
+                  className={classes.textFld}
+                  value={LoginData.login}
+                  // helper text for an error
+                />
+              </Grid>
+            </Grid>
+            <Grid
+              className={classes.margin}
+              container
+              spacing={1}
+              alignItems="flex-end"
+            >
+              {/* PASSWORD */}
+
+              <Grid item>
+                <VpnKeySharp />
+              </Grid>
+
+              <Grid item>
+                <FormControl>
+                  <InputLabel htmlFor="standard-adornment-password">
+                    Password
+                  </InputLabel>
+                  <Input
+                    id="password"
+                    className={classes.textFld}
+                    type={LoginData.showPassword ? "text" : "password"}
+                    value={LoginData.password}
+                    onChange={handleChange("password")}
+                    // helper text for an error
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowPassword}
+                          onMouseDown={handleMouseDownPassword}
+                        >
+                          {LoginData.showPassword ? (
+                            <Visibility />
+                          ) : (
+                            <VisibilityOff />
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                  />
+                </FormControl>
+              </Grid>
+            </Grid>
+            <Button
+              className={classes.margin}
+              color="primary"
+              variant="contained"
+            >
+              Sign In
+            </Button>
+          </form>
+          <Grid className="loginSignup">
+            <Typography variant="body1">
+              <p>
+                Don't have an account?{" "}
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  style={{margin:"10px", maxWidth: "100px" }}
+                >
+                  Sign up
+                </Button>
+              </p>
+            </Typography>
+          </Grid>
+        </div>
+      </div>
     </Grid>
   );
 }

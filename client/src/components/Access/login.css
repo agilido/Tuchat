@@ -7,11 +7,110 @@ html {
   float: right;
   border-radius: 5px;
   background: white;
+  position: fixed;
+  animation: start-move 0.2s ease-in;
 }
 .loginForm {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   background-color: white;
   border-radius: 5px;
   z-index: 2;
+  padding: 10px 0;
+}
+
+
+@keyframes start-move {
+  0% {
+    -webkit-transform: translate3d(0, -27px, 0);
+    transform: translate3d(0, -27px, 0);
+    opacity: 0;
+  }
+  to {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    opacity: 1;
+  }
+}
+
+@keyframes loadin1{
+  0% {
+    -webkit-transform: translate3d(0, 24px, 0);
+    transform: translate3d(0, 24px, 0);
+    opacity: 0;
+  }
+  to {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    opacity: 1;
+  }
+}
+
+@keyframes login-successful-fadeout{
+  0% {
+    -webkit-transform: scale(0.8);
+    transform: scale(0.8);
+    opacity: 1;
+  }
+  to {
+    -webkit-transform: scale(1.6);
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+@keyframes bounce-in{
+  0% {
+    -webkit-transform: translateZ(0) scale(0.99);
+    transform: translateZ(0) scale(0.99);
+  }
+  50% {
+    -webkit-transform: translateZ(0) scale(1.005);
+    transform: translateZ(0) scale(1.005);
+  }
+  to {
+    -webkit-transform: translateZ(0) scale(1);
+    transform: translateZ(0) scale(1);
+  }
+}
+/* TODO: ERROR OPTION 2 SHAKE */
+@keyframes shake2{
+  0%,
+  to {
+    -webkit-transform: rotate(0);
+    transform: rotate(0);
+  }
+  25% {
+    -webkit-transform: rotate(2deg);
+    transform: rotate(2deg);
+  }
+  75% {
+    -webkit-transform: rotate(-2deg);
+    transform: rotate(-2deg);
+  }
+}
+/* TODO: 'Shake' for an error  */
+@keyframes shake{ 
+  10%,
+  90% {
+    -webkit-transform: translate3d(-1px, 0, 0);
+    transform: translate3d(-1px, 0, 0);
+  }
+  20%,
+  80% {
+    -webkit-transform: translate3d(2px, 0, 0);
+    transform: translate3d(2px, 0, 0);
+  }
+  30%,
+  50%,
+  70% {
+    -webkit-transform: translate3d(-4px, 0, 0);
+    transform: translate3d(-4px, 0, 0);
+  }
+  40%,
+  60% {
+    -webkit-transform: translate3d(4px, 0, 0);
+    transform: translate3d(4px, 0, 0);
+  }
 }
