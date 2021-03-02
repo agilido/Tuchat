@@ -8,7 +8,7 @@ html {
   border-radius: 5px;
   background: white;
   position: fixed;
-  animation: start-move 0.2s ease-in;
+  animation: start-move 0.2s ease-in-out;
 }
 .loginForm {
   display: flex;
@@ -16,38 +16,34 @@ html {
   justify-content: space-between;
   background-color: white;
   border-radius: 5px;
-  z-index: 2;
+  z-index: 10;
   padding: 10px 0;
 }
-
+.registerBox {
+  display: flex;
+  float: right;
+  border-radius: 5px;
+  background: white;
+  position: fixed;
+  animation: start-move 0.2s ease-in-out;
+}
 
 @keyframes start-move {
   0% {
-    -webkit-transform: translate3d(0, -27px, 0);
-    transform: translate3d(0, -27px, 0);
-    opacity: 0;
+    -webkit-transform: translateZ(0) scale(0.99);
+    transform: translateZ(0) scale(0.99);
+  }
+  50% {
+    -webkit-transform: translateZ(0) scale(1.1);
+    transform: translateZ(0) scale(1.1);
   }
   to {
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
-    opacity: 1;
+    -webkit-transform: translateZ(0) scale(1);
+    transform: translateZ(0) scale(1);
   }
 }
 
-@keyframes loadin1{
-  0% {
-    -webkit-transform: translate3d(0, 24px, 0);
-    transform: translate3d(0, 24px, 0);
-    opacity: 0;
-  }
-  to {
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
-    opacity: 1;
-  }
-}
-
-@keyframes login-successful-fadeout{
+@keyframes login-successful-fadeout {
   0% {
     -webkit-transform: scale(0.8);
     transform: scale(0.8);
@@ -60,7 +56,7 @@ html {
   }
 }
 
-@keyframes bounce-in{
+@keyframes bounce-in {
   0% {
     -webkit-transform: translateZ(0) scale(0.99);
     transform: translateZ(0) scale(0.99);
@@ -75,7 +71,7 @@ html {
   }
 }
 /* TODO: ERROR OPTION 2 SHAKE */
-@keyframes shake2{
+@keyframes shake2 {
   0%,
   to {
     -webkit-transform: rotate(0);
@@ -91,7 +87,7 @@ html {
   }
 }
 /* TODO: 'Shake' for an error  */
-@keyframes shake{ 
+@keyframes shake {
   10%,
   90% {
     -webkit-transform: translate3d(-1px, 0, 0);

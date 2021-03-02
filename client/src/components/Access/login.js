@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import "./login.css";
-import { TextField, Button, Typography, Paper } from "@material-ui/core";
+import "./loginpage.css";
+import { TextField, Button, Typography } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import VpnKeySharp from "@material-ui/icons/VpnKeySharp";
@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   textFld: { width: 300 },
 }));
 
-export default function Login() {
+export default function Login({handleRegisterVisibility}) {
   const classes = useStyles();
 
   const [LoginData, setLoginData] = useState({
@@ -32,7 +32,6 @@ export default function Login() {
 
   const handleChange = (prop) => (event) => {
     setLoginData({ ...LoginData, [prop]: event.target.value });
-    console.log("xd");
   };
 
   const handleClickShowPassword = () => {
@@ -68,7 +67,7 @@ export default function Login() {
 
         <div className="loginForm">
           <Typography className={classes.margin} component="h1" variant="h4">
-            Sign in
+            Sign In
           </Typography>
           <form noValidate autoComplete="off">
             <Grid
@@ -151,7 +150,8 @@ export default function Login() {
                 <Button
                   variant="outlined"
                   color="primary"
-                  style={{margin:"10px", maxWidth: "100px" }}
+                  style={{ margin: "10px", maxWidth: "100px" }}
+                  onClick={handleRegisterVisibility}
                 >
                   Sign up
                 </Button>
