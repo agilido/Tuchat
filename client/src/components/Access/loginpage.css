@@ -3,13 +3,12 @@ html {
   background-color: #003d7b;
 }
 .loginBox {
-  display: flex;
-  float: right;
   border-radius: 5px;
   background: white;
   position: fixed;
-  animation: start-move 0.2s ease-in-out;
+  animation: start-move 0.3s ease-in-out ;
 }
+
 .loginForm {
   display: flex;
   flex-direction: column;
@@ -20,29 +19,50 @@ html {
   padding: 10px 0;
 }
 .registerBox {
-  display: flex;
-  float: right;
   border-radius: 5px;
   background: white;
-  position: fixed;
-  animation: start-move 0.2s ease-in-out;
+  animation: start-move 0.25s ease-in-out;
+  transition: all 0.25s ease-in-out;
 }
+
 
 @keyframes start-move {
   0% {
-    -webkit-transform: translateZ(0) scale(0.99);
-    transform: translateZ(0) scale(0.99);
+    -webkit-transform: translate3d(0, -10px, 0);
+    transform: translate3d(0, -10px, 0) scale(1.2);
+    opacity: 0;
   }
   50% {
-    -webkit-transform: translateZ(0) scale(1.1);
-    transform: translateZ(0) scale(1.1);
+    -webkit-transform: translate3d(0, 12px, 0);
+    transform: translate3d(0, 12px, 0) scale(1);
   }
-  to {
-    -webkit-transform: translateZ(0) scale(1);
-    transform: translateZ(0) scale(1);
+  100%{
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 1;
+  }
+}
+@keyframes out-move {
+  from {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: translate3d(0, -10vh, 0);
+    transform: translate3d(0, -10vh, 0) scale(1.2);
+    opacity: 0;
   }
 }
 
+@media only screen and (max-width: 600px) {
+  .registerBox {
+    
+  }
+}
+
+
+/* SNIPPETS */
 @keyframes login-successful-fadeout {
   0% {
     -webkit-transform: scale(0.8);

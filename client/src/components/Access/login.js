@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   textFld: { width: 300 },
 }));
 
-export default function Login({handleRegisterVisibility}) {
+export default function Login({ handleRegisterVisibility }) {
   const classes = useStyles();
 
   const [LoginData, setLoginData] = useState({
@@ -49,6 +49,7 @@ export default function Login({handleRegisterVisibility}) {
   // function AddExtraProps(Component, extraProps) {
   //   return <Component.type {...Component.props} {...extraProps} />;
   // } TODO: ERROR HANDLING
+
 
   return (
     <Grid
