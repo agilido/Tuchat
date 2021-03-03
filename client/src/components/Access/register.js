@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
   textFld: { width: 300 },
 }));
 
-export default function Register({handleLoginVisibility}) {
+export default function Register({ handleLoginVisibility }) {
   const classes = useStyles();
 
   const [RegisterData, setRegisterData] = useState({
@@ -48,185 +48,186 @@ export default function Register({handleLoginVisibility}) {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
+
+
   return (
     <Grid
-    container
-    spacing={0}
-    alignItems="center"
-    justify="center"
-    style={{ minHeight: "100vh" }}
-  >
-    <div className="registerBox">
-      {/* <Typography component="h1" variant="h4">
+      container
+      spacing={0}
+      alignItems="center"
+      justify="center"
+      style={{ minHeight: "100vh" }}
+    >
+      <div className="registerBox">
+        {/* <Typography component="h1" variant="h4">
               LOGO
             </Typography> */}
-      <Grid></Grid>
-      {/* LOGIN PAD ONLY ON PCS, NOT ON MOBILE */}
+        <Grid></Grid>
+        {/* LOGIN PAD ONLY ON PCS, NOT ON MOBILE */}
 
-      <div className="registerForm">
-        <Typography className={classes.margin} component="h1" variant="h4">
-          Sign Up
-        </Typography>
-        <form noValidate autoComplete="off">
-          <Grid
-            className={classes.margin}
-            container
-            spacing={1}
-            alignItems="flex-end"
-          >
-            {/* USERNAME */}
-
-            <Grid item>
-              <AccountCircle />
-            </Grid>
-            <Grid item>
-              <TextField
-                id="username"
-                label="User name"
-                onChange={handleChange("username")}
-                className={classes.textFld}
-                value={RegisterData.username}
-                // helper text for an error
-              />
-            </Grid>
-          </Grid>
-
-          <Grid
-            className={classes.margin}
-            container
-            spacing={1}
-            alignItems="flex-end"
-          >
-            {/* E-Mail */}
-
-            <Grid item>
-              <EmailIcon />
-            </Grid>
-            <Grid item>
-              <TextField
-                id="email"
-                label="E-mail address"
-                onChange={handleChange("email")}
-                className={classes.textFld}
-                value={RegisterData.email}
-                // helper text for an error
-              />
-            </Grid>
-          </Grid>
-
-          <Grid
-            className={classes.margin}
-            container
-            spacing={1}
-            alignItems="flex-end"
-          >
-            {/* PASSWORD */}
-
-            <Grid item>
-              <VpnKeySharp />
-            </Grid>
-
-            <Grid item>
-              <FormControl>
-                <InputLabel htmlFor="standard-adornment-password">
-                  Password
-                </InputLabel>
-                <Input
-                  id="password"
-                  className={classes.textFld}
-                  type={RegisterData.showPassword ? "text" : "password"}
-                  value={RegisterData.password}
-                  onChange={handleChange("password")}
-                  // helper text for an error
-                  endAdornment={
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={handleClickShowPassword}
-                        onMouseDown={handleMouseDownPassword}
-                      >
-                        {RegisterData.showPassword ? (
-                          <Visibility />
-                        ) : (
-                          <VisibilityOff />
-                        )}
-                      </IconButton>
-                    </InputAdornment>
-                  }
-                />
-              </FormControl>
-            </Grid>
-          </Grid>
-
-
-          <Grid
-            className={classes.margin}
-            container
-            spacing={1}
-            alignItems="flex-end"
-          >
-            {/* CONFIRM PASSWORD */}
-
-            <Grid item>
-              <LockIcon />
-            </Grid>
-
-            <Grid item>
-              <FormControl>
-                <InputLabel htmlFor="standard-adornment-password">
-                  Confirm password
-                </InputLabel>
-                <Input
-                  id="password"
-                  className={classes.textFld}
-                  type={RegisterData.showPassword ? "text" : "password"}
-                  value={RegisterData.confirmPassword}
-                  onChange={handleChange("confirmPassword")}
-                  // helper text for an error
-                  endAdornment={
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={handleClickShowPassword}
-                        onMouseDown={handleMouseDownPassword}
-                      >
-                        {RegisterData.showPassword ? (
-                          <Visibility />
-                        ) : (
-                          <VisibilityOff />
-                        )}
-                      </IconButton>
-                    </InputAdornment>
-                  }
-                />
-              </FormControl>
-            </Grid>
-          </Grid>
-          <Button
-            className={classes.margin}
-            color="primary"
-            variant="contained"
-          >
-            Register
-          </Button>
-        </form>
-        <Grid className="loginSignup">
-          <Typography variant="body1">
-            <p>
-              Have an account?{" "}
-              <Button
-                variant="outlined"
-                color="primary"
-                style={{ margin: "10px", maxWidth: "100px" }}
-                onClick={handleLoginVisibility}
-              >
-                Log in
-              </Button>
-            </p>
+        <div className="registerForm">
+          <Typography className={classes.margin} component="h1" variant="h4">
+            Sign Up
           </Typography>
-        </Grid>
+          <form noValidate autoComplete="off">
+            <Grid
+              className={classes.margin}
+              container
+              spacing={1}
+              alignItems="flex-end"
+            >
+              {/* USERNAME */}
+
+              <Grid item>
+                <AccountCircle />
+              </Grid>
+              <Grid item>
+                <TextField
+                  id="username"
+                  label="User name"
+                  onChange={handleChange("username")}
+                  className={classes.textFld}
+                  value={RegisterData.username}
+                  // helper text for an error
+                />
+              </Grid>
+            </Grid>
+
+            <Grid
+              className={classes.margin}
+              container
+              spacing={1}
+              alignItems="flex-end"
+            >
+              {/* E-Mail */}
+
+              <Grid item>
+                <EmailIcon />
+              </Grid>
+              <Grid item>
+                <TextField
+                  id="email"
+                  label="E-mail address"
+                  onChange={handleChange("email")}
+                  className={classes.textFld}
+                  value={RegisterData.email}
+                  // helper text for an error
+                />
+              </Grid>
+            </Grid>
+
+            <Grid
+              className={classes.margin}
+              container
+              spacing={1}
+              alignItems="flex-end"
+            >
+              {/* PASSWORD */}
+
+              <Grid item>
+                <VpnKeySharp />
+              </Grid>
+
+              <Grid item>
+                <FormControl>
+                  <InputLabel htmlFor="standard-adornment-password">
+                    Password
+                  </InputLabel>
+                  <Input
+                    id="password"
+                    className={classes.textFld}
+                    type={RegisterData.showPassword ? "text" : "password"}
+                    value={RegisterData.password}
+                    onChange={handleChange("password")}
+                    // helper text for an error
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowPassword}
+                          onMouseDown={handleMouseDownPassword}
+                        >
+                          {RegisterData.showPassword ? (
+                            <Visibility />
+                          ) : (
+                            <VisibilityOff />
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                  />
+                </FormControl>
+              </Grid>
+            </Grid>
+
+            <Grid
+              className={classes.margin}
+              container
+              spacing={1}
+              alignItems="flex-end"
+            >
+              {/* CONFIRM PASSWORD */}
+
+              <Grid item>
+                <LockIcon />
+              </Grid>
+
+              <Grid item>
+                <FormControl>
+                  <InputLabel htmlFor="standard-adornment-password">
+                    Confirm password
+                  </InputLabel>
+                  <Input
+                    id="password"
+                    className={classes.textFld}
+                    type={RegisterData.showPassword ? "text" : "password"}
+                    value={RegisterData.confirmPassword}
+                    onChange={handleChange("confirmPassword")}
+                    // helper text for an error
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowPassword}
+                          onMouseDown={handleMouseDownPassword}
+                        >
+                          {RegisterData.showPassword ? (
+                            <Visibility />
+                          ) : (
+                            <VisibilityOff />
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                  />
+                </FormControl>
+              </Grid>
+            </Grid>
+            <Button
+              className={classes.margin}
+              color="primary"
+              variant="contained"
+            >
+              Register
+            </Button>
+          </form>
+          <Grid className="loginSignup">
+            <Typography variant="body1">
+              <p>
+                Have an account?{" "}
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  style={{ margin: "10px", maxWidth: "100px" }}
+                  onClick={handleLoginVisibility}
+                >
+                  Log in
+                </Button>
+              </p>
+            </Typography>
+          </Grid>
+        </div>
       </div>
-    </div>
     </Grid>
   );
 }

@@ -4,9 +4,10 @@ import Register from "./register";
 
 export default function Landing() {
   const [visible, setVisibility] = useState(false);
+  
   const handleRegisterVisibility = () => setVisibility(true);
   const handleLoginVisibility = () => setVisibility(false);
-  console.log(visible);
+
   return (
     <div>
       {visible ? (
