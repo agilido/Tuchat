@@ -1,28 +1,35 @@
-const mongoose = require('mongoose'); // Erase if already required
+const mongoose = require("mongoose"); // Erase if already required
 
 // Declare the Schema of the Mongo model
-const userSchema = new mongoose.Schema({
-    name:{
-        type:String,
-        required:true,
-        unique:true,
-        index:true,
+const UserSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+    unique: true,
+    index: true,
+    default: ''
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    default: '',
+    validate(value) {
+      if (value !== /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/) {
+        throw new Error("Not an email.");
+      }
     },
-    email:{
-        type:String,
-        required:true,
-        unique:true,
-        validate(value) {
-            if (value !== /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/) {
-                throw new Error("Not an email.")
-            }
-        }
-    },
-    password:{
-        type:String,
-        required:true,
-    }
+  },
+  password: {
+    type: String,
+    required: true,
+    default: ''
+  },
+  isDeleted: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 //Export the model
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model("User", UserSchema);
