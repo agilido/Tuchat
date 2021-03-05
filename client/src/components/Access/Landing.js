@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Login from "./login";
-import Register from "./register";
+import Login from "./Login";
+import Register from "./Register";
 
 export default function Landing() {
   const [visible, setVisibility] = useState(false);
