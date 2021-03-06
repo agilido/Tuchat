@@ -1,6 +1,5 @@
-const mongoose = require("mongoose"); // Erase if already required
+const mongoose = require("mongoose"); 
 
-// Declare the Schema of the Mongo model
 const UserSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -18,7 +17,7 @@ const UserSchema = new mongoose.Schema({
       if (value !== /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/) {
         throw new Error("Not an email.");
       }
-    },
+    }
   },
   password: {
     type: String,
@@ -33,8 +32,7 @@ const UserSchema = new mongoose.Schema({
   isDeleted: {
     type: Boolean,
     default: false,
-  },
+  }
 });
 
-//Export the model
 module.exports = mongoose.model("User", UserSchema);
