@@ -25,6 +25,11 @@ const UserSchema = new mongoose.Schema({
     required: true,
     default: ''
   },
+  channels: [{
+    channelId: String,
+    channelName: String,
+    favorite: Boolean
+  }],
   isDeleted: {
     type: Boolean,
     default: false,
