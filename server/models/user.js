@@ -1,4 +1,4 @@
-const mongoose = require("mongoose"); 
+const mongoose = require("mongoose");
 
 const UserSchema = new mongoose.Schema({
   name: {
@@ -6,33 +6,35 @@ const UserSchema = new mongoose.Schema({
     required: true,
     unique: true,
     index: true,
-    default: ''
+    default: "",
   },
   email: {
     type: String,
     required: true,
     unique: true,
-    default: '',
+    default: "",
     validate(value) {
       if (value !== /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/) {
         throw new Error("Not an email.");
       }
-    }
+    },
   },
   password: {
     type: String,
     required: true,
-    default: ''
+    default: "",
   },
-  channels: [{
-    channelId: String,
-    channelName: String,
-    favorite: Boolean
-  }],
+  channels: [
+    {
+      channelId: String,
+      channelName: String,
+      favorite: Boolean,
+    },
+  ],
   isDeleted: {
     type: Boolean,
     default: false,
-  }
+  },
 });
 
 module.exports = mongoose.model("User", UserSchema);
