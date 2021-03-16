@@ -1,11 +1,12 @@
 const mongoose = require("mongoose");
 
-const url = "mongodb://127.0.0.1:27017/mongoDatabase";
+const url = process.env.MONGO_URI;
 
 mongoose.connect(url, {
   useNewUrlParser: true,
   useCreateIndex: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
+  useFindAndModify: true
 }); 
 
 if (url) 
