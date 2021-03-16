@@ -1,5 +1,6 @@
 require("dotenv").config({ path: "./config.env" });
 const express = require("express");
+const errorHandler =  require("./middleware/error");
 const app = express();
 
 
@@ -9,6 +10,8 @@ require("./config/mongoose");
 
 app.use(express.json());
 app.use("/api/auth", require("./routes/auth"));
+
+app.use(errorHandler);
 
 app.get("/", function (req, res, next) {
   res.json({
