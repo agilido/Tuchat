@@ -1,7 +1,9 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
+const validator = require('mongoose-validator');
 
 const UserSchema = new mongoose.Schema({
-  name: {
+  username: {
     type: String,
     required: true,
     unique: true,
@@ -13,11 +15,12 @@ const UserSchema = new mongoose.Schema({
     required: true,
     unique: true,
     default: "",
-    validate(value) {
-      if (value !== /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/) {
-        throw new Error("Not an email.");
-      }
-    },
+    validate: [
+      validator({
+        validator: "isEmail",
+        message: "Please enter valid email."
+      })
+    ],
   },
   password: {
     type: String,
@@ -35,6 +38,23 @@ const UserSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  resetPasswordToken: String,
+  resetPasswordExpire: Date,
 });
+
+
+UserSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) {
+    return next();
+  }
+
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
+  return next();
+});
+
+UserSchema.methods.matchPasswords = async function(password) {
+  return await bcrypt.compare(password, this.password);
+}
 
 module.exports = mongoose.model("User", UserSchema);
