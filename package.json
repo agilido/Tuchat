@@ -8,7 +8,5 @@
   },
   "author": "vlfw",
   "license": "ISC",
-  "dependencies": {
-    "mongoose-validator": "^2.1.0"
-  }
+  "dependencies": {}
 }

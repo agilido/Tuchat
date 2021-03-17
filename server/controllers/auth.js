@@ -1,3 +1,5 @@
+const crypto = require('crypto');
+const { findOne } = require('../models/User');
 const User = require("../models/User");
 const ErrorResponse = require("../utils/ErrorResponse");
 const sendEmail = require("../utils/sendEmail");
@@ -57,7 +59,7 @@ exports.fpassword = async (req, res, next) => {
 
     await user.save();
 
-    const resetUrl = `http://localhost:${process.env.PORT}/passreset/${resetToken}`;
+    const resetUrl = `http://localhost:${process.env.PORT}/resetpassword/${resetToken}`;
 
     const message = `<h1> Password reset requested. </h1>
     <p> Click here to reset your password </p>
@@ -83,8 +85,27 @@ exports.fpassword = async (req, res, next) => {
   }
 };
 
-exports.resetpassword = (req, res, next) => {
-  res.send("Reset password route");
+exports.resetpassword = async (req, res, next) => {
+  const resetPasswordToken = crypto.createHash("sha256").update(req.params.resetToken).digest("hex");
+
+  try {
+    const user = await User.findOne({
+      resetPasswordToken,
+      resetPasswordExpire: { $gt: Date.now() }
+    })
+    if (!user) {
+      return next(new ErrorResponse("Invalid Reset Token"), 400)
+    }
+    user.password = req.body.password;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+
+    await user.save();
+
+    res.status(201).json({ success:true, data: "Password reset success"})
+  } catch (error) {
+    next(error);
+  }
 };
 
 const sendToken = (user, statusCode, res) => {
