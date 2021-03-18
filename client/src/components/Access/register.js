@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./loginPage.css";
+import "./authPage.css";
 import { TextField, Button, Typography } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import AccountCircle from "@material-ui/icons/AccountCircle";
@@ -14,6 +14,7 @@ import Input from "@material-ui/core/Input";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import FormControl from "@material-ui/core/FormControl";
 import { makeStyles } from "@material-ui/core/styles";
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   margin: {
@@ -48,7 +49,6 @@ export default function Register({ handleLoginVisibility }) {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
-
 
   return (
     <Grid
@@ -215,14 +215,16 @@ export default function Register({ handleLoginVisibility }) {
             <Typography variant="body1">
               <p>
                 Have an account?{" "}
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  style={{ margin: "10px", maxWidth: "100px" }}
-                  onClick={handleLoginVisibility}
-                >
-                  Log in
-                </Button>
+                <Link to="/login">
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    style={{ margin: "10px", maxWidth: "100px" }}
+                    onClick={handleLoginVisibility}
+                  >
+                    Log in
+                  </Button>
+                </Link>
               </p>
             </Typography>
           </Grid>
