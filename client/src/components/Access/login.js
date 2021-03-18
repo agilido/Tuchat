@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./loginPage.css";
+import "./authPage.css";
 import { TextField, Button, Typography } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import AccountCircle from "@material-ui/icons/AccountCircle";
@@ -12,7 +12,7 @@ import Input from "@material-ui/core/Input";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import FormControl from "@material-ui/core/FormControl";
 import { makeStyles } from "@material-ui/core/styles";
-
+import { Link } from 'react-router-dom';
 const useStyles = makeStyles((theme) => ({
   margin: {
     margin: theme.spacing(3),
@@ -148,7 +148,8 @@ export default function Login({ handleRegisterVisibility }) {
             <Typography variant="body1">
               <p>
                 Don't have an account?{" "}
-                <Button
+                <Link to="/register">
+                  <Button
                   variant="outlined"
                   color="primary"
                   style={{ margin: "10px", maxWidth: "100px" }}
@@ -156,6 +157,8 @@ export default function Login({ handleRegisterVisibility }) {
                 >
                   Sign up
                 </Button>
+                </Link>
+                
               </p>
             </Typography>
           </Grid>
