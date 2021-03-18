@@ -222,7 +222,7 @@ export default function Register({ handleLoginVisibility }) {
                     style={{ margin: "10px", maxWidth: "100px" }}
                     onClick={handleLoginVisibility}
                   >
-                    Log in
+                    Sign In
                   </Button>
                 </Link>
               </p>
