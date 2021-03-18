@@ -24,7 +24,10 @@ html {
   animation: start-move 0.25s ease-in-out;
   transition: all 0.25s ease-in-out;
 }
-
+.fpassword-link{
+  text-decoration: none;
+  color: #003d7b;
+}
 
 @keyframes start-move {
   0% {
