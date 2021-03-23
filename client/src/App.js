@@ -1,7 +1,6 @@
 import React from "react";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import "./App.css";
-import Landing from "./components/Access/Landing";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import PrivateRoute from "./components/PrivateRoute";
 import Login from "./components/Access/Login";
@@ -19,7 +18,11 @@ function App() {
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
           <Route exact path="/fpassword" component={fpassword} />
-          <Route exact path="/resetpassword" component={resetpassword} />
+          <Route
+            exact
+            path="/resetpassword/:resetToken"
+            component={resetpassword}
+          />
         </Switch>
       </div>
     </Router>
