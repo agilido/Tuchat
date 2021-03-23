@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./authPage.css";
 import { TextField, Button, Typography } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
@@ -11,8 +11,12 @@ import IconButton from "@material-ui/core/IconButton";
 import Input from "@material-ui/core/Input";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import FormControl from "@material-ui/core/FormControl";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import Alert from "@material-ui/lab/Alert";
 import { makeStyles } from "@material-ui/core/styles";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import axios from "axios";
+
 const useStyles = makeStyles((theme) => ({
   margin: {
     margin: theme.spacing(3),
@@ -20,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
   textFld: { width: 300 },
 }));
 
-export default function Login({ handleRegisterVisibility }) {
+export default function Login() {
   const classes = useStyles();
 
   const [LoginData, setLoginData] = useState({
@@ -28,7 +32,16 @@ export default function Login({ handleRegisterVisibility }) {
     password: "",
     showPassword: false,
     error: false,
+    errorMsg: "",
   });
+
+  let history = useHistory();
+
+  useEffect(() => {
+    if (localStorage.getItem("authToken")) {
+      history.push("/");
+    }
+  }, [history]);
 
   const handleChange = (prop) => (event) => {
     setLoginData({ ...LoginData, [prop]: event.target.value });
@@ -42,13 +55,44 @@ export default function Login({ handleRegisterVisibility }) {
     event.preventDefault();
   };
 
-  const handleLogin = () => {
-    // TODO: handlelogin
-  };
+  const handleLogin = async (event) => {
+    event.preventDefault();
 
-  // function AddExtraProps(Component, extraProps) {
-  //   return <Component.type {...Component.props} {...extraProps} />;
-  // } TODO: ERROR HANDLING
+    const config = {
+      header: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    try {
+      const { data } = await axios.post(
+        "/api/auth/login",
+        {
+          email: LoginData.login,
+          password: LoginData.password,
+        },
+        config
+      );
+      localStorage.setItem("authToken", data.token);
+      setLoginData({
+        ...LoginData,
+        error: false,
+      });
+    } catch (error) {
+      setLoginData({
+        ...LoginData,
+        error: true,
+        errorMsg: error.response.data.error,
+      });
+      setTimeout(() => {
+        setLoginData({
+          ...LoginData,
+          error: true,
+          errorMsg: "",
+        });
+      }, 5000);
+    }
+  };
 
   return (
     <Grid
@@ -63,13 +107,13 @@ export default function Login({ handleRegisterVisibility }) {
               LOGO
             </Typography> */}
         <Grid></Grid>
-        {/* LOGIN PAD ONLY ON PCS, NO ON MOBILE */}
 
         <div className="loginForm">
           <Typography className={classes.margin} component="h1" variant="h4">
             Sign In
           </Typography>
-          <form noValidate autoComplete="off">
+
+          <form onSubmit={handleLogin} noValidate autoComplete="off">
             <Grid
               className={classes.margin}
               container
@@ -83,11 +127,13 @@ export default function Login({ handleRegisterVisibility }) {
               </Grid>
               <Grid item>
                 <TextField
+                  error={LoginData.error}
                   id="login"
-                  label="Username or e-mail address"
+                  label={LoginData.errorMsg ? LoginData.errorMsg : "E-mail"}
                   onChange={handleChange("login")}
                   className={classes.textFld}
                   value={LoginData.login}
+                  inputProps={{ tabIndex: "1" }}
                   // helper text for an error
                 />
               </Grid>
@@ -97,6 +143,7 @@ export default function Login({ handleRegisterVisibility }) {
               container
               spacing={1}
               alignItems="flex-end"
+              alignContent="space-around"
             >
               {/* PASSWORD */}
 
@@ -105,9 +152,9 @@ export default function Login({ handleRegisterVisibility }) {
               </Grid>
 
               <Grid item>
-                <FormControl>
+                <FormControl error={LoginData.error}>
                   <InputLabel htmlFor="standard-adornment-password">
-                    Password
+                    {LoginData.errorMsg ? LoginData.errorMsg : "Password"}
                   </InputLabel>
                   <Input
                     id="password"
@@ -115,6 +162,7 @@ export default function Login({ handleRegisterVisibility }) {
                     type={LoginData.showPassword ? "text" : "password"}
                     value={LoginData.password}
                     onChange={handleChange("password")}
+                    inputProps={{ tabIndex: "2" }}
                     // helper text for an error
                     endAdornment={
                       <InputAdornment position="end">
@@ -132,36 +180,40 @@ export default function Login({ handleRegisterVisibility }) {
                       </InputAdornment>
                     }
                   />
+                  {/* <FormHelperText id="component-error-text">
+                    {LoginData.errorMsg}
+                  </FormHelperText> */}
                 </FormControl>
               </Grid>
             </Grid>
             <Grid>
-              <Link to="/fpassword" className="fpassword-link">Forgot account?</Link>
+              <Link to="/fpassword" className="fpassword-link">
+                Forgot account?
+              </Link>
             </Grid>
 
             <Button
               className={classes.margin}
               color="primary"
               variant="contained"
+              tabIndex="3"
+              type="submit"
             >
               Sign In
             </Button>
           </form>
           <Grid className="loginSignup">
-            <Typography variant="body1">
-              <p>
-                Don't have an account?{" "}
-                <Link to="/register">
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    style={{ margin: "10px", maxWidth: "100px" }}
-                    onClick={handleRegisterVisibility}
-                  >
-                    Sign up
-                  </Button>
-                </Link>
-              </p>
+            <Typography style={{ marginBottom: "20px" }} variant="body1">
+              Don't have an account?{" "}
+              <Link to="/register">
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  style={{ margin: "10px", maxWidth: "100px" }}
+                >
+                  Sign up
+                </Button>
+              </Link>
             </Typography>
           </Grid>
         </div>
