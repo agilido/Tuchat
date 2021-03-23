@@ -59,7 +59,7 @@ exports.fpassword = async (req, res, next) => {
 
     await user.save();
 
-    const resetUrl = `http://localhost:${process.env.PORT}/resetpassword/${resetToken}`;
+    const resetUrl = `http://localhost:3000/resetpassword/${resetToken}`;
 
     const message = `<h1> Password reset requested. </h1>
     <p> Click here to reset your password </p>
