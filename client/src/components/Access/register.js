@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./authPage.css";
 import { TextField, Button, Typography } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
@@ -14,7 +14,8 @@ import Input from "@material-ui/core/Input";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import FormControl from "@material-ui/core/FormControl";
 import { makeStyles } from "@material-ui/core/styles";
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from "react-router-dom";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   margin: {
@@ -33,10 +34,20 @@ export default function Register({ handleLoginVisibility }) {
     confirmPassword: "",
     showPassword: false,
     error: false,
+    errorMsg: "",
+    passError: false,
   });
+
+  let history = useHistory();
+
+  useEffect(() => {
+    if (localStorage.getItem("authToken")) {
+      history.push("/");
+    }
+  }, [history]);
+
   const handleChange = (prop) => (event) => {
     setRegisterData({ ...RegisterData, [prop]: event.target.value });
-    console.log("xd");
   };
 
   const handleClickShowPassword = () => {
@@ -48,6 +59,67 @@ export default function Register({ handleLoginVisibility }) {
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
+  };
+
+  const handleRegister = async (event) => {
+    event.preventDefault();
+    console.log("handle register triggered");
+    const config = {
+      header: {
+        "Content-Type": "application/json",
+      },
+    };
+    if (!RegisterData.password || !RegisterData.username) {
+      return setRegisterData({
+        ...RegisterData,
+        error: true,
+        errorMsg: "Please provide data",
+      });
+    }
+    if (RegisterData.password !== RegisterData.confirmPassword) {
+      console.log("passwords do not match");
+
+      setRegisterData({ ...RegisterData, password: "", confirmPassword: "" });
+      setTimeout(() => {
+        setRegisterData({ ...RegisterData, passError: false, errorMsg: "" });
+      }, 5000);
+      // AddExtraProps(FormControl, "error");
+      return setRegisterData({
+        ...RegisterData,
+        passError: true,
+        errorMsg: "Passwords do not match",
+      });
+    }
+    try {
+      const { data } = await axios.post(
+        "/api/auth/register",
+        {
+          username: RegisterData.username,
+          email: RegisterData.email,
+          password: RegisterData.password,
+        },
+        config
+      );
+      localStorage.setItem("authToken", data.token);
+      setRegisterData({
+        ...RegisterData,
+        error: false,
+      });
+    } catch (error) {
+      setRegisterData({
+        ...RegisterData,
+        error: true,
+        errorMsg: error.response.data.error,
+      });
+      console.log("axios error" + RegisterData.errorMsg);
+      setTimeout(() => {
+        setRegisterData({
+          ...RegisterData,
+          error: true,
+          errorMsg: error.response.data.error,
+        });
+      }, 5000);
+    }
   };
 
   return (
@@ -63,13 +135,12 @@ export default function Register({ handleLoginVisibility }) {
               LOGO
             </Typography> */}
         <Grid></Grid>
-        {/* LOGIN PAD ONLY ON PCS, NOT ON MOBILE */}
 
         <div className="registerForm">
           <Typography className={classes.margin} component="h1" variant="h4">
             Sign Up
           </Typography>
-          <form noValidate autoComplete="off">
+          <form onSubmit={handleRegister} noValidate autoComplete="off">
             <Grid
               className={classes.margin}
               container
@@ -83,11 +154,13 @@ export default function Register({ handleLoginVisibility }) {
               </Grid>
               <Grid item>
                 <TextField
+                  error={RegisterData.error}
                   id="username"
                   label="User name"
                   onChange={handleChange("username")}
                   className={classes.textFld}
                   value={RegisterData.username}
+                  inputProps={{ tabIndex: "1" }}
                   // helper text for an error
                 />
               </Grid>
@@ -106,11 +179,13 @@ export default function Register({ handleLoginVisibility }) {
               </Grid>
               <Grid item>
                 <TextField
+                  error={RegisterData.error}
                   id="email"
                   label="E-mail address"
                   onChange={handleChange("email")}
                   className={classes.textFld}
                   value={RegisterData.email}
+                  inputProps={{ tabIndex: "2" }}
                   // helper text for an error
                 />
               </Grid>
@@ -129,7 +204,9 @@ export default function Register({ handleLoginVisibility }) {
               </Grid>
 
               <Grid item>
-                <FormControl>
+                <FormControl
+                  error={RegisterData.passError || RegisterData.error}
+                >
                   <InputLabel htmlFor="standard-adornment-password">
                     Password
                   </InputLabel>
@@ -138,8 +215,8 @@ export default function Register({ handleLoginVisibility }) {
                     className={classes.textFld}
                     type={RegisterData.showPassword ? "text" : "password"}
                     value={RegisterData.password}
+                    inputProps={{ tabIndex: "3" }}
                     onChange={handleChange("password")}
-                    // helper text for an error
                     endAdornment={
                       <InputAdornment position="end">
                         <IconButton
@@ -173,7 +250,9 @@ export default function Register({ handleLoginVisibility }) {
               </Grid>
 
               <Grid item>
-                <FormControl>
+                <FormControl
+                  error={RegisterData.passError || RegisterData.error}
+                >
                   <InputLabel htmlFor="standard-adornment-password">
                     Confirm password
                   </InputLabel>
@@ -182,8 +261,8 @@ export default function Register({ handleLoginVisibility }) {
                     className={classes.textFld}
                     type={RegisterData.showPassword ? "text" : "password"}
                     value={RegisterData.confirmPassword}
+                    inputProps={{ tabIndex: "4" }}
                     onChange={handleChange("confirmPassword")}
-                    // helper text for an error
                     endAdornment={
                       <InputAdornment position="end">
                         <IconButton
@@ -207,25 +286,25 @@ export default function Register({ handleLoginVisibility }) {
               className={classes.margin}
               color="primary"
               variant="contained"
+              type="submit"
+              tabIndex="5"
             >
               Register
             </Button>
           </form>
           <Grid className="loginSignup">
-            <Typography variant="body1">
-              <p>
-                Have an account?{" "}
-                <Link to="/login">
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    style={{ margin: "10px", maxWidth: "100px" }}
-                    onClick={handleLoginVisibility}
-                  >
-                    Sign In
-                  </Button>
-                </Link>
-              </p>
+            <Typography style={{ marginBottom: "20px" }} variant="body1">
+              Have an account?{" "}
+              <Link to="/login">
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  tabIndex="6"
+                  style={{ margin: "10px", maxWidth: "100px" }}
+                >
+                  Sign In
+                </Button>
+              </Link>
             </Typography>
           </Grid>
         </div>
