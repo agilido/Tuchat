@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./authPage.css";
-import { TextField, Button, Typography } from "@material-ui/core";
+import { Button, Typography } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
-import AccountCircle from "@material-ui/icons/AccountCircle";
-import EmailIcon from "@material-ui/icons/Email";
 import VpnKeySharp from "@material-ui/icons/VpnKeySharp";
 import LockIcon from "@material-ui/icons/Lock";
 import Visibility from "@material-ui/icons/Visibility";
