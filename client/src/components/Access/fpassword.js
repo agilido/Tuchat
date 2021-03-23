@@ -4,6 +4,8 @@ import { TextField, Button, Typography } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   margin: {
@@ -12,16 +14,50 @@ const useStyles = makeStyles((theme) => ({
   textFld: { width: 300 },
 }));
 
-export default function Login({ handleRegisterVisibility }) {
+export default function ForgotPassword() {
   const classes = useStyles();
 
   const [fpasswordData, setfpasswordData] = useState({
     email: "",
     error: false,
+    errorMsg: "",
+    success: "",
+    successMsg: "",
   });
 
   const handleChange = (prop) => (event) => {
     setfpasswordData({ ...fpasswordData, [prop]: event.target.value });
+  };
+
+  const handlefpassword = async (event) => {
+    event.preventDefault();
+    const config = {
+      header: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+      },
+    };
+    try {
+      const { data } = await axios.post(
+        "/api/auth/fpassword",
+        { email: fpasswordData.email },
+        config
+      );
+      setfpasswordData({
+        ...fpasswordData,
+        success: true,
+        successMsg: "Reset password e-mail sent.",
+        error: false,
+        errorMsg: "",
+      });
+    } catch (error) {
+      localStorage.removeItem("authToken");
+      setfpasswordData({
+        ...fpasswordData,
+        error: true,
+        errorMsg: error.response.data.error,
+      });
+    }
   };
 
   return (
@@ -42,7 +78,7 @@ export default function Login({ handleRegisterVisibility }) {
               Please enter your email <br></br> to search for your account.
             </p>
           </Typography>
-          <form noValidate>
+          <form onSubmit={handlefpassword} noValidate>
             <Grid
               className={classes.margin}
               container
@@ -60,12 +96,19 @@ export default function Login({ handleRegisterVisibility }) {
                   value={fpasswordData.email}
                   // helper text for an error
                 />
+                <FormHelperText error id="component-error-text">
+                  {fpasswordData.errorMsg ? fpasswordData.errorMsg : null}
+                </FormHelperText>
+                <FormHelperText id="component-error-text">
+                  {fpasswordData.successMsg}
+                </FormHelperText>
               </Grid>
             </Grid>
             <Button
               className={classes.margin}
               color="primary"
               variant="contained"
+              type="submit"
             >
               Send
             </Button>
