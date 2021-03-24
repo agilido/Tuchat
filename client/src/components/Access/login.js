@@ -12,7 +12,7 @@ import Input from "@material-ui/core/Input";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import FormControl from "@material-ui/core/FormControl";
 import { makeStyles } from "@material-ui/core/styles";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
   textFld: { width: 300 },
 }));
 
-export default function Login() {
+export default function Login({ history }) {
   const classes = useStyles();
 
   const [LoginData, setLoginData] = useState({
@@ -32,8 +32,6 @@ export default function Login() {
     error: false,
     errorMsg: "",
   });
-
-  let history = useHistory();
 
   useEffect(() => {
     if (localStorage.getItem("authToken")) {
@@ -72,6 +70,7 @@ export default function Login() {
         config
       );
       localStorage.setItem("authToken", data.token);
+      history.push("/");
       setLoginData({
         ...LoginData,
         error: false,
