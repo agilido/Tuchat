@@ -29,6 +29,8 @@ export default function Login({ history }) {
     login: "",
     password: "",
     showPassword: false,
+  });
+  const [ReqState, setReqState] = useState({
     error: false,
     errorMsg: "",
   });
@@ -65,26 +67,25 @@ export default function Login({ history }) {
         "/api/auth/login",
         {
           email: LoginData.login,
+          username: LoginData.login,
           password: LoginData.password,
         },
         config
       );
       localStorage.setItem("authToken", data.token);
       history.push("/");
-      setLoginData({
-        ...LoginData,
+      setReqState({
         error: false,
+        errorMsg: "",
       });
     } catch (error) {
-      setLoginData({
-        ...LoginData,
+      setReqState({
         error: true,
         errorMsg: error.response.data.error,
       });
       setTimeout(() => {
-        setLoginData({
-          ...LoginData,
-          error: true,
+        setReqState({
+          error: false,
           errorMsg: "",
         });
       }, 5000);
@@ -124,9 +125,11 @@ export default function Login({ history }) {
               </Grid>
               <Grid item>
                 <TextField
-                  error={LoginData.error}
+                  error={ReqState.error}
                   id="login"
-                  label={LoginData.errorMsg ? LoginData.errorMsg : "E-mail"}
+                  label={
+                    ReqState.errorMsg ? ReqState.errorMsg : "Username or E-mail"
+                  }
                   onChange={handleChange("login")}
                   className={classes.textFld}
                   value={LoginData.login}
@@ -149,9 +152,9 @@ export default function Login({ history }) {
               </Grid>
 
               <Grid item>
-                <FormControl error={LoginData.error}>
+                <FormControl error={ReqState.error}>
                   <InputLabel htmlFor="standard-adornment-password">
-                    {LoginData.errorMsg ? LoginData.errorMsg : "Password"}
+                    {ReqState.errorMsg ? ReqState.errorMsg : "Password"}
                   </InputLabel>
                   <Input
                     id="password"
