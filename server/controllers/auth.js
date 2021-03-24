@@ -1,5 +1,5 @@
-const crypto = require('crypto');
-const { findOne } = require('../models/User');
+const crypto = require("crypto");
+const { findOne } = require("../models/User");
 const User = require("../models/User");
 const ErrorResponse = require("../utils/ErrorResponse");
 const sendEmail = require("../utils/sendEmail");
@@ -21,30 +21,41 @@ exports.register = async (req, res, next) => {
 };
 
 exports.login = async (req, res, next) => {
-  const { email, password } = req.body;
-  if (!email || !password) {
-    return next(new ErrorResponse("Please enter email and password", 400));
+  const { username, email, password } = req.body;
+  if (!username || !email || !password) {
+    return next(new ErrorResponse("Please enter credentials", 400));
   }
 
   try {
-    const user = await User.findOne({ email }).select("+password");
+    const userByUsername = await User.findOne({ username }).select("+password");
 
-    if (!user) {
-      return next(new ErrorResponse("Invalid credentials", 401));
+    if (!userByUsername) {
+      const userByMail = await User.findOne({ email }).select("+password");
+
+      if (userByMail) {
+        const isMatch = await userByMail.matchPasswords(password);
+        if (!isMatch) {
+          return next(new ErrorResponse("Invalid credentials", 401));
+        }
+        return sendToken(userByMail, 200, res);
+      }
+
+      return next(new ErrorResponse("Invalid credentials xD", 401));
     }
 
-    const isMatch = await user.matchPasswords(password);
+    const isMatch = await userByUsername.matchPasswords(password);
+
     if (!isMatch) {
       return next(new ErrorResponse("Invalid credentials", 401));
     }
 
-    sendToken(user, 200, res);
+    sendToken(userByUsername, 200, res);
   } catch (error) {
     next(error);
   }
 };
 
-// Forgot password 
+// Forgot password
 
 exports.fpassword = async (req, res, next) => {
   const { email } = req.body;
@@ -86,15 +97,18 @@ exports.fpassword = async (req, res, next) => {
 };
 
 exports.resetpassword = async (req, res, next) => {
-  const resetPasswordToken = crypto.createHash("sha256").update(req.params.resetToken).digest("hex");
+  const resetPasswordToken = crypto
+    .createHash("sha256")
+    .update(req.params.resetToken)
+    .digest("hex");
 
   try {
     const user = await User.findOne({
       resetPasswordToken,
-      resetPasswordExpire: { $gt: Date.now() }
-    })
+      resetPasswordExpire: { $gt: Date.now() },
+    });
     if (!user) {
-      return next(new ErrorResponse("Invalid Reset Token"), 400)
+      return next(new ErrorResponse("Invalid Reset Token"), 400);
     }
     user.password = req.body.password;
     user.resetPasswordToken = undefined;
@@ -102,7 +116,7 @@ exports.resetpassword = async (req, res, next) => {
 
     await user.save();
 
-    res.status(201).json({ success:true, data: "Password reset success"})
+    res.status(201).json({ success: true, data: "Password reset success" });
   } catch (error) {
     next(error);
   }
