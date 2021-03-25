@@ -9,6 +9,7 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
+    lowercase: true,
     index: true,
     default: "",
   },
@@ -20,7 +21,7 @@ const UserSchema = new mongoose.Schema({
     validate: [
       validator({
         validator: "isEmail",
-        message: "Please enter valid email.",
+        message: "Please enter valid e-mail address",
       }),
     ],
   },
