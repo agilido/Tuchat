@@ -10,6 +10,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 import IconButton from "@material-ui/core/IconButton";
 import Input from "@material-ui/core/Input";
 import InputAdornment from "@material-ui/core/InputAdornment";
+import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
 import { makeStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
@@ -20,6 +21,9 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3),
   },
   textFld: { width: 300 },
+  helper: {
+    position: "absolute",
+  },
 }));
 
 export default function Login({ history }) {
@@ -33,6 +37,7 @@ export default function Login({ history }) {
   const [ReqState, setReqState] = useState({
     error: false,
     errorMsg: "",
+    errorTxtMsg: "",
   });
 
   useEffect(() => {
@@ -63,6 +68,15 @@ export default function Login({ history }) {
     };
 
     try {
+      if (!LoginData.login || !LoginData.password) {
+        setReqState({ error: true, errorMsg: "This field is required" });
+        return setTimeout(() => {
+          setReqState({
+            error: false,
+            errorMsg: "",
+          });
+        }, 5000);
+      }
       const { data } = await axios.post(
         "/api/auth/login",
         {
@@ -79,16 +93,25 @@ export default function Login({ history }) {
         errorMsg: "",
       });
     } catch (error) {
-      setReqState({
-        error: true,
-        errorMsg: error.response.data.error,
-      });
-      setTimeout(() => {
+      if (error.response.status === 500) {
         setReqState({
-          error: false,
-          errorMsg: "",
+          loading: false,
+          error: true,
+          errorTxtMsg: "Unable to connect to server",
         });
-      }, 5000);
+      } else {
+        setReqState({
+          loading: false,
+          error: true,
+          errorMsg: error.response.data.error,
+        });
+        setTimeout(() => {
+          setReqState({
+            error: false,
+            errorMsg: "",
+          });
+        }, 5000);
+      }
     }
   };
 
@@ -127,15 +150,19 @@ export default function Login({ history }) {
                 <TextField
                   error={ReqState.error}
                   id="login"
-                  label={
-                    ReqState.errorMsg ? ReqState.errorMsg : "Username or E-mail"
-                  }
+                  label="Username or E-mail"
                   onChange={handleChange("login")}
                   className={classes.textFld}
                   value={LoginData.login}
                   inputProps={{ tabIndex: "1" }}
                   // helper text for an error
                 />
+                <FormHelperText
+                  error={ReqState.error}
+                  className={classes.helper}
+                >
+                  {ReqState.errorMsg && ReqState.errorMsg}
+                </FormHelperText>
               </Grid>
             </Grid>
             <Grid
@@ -154,7 +181,7 @@ export default function Login({ history }) {
               <Grid item>
                 <FormControl error={ReqState.error}>
                   <InputLabel htmlFor="standard-adornment-password">
-                    {ReqState.errorMsg ? ReqState.errorMsg : "Password"}
+                    Password
                   </InputLabel>
                   <Input
                     id="password"
@@ -163,7 +190,6 @@ export default function Login({ history }) {
                     value={LoginData.password}
                     onChange={handleChange("password")}
                     inputProps={{ tabIndex: "2" }}
-                    // helper text for an error
                     endAdornment={
                       <InputAdornment position="end">
                         <IconButton
@@ -180,10 +206,13 @@ export default function Login({ history }) {
                       </InputAdornment>
                     }
                   />
-                  {/* <FormHelperText id="component-error-text">
-                    {LoginData.errorMsg}
-                  </FormHelperText> */}
                 </FormControl>
+                <FormHelperText
+                  error={ReqState.error}
+                  className={classes.helper}
+                >
+                  {ReqState.errorMsg && ReqState.errorMsg}
+                </FormHelperText>
               </Grid>
             </Grid>
             <Grid>
@@ -191,6 +220,10 @@ export default function Login({ history }) {
                 Forgot account?
               </Link>
             </Grid>
+
+            <Typography style={{ marginTop: "7px" }} variant="h6">
+              {ReqState.errorTxtMsg ? ReqState.errorTxtMsg : null}
+            </Typography>
 
             <Button
               className={classes.margin}
