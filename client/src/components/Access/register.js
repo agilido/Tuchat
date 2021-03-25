@@ -13,18 +13,46 @@ import IconButton from "@material-ui/core/IconButton";
 import Input from "@material-ui/core/Input";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import FormControl from "@material-ui/core/FormControl";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import clsx from "clsx";
+import { green } from "@material-ui/core/colors";
 import { makeStyles } from "@material-ui/core/styles";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
+import FormHelperText from "@material-ui/core/FormHelperText";
 import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    position: "absolute",
+  },
   margin: {
     margin: theme.spacing(3),
   },
+  helper: {
+    position: "absolute",
+  },
   textFld: { width: 300 },
+  wrapper: {
+    margin: theme.spacing(3),
+    position: "relative",
+  },
+  buttonSuccess: {
+    backgroundColor: green[500],
+    "&:hover": {
+      backgroundColor: green[700],
+    },
+  },
+  buttonProgress: {
+    color: green[500],
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    marginTop: -12,
+    marginLeft: -12,
+  },
 }));
 
-export default function Register({ handleLoginVisibility }) {
+export default function Register({ history }) {
   const classes = useStyles();
 
   const [RegisterData, setRegisterData] = useState({
@@ -33,12 +61,22 @@ export default function Register({ handleLoginVisibility }) {
     password: "",
     confirmPassword: "",
     showPassword: false,
+  });
+  const [ReqState, setReqState] = useState({
     error: false,
     errorMsg: "",
+    errorTxtMsg: "",
+    emailErr: false,
+    emailErrMsg: "",
     passError: false,
+    passErrMsg: "",
+    loading: false,
+    success: false,
+    successMsg: "",
   });
-
-  let history = useHistory();
+  const buttonSubmit = clsx({
+    [classes.buttonSuccess]: ReqState.success,
+  });
 
   useEffect(() => {
     if (localStorage.getItem("authToken")) {
@@ -60,37 +98,55 @@ export default function Register({ handleLoginVisibility }) {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
+  function emailIsValid(email) {
+    return /\S+@\S+\.\S+/.test(email);
+  }
 
   const handleRegister = async (event) => {
     event.preventDefault();
+
     console.log("handle register triggered");
+
     const config = {
       header: {
         "Content-Type": "application/json",
       },
     };
-    if (!RegisterData.password || !RegisterData.username) {
-      return setRegisterData({
-        ...RegisterData,
-        error: true,
-        errorMsg: "Please provide data",
-      });
-    }
-    if (RegisterData.password !== RegisterData.confirmPassword) {
-      console.log("passwords do not match");
 
-      setRegisterData({ ...RegisterData, password: "", confirmPassword: "" });
-      setTimeout(() => {
-        setRegisterData({ ...RegisterData, passError: false, errorMsg: "" });
+    if (!RegisterData.password || !RegisterData.username) {
+      setReqState({
+        error: true,
+        errorMsg: "This field is required",
+      });
+      return setTimeout(() => {
+        setReqState({
+          error: false,
+          errorMsg: "",
+        });
       }, 5000);
-      // AddExtraProps(FormControl, "error");
-      return setRegisterData({
-        ...RegisterData,
+    }
+    if (!emailIsValid(RegisterData.email)) {
+      setReqState({
+        emailErr: true,
+        emailErrMsg: "E-mail address is invalid",
+      });
+      setTimeout(() => {
+        setReqState({
+          emailErr: false,
+          emailErrMsg: "",
+        });
+      }, 5000);
+    }
+
+    if (RegisterData.password !== RegisterData.confirmPassword) {
+      return setReqState({
         passError: true,
-        errorMsg: "Passwords do not match",
+        passErrMsg: "Passwords do not match",
       });
     }
+
     try {
+      setReqState({ loading: true });
       const { data } = await axios.post(
         "/api/auth/register",
         {
@@ -100,25 +156,32 @@ export default function Register({ handleLoginVisibility }) {
         },
         config
       );
-      localStorage.setItem("authToken", data.token);
-      setRegisterData({
-        ...RegisterData,
+      setReqState({
         error: false,
+        loading: false,
+        success: true,
+        successMsg: data.data,
       });
     } catch (error) {
-      setRegisterData({
-        ...RegisterData,
-        error: true,
-        errorMsg: error.response.data.error,
-      });
-      console.log("axios error" + RegisterData.errorMsg);
-      setTimeout(() => {
-        setRegisterData({
-          ...RegisterData,
+      if (error.response.status == 500) {
+        return setReqState({
+          loading: false,
+          error: true,
+          errorTxtMsg: "Unable to connect to server",
+        });
+      } else {
+        setReqState({
+          loading: false,
           error: true,
           errorMsg: error.response.data.error,
         });
-      }, 5000);
+        setTimeout(() => {
+          setReqState({
+            error: false,
+            errorMsg: "",
+          });
+        }, 5000);
+      }
     }
   };
 
@@ -154,15 +217,29 @@ export default function Register({ handleLoginVisibility }) {
               </Grid>
               <Grid item>
                 <TextField
-                  error={RegisterData.error}
+                  error={
+                    ReqState.error &&
+                    ReqState.errorMsg !== "Please enter valid e-mail address"
+                  }
                   id="username"
-                  label="User name"
+                  label="Username"
                   onChange={handleChange("username")}
                   className={classes.textFld}
                   value={RegisterData.username}
                   inputProps={{ tabIndex: "1" }}
-                  // helper text for an error
                 />
+                <FormHelperText
+                  error={ReqState.passError || ReqState.error}
+                  className={classes.helper}
+                >
+                  {(ReqState.error &&
+                    ReqState.errorMsg !== "E-mail already exists" &&
+                    ReqState.errorMsg !==
+                      "Please enter valid e-mail address") ||
+                  !RegisterData.username
+                    ? ReqState.errorMsg
+                    : null}
+                </FormHelperText>
               </Grid>
             </Grid>
 
@@ -179,15 +256,25 @@ export default function Register({ handleLoginVisibility }) {
               </Grid>
               <Grid item>
                 <TextField
-                  error={RegisterData.error}
+                  error={ReqState.emailErr || ReqState.errorMsg}
                   id="email"
-                  label="E-mail address"
+                  label="E-mail"
                   onChange={handleChange("email")}
                   className={classes.textFld}
                   value={RegisterData.email}
                   inputProps={{ tabIndex: "2" }}
-                  // helper text for an error
                 />
+                <FormHelperText
+                  error={ReqState.emailErr || ReqState.error}
+                  className={classes.helper}
+                >
+                  {ReqState.emailErr ||
+                  (ReqState.error &&
+                    ReqState.errorMsg !== "Username already exists") ||
+                  !RegisterData.email
+                    ? ReqState.errorMsg || ReqState.emailErrMsg
+                    : null}
+                </FormHelperText>
               </Grid>
             </Grid>
 
@@ -205,7 +292,11 @@ export default function Register({ handleLoginVisibility }) {
 
               <Grid item>
                 <FormControl
-                  error={RegisterData.passError || RegisterData.error}
+                  error={
+                    ReqState.passError ||
+                    (ReqState.errorMsg &&
+                      ReqState.errorMsg !== "Please enter valid e-mail address")
+                  }
                 >
                   <InputLabel htmlFor="standard-adornment-password">
                     Password
@@ -234,6 +325,17 @@ export default function Register({ handleLoginVisibility }) {
                     }
                   />
                 </FormControl>
+                <FormHelperText
+                  error={ReqState.passError || ReqState.error}
+                  className={classes.helper}
+                >
+                  {ReqState.passError ||
+                  (ReqState.errorMsg &&
+                    !RegisterData.password &&
+                    ReqState.errorMsg !== "Please enter valid e-mail address")
+                    ? ReqState.errorMsg
+                    : null}
+                </FormHelperText>
               </Grid>
             </Grid>
 
@@ -251,10 +353,14 @@ export default function Register({ handleLoginVisibility }) {
 
               <Grid item>
                 <FormControl
-                  error={RegisterData.passError || RegisterData.error}
+                  error={
+                    ReqState.passError ||
+                    (ReqState.errorMsg &&
+                      ReqState.errorMsg !== "Please enter valid e-mail address")
+                  }
                 >
                   <InputLabel htmlFor="standard-adornment-password">
-                    Confirm password
+                    Confirm Password
                   </InputLabel>
                   <Input
                     id="password"
@@ -280,17 +386,42 @@ export default function Register({ handleLoginVisibility }) {
                     }
                   />
                 </FormControl>
+                <FormHelperText
+                  error={ReqState.error || ReqState.passError}
+                  className={classes.helper}
+                >
+                  {ReqState.passError ||
+                  (ReqState.errorMsg &&
+                    !RegisterData.password &&
+                    ReqState.errorMsg !== "Please enter valid e-mail address")
+                    ? ReqState.passErrMsg || ReqState.errorMsg
+                    : null}
+                </FormHelperText>
               </Grid>
             </Grid>
-            <Button
-              className={classes.margin}
-              color="primary"
-              variant="contained"
-              type="submit"
-              tabIndex="5"
-            >
-              Register
-            </Button>
+            <Typography variant="h6">
+              {ReqState.successMsg ? ReqState.successMsg : null}
+              {ReqState.errorTxtMsg ? ReqState.errorTxtMsg : null}
+            </Typography>
+            <div className={classes.wrapper}>
+              <Button
+                variant="contained"
+                color="primary"
+                type="submit"
+                tabIndex="5"
+                className={buttonSubmit}
+                disabled={ReqState.loading}
+                style={{ marginTop: "10px" }}
+              >
+                Register
+              </Button>
+              {ReqState.loading && (
+                <CircularProgress
+                  size={24}
+                  className={classes.buttonProgress}
+                />
+              )}
+            </div>
           </form>
           <Grid className="loginSignup">
             <Typography style={{ marginBottom: "20px" }} variant="body1">
