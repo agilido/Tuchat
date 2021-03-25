@@ -1,20 +1,35 @@
 const crypto = require("crypto");
-const { findOne } = require("../models/User");
 const User = require("../models/User");
 const ErrorResponse = require("../utils/ErrorResponse");
 const sendEmail = require("../utils/sendEmail");
 
+function emailIsValid(email) {
+  return /\S+@\S+\.\S+/.test(email);
+}
+
 exports.register = async (req, res, next) => {
   const { username, email, password } = req.body;
+  if (!username || !email || !password) {
+    return next(new ErrorResponse("Please enter credentials", 400));
+  }
 
   try {
-    const user = await User.create({
+    if (await User.findOne({ email })) {
+      return next(new ErrorResponse("E-mail already exists", 400));
+    }
+    if (await User.findOne({ username })) {
+      return next(new ErrorResponse("Username already exists", 400));
+    }
+
+    await User.create({
       username,
       email,
       password,
     });
-
-    sendToken(user, 200, res);
+    res.status(200).json({
+      success: true,
+      data: "Registered successfully!",
+    });
   } catch (error) {
     next(error);
   }
@@ -40,7 +55,7 @@ exports.login = async (req, res, next) => {
         return sendToken(userByMail, 200, res);
       }
 
-      return next(new ErrorResponse("Invalid credentials xD", 401));
+      return next(new ErrorResponse("Invalid credentials", 401));
     }
 
     const isMatch = await userByUsername.matchPasswords(password);
@@ -59,12 +74,14 @@ exports.login = async (req, res, next) => {
 
 exports.fpassword = async (req, res, next) => {
   const { email } = req.body;
-
+  if (!emailIsValid(email)) {
+    return next(new ErrorResponse("Please enter valid e-mail address"), 404);
+  }
   try {
     const user = await User.findOne({ email });
 
     if (!user) {
-      return next(new ErrorResponse("Email could not be sent"), 404);
+      return next(new ErrorResponse("E-mail could not be sent"), 404);
     }
     const resetToken = user.getResetPasswordToken();
 
