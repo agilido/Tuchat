@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./authPage.css";
+import "./styles.css";
 import { Button, Typography } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import VpnKeySharp from "@material-ui/icons/VpnKeySharp";
@@ -32,7 +32,7 @@ export default function ResetPassword({ match }) {
     error: false,
     errorMsg: "",
     success: false,
-    successMsg: ""
+    successMsg: "",
   });
 
   const handleChange = (prop) => (event) => {
@@ -60,11 +60,19 @@ export default function ResetPassword({ match }) {
     };
 
     if (ResetPasswordData.password !== ResetPasswordData.confirmPassword) {
-        setResetPasswordData({password: "", confirmPassword: ""});
-        setTimeout(() => {
-            setResetPasswordData({...ResetPasswordData, error: true, errorMsg: ""});
-        }, 5000);
-        return setResetPasswordData({...ResetPasswordData, error: true, errorMsg: "Passwords do not match"});
+      setResetPasswordData({ password: "", confirmPassword: "" });
+      setTimeout(() => {
+        setResetPasswordData({
+          ...ResetPasswordData,
+          error: true,
+          errorMsg: "",
+        });
+      }, 5000);
+      return setResetPasswordData({
+        ...ResetPasswordData,
+        error: true,
+        errorMsg: "Passwords do not match",
+      });
     }
 
     try {
@@ -77,9 +85,8 @@ export default function ResetPassword({ match }) {
       );
 
       setResetPasswordData(data.data);
-
     } catch (error) {
-        setResetPasswordData({
+      setResetPasswordData({
         ...ResetPasswordData,
         error: true,
         errorMsg: error.response.data.error,
@@ -113,7 +120,6 @@ export default function ResetPassword({ match }) {
             Change Your Password
           </Typography>
           <form onSubmit={handleResetPassword} noValidate autoComplete="off">
-
             {/* PASSWORD */}
             <Grid
               className={classes.margin}
@@ -121,7 +127,6 @@ export default function ResetPassword({ match }) {
               spacing={1}
               alignItems="flex-end"
             >
-
               <Grid item>
                 <VpnKeySharp />
               </Grid>
