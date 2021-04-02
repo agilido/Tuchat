@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
+import Navigation from "./Navigation";
 
 export const Home = () => {
   const style = {
@@ -32,16 +33,11 @@ export const Home = () => {
     };
   }, [history]);
 
-  const handleLogout = () => {
-    localStorage.removeItem("authToken");
-    history.push("/login");
-  };
-
   return (
     <div>
       {error && <span>{error}</span>}
-      <h1 style={style}>YO IM CHAT HOME SCREEN</h1>
-      <button onClick={handleLogout}>Logout</button>
+      <Navigation />
+      {/* <button onClick={handleLogout}>Logout</button> */}
     </div>
   );
 };
