@@ -116,7 +116,7 @@ export default function Register({ history }) {
     if (!RegisterData.password || !RegisterData.username) {
       setReqState({
         error: true,
-        errorMsg: "This field is required",
+        errorMsg: "Required",
       });
       return setTimeout(() => {
         setReqState({

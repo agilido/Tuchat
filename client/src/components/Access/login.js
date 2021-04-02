@@ -69,7 +69,7 @@ export default function Login({ history }) {
 
     try {
       if (!LoginData.login || !LoginData.password) {
-        setReqState({ error: true, errorMsg: "This field is required" });
+        setReqState({ error: true, errorMsg: "Required" });
         return setTimeout(() => {
           setReqState({
             error: false,
