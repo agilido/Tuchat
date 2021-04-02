@@ -12,8 +12,11 @@ import Input from "@material-ui/core/Input";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import { makeStyles } from "@material-ui/core/styles";
+import { green } from "@material-ui/core/colors";
 import { Link } from "react-router-dom";
+import clsx from "clsx";
 import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
@@ -23,6 +26,20 @@ const useStyles = makeStyles((theme) => ({
   textFld: { width: 300 },
   helper: {
     position: "absolute",
+  },
+  buttonSuccess: {
+    backgroundColor: green[500],
+    "&:hover": {
+      backgroundColor: green[700],
+    },
+  },
+  buttonProgress: {
+    color: green[500],
+    position: "absolute",
+    top: "74%",
+    left: "50%",
+    marginTop: -12,
+    marginLeft: -12,
   },
 }));
 
@@ -38,8 +55,11 @@ export default function Login({ history }) {
     error: false,
     errorMsg: "",
     errorTxtMsg: "",
+    loading: false,
   });
-
+  const buttonSubmit = clsx({
+    [classes.buttonSuccess]: ReqState.success,
+  });
   useEffect(() => {
     if (localStorage.getItem("authToken")) {
       history.push("/");
@@ -77,6 +97,7 @@ export default function Login({ history }) {
           });
         }, 5000);
       }
+      setReqState({ loading: true });
       const { data } = await axios.post(
         "/api/auth/login",
         {
@@ -131,7 +152,7 @@ export default function Login({ history }) {
 
         <div className="loginForm">
           <Typography className={classes.margin} component="h1" variant="h4">
-            Sign In
+            Log In
           </Typography>
 
           <form onSubmit={handleLogin} noValidate autoComplete="off">
@@ -226,14 +247,19 @@ export default function Login({ history }) {
             </Typography>
 
             <Button
-              className={classes.margin}
+              className={classes.buttonSubmit}
               color="primary"
               variant="contained"
               tabIndex="3"
               type="submit"
+              style={{ margin: "12px" }}
+              disabled={ReqState.loading}
             >
-              Sign In
+              Log in
             </Button>
+            {ReqState.loading && (
+              <CircularProgress size={24} className={classes.buttonProgress} />
+            )}
           </form>
           <Grid className="loginSignup">
             <Typography style={{ marginBottom: "20px" }} variant="body1">

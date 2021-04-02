@@ -433,7 +433,7 @@ export default function Register({ history }) {
                   tabIndex="6"
                   style={{ margin: "10px", maxWidth: "100px" }}
                 >
-                  Sign In
+                  Log In
                 </Button>
               </Link>
             </Typography>
