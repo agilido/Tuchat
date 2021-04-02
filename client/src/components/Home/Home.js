@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import Navigation from "./Navigation";
+import "./styles.css";
 
 export const Home = () => {
   const style = {
