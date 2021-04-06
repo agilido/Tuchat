@@ -32,6 +32,7 @@ const UserSchema = new mongoose.Schema({
   },
   channels: [
     {
+      _id: false,
       channelId: String,
       channelName: String,
       favorite: Boolean,

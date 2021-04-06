@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 
 // icons
@@ -6,11 +6,14 @@ import StarBorder from "@material-ui/icons/StarBorder";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import FolderIcon from "@material-ui/icons/Folder";
+import IconButton from "@material-ui/core/IconButton";
+import AddCircleIcon from "@material-ui/icons/AddCircle";
 // structure items
 
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import List from "@material-ui/core/List";
 import Collapse from "@material-ui/core/Collapse";
 
@@ -41,6 +44,9 @@ export default function LeftNavigationSection({
   const switchShow = () => {
     setShow(!show);
   };
+  const addIcon = () => {
+    return <FolderIcon />;
+  };
   return (
     <>
       <List>
@@ -52,34 +58,47 @@ export default function LeftNavigationSection({
               <FolderIcon fontSize="large" />
             )}
           </ListItemIcon>
+
           <ListItemText primary={title} />
+
           {show ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
-
-        <Collapse in={show} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
-            {/* <ListItem button className={classes.nested}>
-              <ListItemText primary="Room 1" />
-            </ListItem> */}
-            {items ? (
-              items.map((text) => {
-                return (
-                  <ListItem dense button className={classes.nested}>
-                    #
-                    <ListItemText
-                      disableTypography
-                      className={classes.item}
-                      primary={text}
-                    />
-                  </ListItem>
-                );
-              })
-            ) : (
-              <ListItemText primary="No channels found" />
-            )}
-          </List>
-        </Collapse>
+        <ListItemSecondaryAction
+          style={{
+            position: "absolute",
+            float: "right",
+            left: "65%",
+            top: "50%",
+            width: "20%",
+          }}
+        >
+          {type === "channel" ? (
+            <IconButton aria-label="addChannel">
+              <AddCircleIcon />
+            </IconButton>
+          ) : null}
+        </ListItemSecondaryAction>
       </List>
+      <Collapse in={show} timeout="auto" unmountOnExit>
+        <List component="div" disablePadding>
+          {items ? (
+            items.map((text) => {
+              return (
+                <ListItem dense button className={classes.nested}>
+                  #
+                  <ListItemText
+                    disableTypography
+                    className={classes.item}
+                    primary={text}
+                  />
+                </ListItem>
+              );
+            })
+          ) : (
+            <ListItemText primary="No channels found" />
+          )}
+        </List>
+      </Collapse>
     </>
   );
 }
