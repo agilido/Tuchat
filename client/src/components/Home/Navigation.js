@@ -82,7 +82,7 @@ export default function LeftNavigation() {
   const [openStarredList, setOpenStarredList] = useState(true);
   const [openChannelList, setOpenChannelList] = useState(true);
 
-  const handleDrawerPosition = () => {
+  const handleDrawerPosition = (e) => {
     if (open) {
       setOpen(false);
       setOpenStarredList(false);
@@ -154,7 +154,6 @@ export default function LeftNavigation() {
           show={openStarredList}
           setShow={setOpenStarredList}
           title="Favorites"
-          type="channel"
           icon="star"
           items={["Piwnica", "Garaż", "Dach"]}
           open={open}
@@ -166,7 +165,7 @@ export default function LeftNavigation() {
           type="channel"
           items={null}
           open={open}
-        />
+        ></LeftNavigationSection>
 
         {/* <Divider />
         <List>
