@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
@@ -78,25 +78,69 @@ const useStyles = makeStyles((theme) => ({
 
 export default function LeftNavigation() {
   const classes = useStyles();
-  const [open, setOpen] = useState(true);
-  const [openStarredList, setOpenStarredList] = useState(true);
-  const [openChannelList, setOpenChannelList] = useState(true);
+
+  const data = localStorage.getItem("barPosition");
+  const starredPosition = localStorage.getItem("starredPosition");
+  const channelsPosition = localStorage.getItem("channelsPosition");
+
+  const [open, setOpen] = useState(data ? JSON.parse(data) : true);
+  const [openStarredList, setOpenStarredList] = useState(
+    starredPosition ? JSON.parse(starredPosition) : true
+  );
+  const [openChannelList, setOpenChannelList] = useState(
+    channelsPosition ? JSON.parse(channelsPosition) : true
+  );
+
+  useEffect(() => {
+    if (data) {
+      setOpen(JSON.parse(data));
+      setOpenStarredList(JSON.parse(starredPosition));
+      setOpenChannelList(JSON.parse(channelsPosition));
+    }
+  }, []);
+
+  useEffect(() => {
+    setLocalStorage("starredPosition", openStarredList);
+  }, [openStarredList]);
+
+  useEffect(() => {
+    setLocalStorage("channelsPosition", openChannelList);
+  }, [openChannelList]);
+
+  const setLocalStorage = (text, value) => {
+    localStorage.setItem(text, JSON.stringify(value));
+  };
 
   const handleDrawerPosition = (e) => {
     if (open) {
       setOpen(false);
+
       setOpenStarredList(false);
+      setLocalStorage("starredPosition", openStarredList);
+
       setOpenChannelList(false);
+      setLocalStorage("channelsPosition", openChannelList);
+
+      setLocalStorage("barPosition", !open);
     } else {
       setOpen(true);
+
+      if (starredPosition && channelsPosition) {
+        setOpenStarredList(JSON.parse(starredPosition));
+        setOpenChannelList(JSON.parse(channelsPosition));
+      }
+
+      setLocalStorage("barPosition", !open);
     }
   };
+
   let history = useHistory();
 
   const handleLogout = () => {
     localStorage.removeItem("authToken");
     history.push("/login");
   };
+
   return (
     <div className={classes.root}>
       <CssBaseline />

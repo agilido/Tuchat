@@ -44,9 +44,7 @@ export default function LeftNavigationSection({
   const switchShow = () => {
     setShow(!show);
   };
-  const addIcon = () => {
-    return <FolderIcon />;
-  };
+
   return (
     <>
       <List>
@@ -66,20 +64,19 @@ export default function LeftNavigationSection({
         <ListItemSecondaryAction
           style={{
             position: "absolute",
-            float: "right",
             left: "65%",
             top: "50%",
             width: "20%",
           }}
         >
-          {type === "channel" ? (
+          {type === "channel" && open ? (
             <IconButton aria-label="addChannel">
               <AddCircleIcon />
             </IconButton>
           ) : null}
         </ListItemSecondaryAction>
       </List>
-      <Collapse in={show} timeout="auto" unmountOnExit>
+      <Collapse in={show && open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
           {items ? (
             items.map((text) => {
