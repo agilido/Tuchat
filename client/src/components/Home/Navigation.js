@@ -207,7 +207,7 @@ export default function LeftNavigation() {
           setShow={setOpenChannelList}
           title="Channels"
           type="channel"
-          items={null}
+          items={["Biuro", "Dom", "Mieszkanie"]}
           open={open}
         ></LeftNavigationSection>
 
