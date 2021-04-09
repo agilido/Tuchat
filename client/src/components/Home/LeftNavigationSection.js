@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-
 // icons
 import StarBorder from "@material-ui/icons/StarBorder";
 import ExpandLess from "@material-ui/icons/ExpandLess";
@@ -8,6 +7,8 @@ import ExpandMore from "@material-ui/icons/ExpandMore";
 import FolderIcon from "@material-ui/icons/Folder";
 import IconButton from "@material-ui/core/IconButton";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
+import StarOutlineIcon from "@material-ui/icons/StarOutline";
+import StarIcon from "@material-ui/icons/Star";
 // structure items
 
 import ListItem from "@material-ui/core/ListItem";
@@ -25,9 +26,12 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "1.1rem",
     marginLeft: "12px",
   },
-  largeIcon: {
-    width: 60,
-    height: 60,
+  starSize: {
+    height: "30px",
+    width: "30px",
+    color: "#FFDF00",
+    boxShadow:
+      "0 4px 10px 0 rgba(0, 0, 0, 0.1), 0px 0px 0px rgba(0, 0, 0, 0.1)",
   },
 }));
 
@@ -44,7 +48,6 @@ export default function LeftNavigationSection({
   const switchShow = () => {
     setShow(!show);
   };
-
   return (
     <>
       <List>
@@ -88,6 +91,30 @@ export default function LeftNavigationSection({
                     className={classes.item}
                     primary={text}
                   />
+                  <ListItemSecondaryAction
+                    style={{
+                      position: "absolute",
+                      left: "78%",
+                      top: "50%",
+                      width: "20%",
+                    }}
+                  >
+                    {type === "channel" ? (
+                      <IconButton
+                        className={classes.starSize}
+                        aria-label="starChannel"
+                      >
+                        <StarOutlineIcon />
+                      </IconButton>
+                    ) : (
+                      <IconButton
+                        className={classes.starSize}
+                        aria-label="unStarChannel"
+                      >
+                        <StarIcon />
+                      </IconButton>
+                    )}
+                  </ListItemSecondaryAction>
                 </ListItem>
               );
             })
