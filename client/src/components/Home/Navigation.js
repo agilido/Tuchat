@@ -82,13 +82,19 @@ export default function LeftNavigation() {
   const data = localStorage.getItem("barPosition");
   const starredPosition = localStorage.getItem("starredPosition");
   const channelsPosition = localStorage.getItem("channelsPosition");
+  const contactsPosition = localStorage.getItem("contactsPosition");
 
   const [open, setOpen] = useState(data ? JSON.parse(data) : true);
+
+  // <ToRefactor >
   const [openStarredList, setOpenStarredList] = useState(
     starredPosition ? JSON.parse(starredPosition) : true
   );
   const [openChannelList, setOpenChannelList] = useState(
     channelsPosition ? JSON.parse(channelsPosition) : true
+  );
+  const [openContactList, setOpenContactList] = useState(
+    contactsPosition ? JSON.parse(contactsPosition) : true
   );
 
   useEffect(() => {
@@ -96,6 +102,7 @@ export default function LeftNavigation() {
       setOpen(JSON.parse(data));
       setOpenStarredList(JSON.parse(starredPosition));
       setOpenChannelList(JSON.parse(channelsPosition));
+      setOpenContactList(JSON.parse(contactsPosition));
     }
   }, []);
 
@@ -106,6 +113,9 @@ export default function LeftNavigation() {
   useEffect(() => {
     setLocalStorage("channelsPosition", openChannelList);
   }, [openChannelList]);
+  useEffect(() => {
+    setLocalStorage("contactsPosition", openContactList);
+  }, [openContactList]);
 
   const setLocalStorage = (text, value) => {
     localStorage.setItem(text, JSON.stringify(value));
@@ -120,6 +130,8 @@ export default function LeftNavigation() {
 
       setOpenChannelList(false);
       setLocalStorage("channelsPosition", openChannelList);
+      setOpenContactList(false);
+      setLocalStorage("contactsPosition", openContactList);
 
       setLocalStorage("barPosition", !open);
     } else {
@@ -128,12 +140,13 @@ export default function LeftNavigation() {
       if (starredPosition && channelsPosition) {
         setOpenStarredList(JSON.parse(starredPosition));
         setOpenChannelList(JSON.parse(channelsPosition));
+        setOpenContactList(JSON.parse(contactsPosition));
       }
 
       setLocalStorage("barPosition", !open);
     }
   };
-
+  // <ToRefactor />
   let history = useHistory();
 
   const handleLogout = () => {
@@ -198,7 +211,7 @@ export default function LeftNavigation() {
           show={openStarredList}
           setShow={setOpenStarredList}
           title="Favorites"
-          icon="star"
+          type="stars"
           items={["Piwnica", "Garaż", "Dach"]}
           open={open}
         />
@@ -211,17 +224,16 @@ export default function LeftNavigation() {
           open={open}
         ></LeftNavigationSection>
 
-        {/* <Divider />
-        <List>
-          {["All mail", "Trash", "Spam"].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List> */}
+        <Divider />
+
+        <LeftNavigationSection
+          show={openContactList}
+          setShow={setOpenContactList}
+          title="Contacts"
+          type="contacts"
+          items={["Rob", "Bob", "Georgy"]}
+          open={open}
+        ></LeftNavigationSection>
       </Drawer>
       <main className={classes.content}>
         <div className={classes.toolbar} />
