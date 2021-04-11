@@ -9,6 +9,8 @@ import IconButton from "@material-ui/core/IconButton";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import StarOutlineIcon from "@material-ui/icons/StarOutline";
 import StarIcon from "@material-ui/icons/Star";
+import ChatIcon from "@material-ui/icons/Chat";
+import PeopleIcon from "@material-ui/icons/People";
 // structure items
 
 import ListItem from "@material-ui/core/ListItem";
@@ -27,11 +29,11 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: "12px",
   },
   starSize: {
-    height: "30px",
-    width: "30px",
-    color: "#FFDF00",
-    boxShadow:
-      "0 4px 10px 0 rgba(0, 0, 0, 0.1), 0px 0px 0px rgba(0, 0, 0, 0.1)",
+    height: "40px",
+    width: "40px",
+    color: "#FACA2B",
+    // boxShadow:
+    //   "0 4px 10px 0 rgba(0, 0, 0, 0.1), 0px 0px 0px rgba(0, 0, 0, 0.1)",
   },
 }));
 
@@ -41,7 +43,6 @@ export default function LeftNavigationSection({
   type,
   items,
   title,
-  icon,
   open,
 }) {
   const classes = useStyles();
@@ -53,8 +54,10 @@ export default function LeftNavigationSection({
       <List>
         <ListItem button onClick={open ? switchShow : null}>
           <ListItemIcon>
-            {icon === "star" ? (
+            {type === "stars" ? (
               <StarBorder fontSize="large" />
+            ) : type === "contacts" ? (
+              <PeopleIcon fontSize="large" />
             ) : (
               <FolderIcon fontSize="large" />
             )}
@@ -85,7 +88,7 @@ export default function LeftNavigationSection({
             items.map((text) => {
               return (
                 <ListItem dense button className={classes.nested}>
-                  #
+                  {type === "channel" || type === "stars" ? "#" : null}
                   <ListItemText
                     disableTypography
                     className={classes.item}
@@ -106,14 +109,18 @@ export default function LeftNavigationSection({
                       >
                         <StarOutlineIcon />
                       </IconButton>
-                    ) : (
+                    ) : type === "stars" ? (
                       <IconButton
                         className={classes.starSize}
                         aria-label="unStarChannel"
                       >
                         <StarIcon />
                       </IconButton>
-                    )}
+                    ) : type === "contacts" ? (
+                      <IconButton aria-label="unStarChannel">
+                        <ChatIcon />
+                      </IconButton>
+                    ) : null}
                   </ListItemSecondaryAction>
                 </ListItem>
               );
