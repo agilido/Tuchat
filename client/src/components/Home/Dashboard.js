@@ -14,6 +14,7 @@ import { useHistory } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 
 import LeftNavigationSection from "./LeftNavigationSection";
+import ChannelHome from "./Channel/ChannelHome";
 
 const drawerWidth = 240;
 
@@ -69,7 +70,9 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(3),
+    display: "flex",
+    flexDirection: "row",
+    marginTop: "80px",
   },
   nested: {
     paddingLeft: theme.spacing(4),
@@ -237,6 +240,7 @@ export default function LeftNavigation() {
       </Drawer>
       <main className={classes.content}>
         <div className={classes.toolbar} />
+        <ChannelHome />
       </main>
     </div>
   );
