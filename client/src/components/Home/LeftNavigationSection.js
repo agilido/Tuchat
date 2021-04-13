@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: theme.spacing(4),
   },
   item: {
-    fontSize: "1.1rem",
+    fontSize: "1rem",
     marginLeft: "12px",
   },
   starSize: {

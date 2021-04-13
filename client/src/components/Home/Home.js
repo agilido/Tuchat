@@ -1,13 +1,12 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
-import Navigation from "./Navigation";
 import "./styles.css";
+import Dashboard from "./Dashboard";
+import ChannelHome from "./Channel/ChannelHome";
+import { Grid } from "@material-ui/core";
 
 export const Home = () => {
-  const style = {
-    color: "white",
-  };
   const [error, setError] = useState("");
   const [PrivateData, setPrivateData] = useState("");
 
@@ -36,9 +35,8 @@ export const Home = () => {
 
   return (
     <div>
+      <Dashboard />
       {error && <span>{error}</span>}
-      <Navigation />
-      {/* <button onClick={handleLogout}>Logout</button> */}
     </div>
   );
 };

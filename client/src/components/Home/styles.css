@@ -2,6 +2,7 @@ div {
   transition: all 0.2s ease-in-out;
   animation: opacity 0.2s ease-in-out;
 }
+
 @keyframes opacity {
   0% {
     opacity: 0.4;
