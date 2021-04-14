@@ -69,11 +69,11 @@ const useStyles = makeStyles((theme) => ({
     ...theme.mixins.toolbar,
   },
   content: {
-    flexGrow: 1,
     display: "flex",
     flexDirection: "row",
-    marginTop: "80px",
+    flexGrow: 1,
   },
+
   nested: {
     paddingLeft: theme.spacing(4),
   },
@@ -160,7 +160,6 @@ export default function LeftNavigation() {
   return (
     <div className={classes.root}>
       <CssBaseline />
-
       {/* Hiding */}
       <AppBar
         position="fixed"
@@ -193,7 +192,6 @@ export default function LeftNavigation() {
           </Grid>
         </Toolbar>
       </AppBar>
-
       <Drawer
         variant="permanent"
         className={clsx(classes.drawer, {
@@ -238,10 +236,12 @@ export default function LeftNavigation() {
           open={open}
         ></LeftNavigationSection>
       </Drawer>
-      <main className={classes.content}>
+      <Grid container>
         <div className={classes.toolbar} />
-        <ChannelHome />
-      </main>
+        <Grid container alignItems="flex-start">
+          <ChannelHome />
+        </Grid>
+      </Grid>
     </div>
   );
 }

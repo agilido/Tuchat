@@ -9,7 +9,6 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "12px",
     width: "30%",
     marginLeft: "15px",
-    marginRight: "15px",
   },
 }));
 export default function ChannelInfo() {
