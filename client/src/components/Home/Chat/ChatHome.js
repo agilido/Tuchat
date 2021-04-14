@@ -9,9 +9,9 @@ const useStyles = makeStyles((theme) => ({
     color: "black",
     backgroundColor: "#edf0f5",
     borderRadius: "12px",
-    width: "100%",
     padding: "1%",
-    height: "90vh",
+    width: "100%",
+    height: "100%",
   },
 }));
 
