@@ -15,6 +15,7 @@ import Grid from "@material-ui/core/Grid";
 
 import LeftNavigationSection from "./LeftNavigationSection";
 import ChannelHome from "./Channel/ChannelHome";
+import AddChannelForm from "./AddChannelForm";
 
 const drawerWidth = 240;
 
@@ -88,6 +89,12 @@ export default function LeftNavigation() {
   const contactsPosition = localStorage.getItem("contactsPosition");
 
   const [open, setOpen] = useState(data ? JSON.parse(data) : true);
+
+  const [showAddChannelForm, setShowAddChannelForm] = useState(false);
+
+  const setShowAddChannelBox = () => {
+    setShowAddChannelForm(true);
+  };
 
   // <ToRefactor >
   const [openStarredList, setOpenStarredList] = useState(
@@ -177,8 +184,15 @@ export default function LeftNavigation() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap>
-            {"<CHANNEL #> || other panel"}
+          <Typography
+            variant="h6"
+            noWrap
+            style={{
+              width: "100%",
+              textAlign: "left",
+            }}
+          >
+            {"#Piwnicasdfgsfdgsdfg"}
           </Typography>
           <Grid container justify="flex-end">
             <Button
@@ -223,6 +237,8 @@ export default function LeftNavigation() {
           type="channel"
           items={["Biuro", "Dom", "Mieszkanie"]}
           open={open}
+          setShowChannelForm={setShowAddChannelForm}
+          showAddChannelForm={showAddChannelForm}
         ></LeftNavigationSection>
 
         <Divider />
@@ -242,6 +258,10 @@ export default function LeftNavigation() {
           <ChannelHome />
         </Grid>
       </Grid>
+      <AddChannelForm
+        setShowChannelForm={setShowAddChannelForm}
+        showAddChannelForm={showAddChannelForm}
+      />
     </div>
   );
 }

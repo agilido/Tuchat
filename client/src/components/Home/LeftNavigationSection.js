@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 // icons
 import StarBorder from "@material-ui/icons/StarBorder";
@@ -44,10 +44,16 @@ export default function LeftNavigationSection({
   items,
   title,
   open,
+  setShowChannelForm,
+  showAddChannelForm,
 }) {
   const classes = useStyles();
+
   const switchShow = () => {
     setShow(!show);
+  };
+  const switchChannelFormShow = () => {
+    setShowChannelForm(!showAddChannelForm);
   };
   return (
     <>
@@ -67,20 +73,21 @@ export default function LeftNavigationSection({
 
           {show ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
-        <ListItemSecondaryAction
-          style={{
-            position: "absolute",
-            left: "65%",
-            top: "50%",
-            width: "20%",
-          }}
-        >
-          {type === "channel" && open ? (
-            <IconButton aria-label="addChannel">
+
+        {type === "channel" && open ? (
+          <ListItemSecondaryAction
+            style={{
+              position: "absolute",
+              left: "65%",
+              top: "50%",
+              width: "20%",
+            }}
+          >
+            <IconButton onClick={switchChannelFormShow} aria-label="addChannel">
               <AddCircleIcon />
             </IconButton>
-          ) : null}
-        </ListItemSecondaryAction>
+          </ListItemSecondaryAction>
+        ) : null}
       </List>
       <Collapse in={show && open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
