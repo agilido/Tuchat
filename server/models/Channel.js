@@ -10,6 +10,7 @@ const ChannelSchema = new mongoose.Schema({
   channelDescription: String,
   members: [
     {
+      _id: false,
       userId: String,
       username: String,
     },
