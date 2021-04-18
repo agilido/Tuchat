@@ -11,6 +11,7 @@ require("./config/mongoose");
 // Routes
 app.use(express.json());
 app.use("/api/auth", require("./routes/auth"));
+app.use("/api/channel", require("./routes/channel"));
 app.use("/api/private", require("./routes/private"));
 
 app.use(errorHandler);

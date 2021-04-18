@@ -46,7 +46,6 @@ exports.login = async (req, res, next) => {
 
     if (!userByUsername) {
       const userByMail = await User.findOne({ email }).select("+password");
-
       if (userByMail) {
         const isMatch = await userByMail.matchPasswords(password);
         if (!isMatch) {
@@ -141,5 +140,7 @@ exports.resetpassword = async (req, res, next) => {
 
 const sendToken = (user, statusCode, res) => {
   const token = user.getSignedToken();
-  res.status(statusCode).json({ success: true, token });
+  const userId = user._id;
+  const userName = user.username;
+  res.status(statusCode).json({ success: true, token, userId, userName });
 };
