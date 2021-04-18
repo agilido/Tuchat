@@ -160,7 +160,6 @@ export default function Register({ history }) {
         error: false,
         loading: false,
         success: true,
-        successMsg: data.data,
       });
     } catch (error) {
       if (error.response.status == 500) {

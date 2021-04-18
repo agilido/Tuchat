@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
@@ -8,6 +8,9 @@ import MuiDialogActions from "@material-ui/core/DialogActions";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
+import { TextField } from "@material-ui/core";
+import axios from "axios";
+import { v4 as uuidv4 } from "uuid";
 
 const styles = (theme) => ({
   root: {
@@ -24,7 +27,12 @@ const styles = (theme) => ({
 
 const DialogContent = withStyles((theme) => ({
   root: {
-    padding: theme.spacing(2),
+    padding: theme.spacing(3),
+    display: "flex",
+    flexDirection: "column",
+    "& TextField": {
+      margin: "100px",
+    },
   },
 }))(MuiDialogContent);
 
@@ -58,12 +66,67 @@ export default function AddChannelForm({
   setShowChannelForm,
 }) {
   const [open, setOpen] = React.useState(false);
+  const [channelInfo, setChannelInfo] = useState({
+    name: "",
+    description: "",
+  });
+  const [ReqState, setReqState] = useState({
+    error: false,
+    errorMsg: "",
+  });
 
   //   const showAddChannelForm = () => {
   //     setOpen(true);
   //   };
   const handleClose = () => {
     setShowChannelForm(false);
+  };
+
+  const handleChange = (e) => {
+    setChannelInfo({
+      ...channelInfo,
+      [e.target.id]: e.target.value,
+    });
+  };
+
+  const createChannel = async (e) => {
+    e.preventDefault();
+
+    if (!channelInfo.name) {
+      setReqState({
+        error: true,
+        errorMsg: "Field required",
+      });
+      return setTimeout(() => {
+        setReqState({ error: false, errorMsg: "" });
+      }, 5000);
+    }
+    const config = {
+      header: {
+        "Content-Type": "application/json",
+      },
+    };
+    const userData = {
+      _id: localStorage.getItem("dIresu"),
+      name: localStorage.getItem("name"),
+    };
+    const channelData = {
+      channelId: uuidv4(),
+      ...channelInfo,
+      messages: [],
+    };
+    try {
+      const { data } = await axios.post(
+        "/api/channel/add",
+        {
+          userData,
+          channelData,
+        },
+        config
+      );
+    } catch (error) {
+      return null;
+    }
   };
 
   return (
@@ -79,16 +142,31 @@ export default function AddChannelForm({
         <DialogTitle id="customized-dialog-title" onClose={handleClose}>
           Add channel
         </DialogTitle>
+
         <DialogContent dividers>
-          <Typography gutterBottom>
-            Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-            dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta
-            ac consectetur ac, vestibulum at eros.
-          </Typography>
-          Here will be a form.
+          <TextField
+            margin="normal"
+            id="standard-basic"
+            label="Name"
+            variant="outlined"
+            required
+            error={ReqState.error}
+            id="name"
+            value={channelInfo.name}
+            onChange={handleChange}
+          />
+          <TextField
+            margin="normal"
+            id="standard-basic"
+            label="Description"
+            variant="outlined"
+            id="description"
+            onChange={handleChange}
+            value={channelInfo.description}
+          />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={createChannel} color="primary">
             Save
           </Button>
         </DialogActions>
