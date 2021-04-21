@@ -61,9 +61,8 @@ UserSchema.methods.matchPasswords = async function (password) {
 };
 
 UserSchema.methods.getSignedToken = function () {
-  return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRE,
-  });
+  console.log(this._id);
+  return jwt.sign({ id: this._id }, process.env.JWT_SECRET);
 };
 UserSchema.methods.getResetPasswordToken = function () {
   const resetToken = crypto.randomBytes(20).toString("hex");

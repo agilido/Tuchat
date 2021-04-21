@@ -3,8 +3,6 @@ import axios from "axios";
 import { useHistory } from "react-router-dom";
 import "./styles.css";
 import Dashboard from "./Dashboard";
-import ChannelHome from "./Channel/ChannelHome";
-import { Grid } from "@material-ui/core";
 
 export const Home = () => {
   const [error, setError] = useState("");
