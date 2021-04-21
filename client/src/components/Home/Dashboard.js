@@ -80,7 +80,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function LeftNavigation() {
+export default function LeftNavigation({ channelItems, getChannels }) {
   const classes = useStyles();
 
   const data = localStorage.getItem("barPosition");
@@ -164,6 +164,12 @@ export default function LeftNavigation() {
     history.push("/login");
   };
 
+  const starredChannels = channelItems.filter(
+    (channel) => channel.favorite === true
+  );
+  const allChannels = channelItems.filter(
+    (channel) => channel.favorite !== true
+  );
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -221,34 +227,35 @@ export default function LeftNavigation() {
       >
         <div className={classes.toolbar} />
         <Divider />
-
+        {/* FAVORITE CHANNELS */}
         <LeftNavigationSection
           show={openStarredList}
           setShow={setOpenStarredList}
           title="Favorites"
           type="stars"
-          items={["Piwnica", "Garaż", "Dach"]}
+          items={starredChannels}
           open={open}
         />
+        {/* ALL CHANNELS */}
         <LeftNavigationSection
           show={openChannelList}
           setShow={setOpenChannelList}
           title="Channels"
           type="channel"
-          items={["Biuro", "Dom", "Mieszkanie"]}
+          items={allChannels}
           open={open}
           setShowChannelForm={setShowAddChannelForm}
           showAddChannelForm={showAddChannelForm}
         ></LeftNavigationSection>
 
         <Divider />
-
+        {/* CONTACTS */}
         <LeftNavigationSection
           show={openContactList}
           setShow={setOpenContactList}
           title="Contacts"
           type="contacts"
-          items={["Rob", "Bob", "Georgy"]}
+          items={["sAS", "sAS"]}
           open={open}
         ></LeftNavigationSection>
       </Drawer>
@@ -261,6 +268,7 @@ export default function LeftNavigation() {
       <AddChannelForm
         setShowChannelForm={setShowAddChannelForm}
         showAddChannelForm={showAddChannelForm}
+        getChannels={getChannels}
       />
     </div>
   );

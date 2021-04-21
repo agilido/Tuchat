@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
@@ -8,11 +8,10 @@ import MuiDialogActions from "@material-ui/core/DialogActions";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles, TextField } from "@material-ui/core";
+import { makeStyles, Snackbar, TextField } from "@material-ui/core";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import clsx from "clsx";
 import { green } from "@material-ui/core/colors";
-
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 
@@ -43,6 +42,10 @@ const useStyles = makeStyles((theme) => ({
     left: "78%",
     marginTop: -12,
     marginLeft: -12,
+  },
+  alert: {
+    backgroundColor: green[500],
+    color: "white",
   },
 }));
 
@@ -85,6 +88,7 @@ const DialogTitle = withStyles(styles)((props) => {
 export default function AddChannelForm({
   showAddChannelForm,
   setShowChannelForm,
+  getChannels,
 }) {
   const classes = useStyles();
   const [channelInfo, setChannelInfo] = useState({
@@ -97,6 +101,7 @@ export default function AddChannelForm({
     loading: false,
     success: false,
     successMsg: "",
+    addedNotification: false,
   });
 
   const buttonSubmit = clsx({
@@ -110,12 +115,6 @@ export default function AddChannelForm({
       erroMsg: "",
       success: false,
     });
-    if (ReqState.success) {
-      setChannelInfo({
-        name: "",
-        description: "",
-      });
-    }
   };
 
   const handleChange = (e) => {
@@ -168,7 +167,10 @@ export default function AddChannelForm({
           loading: false,
           success: true,
           successMsg: "Channel added!",
+          addNotification: true,
         });
+        getChannels();
+        handleClose();
         return setTimeout(() => {
           setReqState({
             success: false,
@@ -200,6 +202,15 @@ export default function AddChannelForm({
       }
     }
   };
+
+  useEffect(() => {
+    if (ReqState.success) {
+      setChannelInfo({
+        name: "",
+        description: "",
+      });
+    }
+  }, [ReqState.success]);
 
   return (
     <div>
@@ -269,6 +280,18 @@ export default function AddChannelForm({
           </DialogActions>
         </form>
       </Dialog>
+      <Snackbar
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+        ContentProps={{
+          className: classes.alert,
+        }}
+        open={ReqState.addNotification}
+        autoHideDuration={6000}
+        message={ReqState.successMsg}
+      />
     </div>
   );
 }

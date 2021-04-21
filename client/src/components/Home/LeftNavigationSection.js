@@ -12,7 +12,6 @@ import StarIcon from "@material-ui/icons/Star";
 import ChatIcon from "@material-ui/icons/Chat";
 import PeopleIcon from "@material-ui/icons/People";
 // structure items
-
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -32,8 +31,6 @@ const useStyles = makeStyles((theme) => ({
     height: "40px",
     width: "40px",
     color: "#FACA2B",
-    // boxShadow:
-    //   "0 4px 10px 0 rgba(0, 0, 0, 0.1), 0px 0px 0px rgba(0, 0, 0, 0.1)",
   },
 }));
 
@@ -55,6 +52,16 @@ export default function LeftNavigationSection({
   const switchChannelFormShow = () => {
     setShowChannelForm(!showAddChannelForm);
   };
+
+  const starChannel = () => {
+    console.log("Channel added to favorites!");
+    // TODO:
+  };
+  const unstarChannel = () => {
+    console.log("Channel deleted from favorites!");
+    // TODO:
+  };
+
   return (
     <>
       <List>
@@ -92,14 +99,19 @@ export default function LeftNavigationSection({
       <Collapse in={show && open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
           {items ? (
-            items.map((text) => {
+            items.map((item) => {
               return (
                 <ListItem dense button className={classes.nested}>
                   {type === "channel" || type === "stars" ? "#" : null}
+
                   <ListItemText
                     disableTypography
                     className={classes.item}
-                    primary={text}
+                    primary={
+                      type === "channel" || type === "stars"
+                        ? item.channelName
+                        : item
+                    }
                   />
                   <ListItemSecondaryAction
                     style={{
@@ -113,6 +125,7 @@ export default function LeftNavigationSection({
                       <IconButton
                         className={classes.starSize}
                         aria-label="starChannel"
+                        onClick={starChannel}
                       >
                         <StarOutlineIcon />
                       </IconButton>
@@ -120,6 +133,7 @@ export default function LeftNavigationSection({
                       <IconButton
                         className={classes.starSize}
                         aria-label="unStarChannel"
+                        onClick={unstarChannel}
                       >
                         <StarIcon />
                       </IconButton>
