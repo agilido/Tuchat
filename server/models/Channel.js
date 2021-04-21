@@ -2,12 +2,12 @@ const mongoose = require("mongoose");
 
 const ChannelSchema = new mongoose.Schema({
   channelId: String,
-  channelName: String,
+  name: String,
+  description: String,
   owner: {
     userId: String,
     username: String,
   },
-  channelDescription: String,
   members: [
     {
       _id: false,
@@ -17,4 +17,4 @@ const ChannelSchema = new mongoose.Schema({
   ],
 });
 
-module.exports = mongoose.model("GroupChat", ChannelSchema);
+module.exports = mongoose.model("Channel", ChannelSchema);

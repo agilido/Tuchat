@@ -108,8 +108,6 @@ export default function Login({ history }) {
         config
       );
       localStorage.setItem("authToken", data.token);
-      localStorage.setItem("dIresu", data.userId);
-      localStorage.setItem("name", data.userName);
 
       history.push("/");
       setReqState({

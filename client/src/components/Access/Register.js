@@ -105,8 +105,6 @@ export default function Register({ history }) {
   const handleRegister = async (event) => {
     event.preventDefault();
 
-    console.log("handle register triggered");
-
     const config = {
       header: {
         "Content-Type": "application/json",
