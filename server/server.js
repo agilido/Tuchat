@@ -17,7 +17,7 @@ app.use("/api/private", require("./routes/private"));
 app.use(errorHandler);
 
 // Socket.io
-const io = require("socket.io")(3000);
+const io = require("socket.io")(6000);
 io.on("connection", (socket) => {
   socket.emit("chatmsg", "wussup");
 });

@@ -4,7 +4,6 @@ const Channel = require("../models/Channel");
 exports.addChannel = async (req, res, next) => {
   const channelData = req.body.channelData;
 
-  console.log(req.user);
   const userId = req.user._id;
   const username = req.user.username;
 
@@ -40,4 +39,14 @@ exports.addChannel = async (req, res, next) => {
   }
 };
 
-exports.getChannels = async (req, res, next) => {};
+exports.getChannels = async (req, res, next) => {
+  const userId = req.user._id;
+  if (userId) {
+    try {
+      const channels = await User.findById(userId);
+      res.status(200).json(channels.channels);
+    } catch (error) {
+      return res.status(500).json(error.message);
+    }
+  }
+};

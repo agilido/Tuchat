@@ -31,9 +31,36 @@ export const Home = () => {
     };
   }, [history]);
 
+  const [channelItems, setChannelItems] = useState([]);
+
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+    },
+  };
+
+  const getChannels = async () => {
+    try {
+      const { data } = await axios.get("/api/channel/get", config);
+      if (data) {
+        console.log(data);
+        setChannelItems(data);
+      }
+    } catch (error) {
+      if (error.response.status === 500) {
+        console.log("Can't connect to server");
+      }
+    }
+  };
+
+  useEffect(() => {
+    getChannels();
+    console.log("refresh");
+  }, []);
   return (
     <div>
-      <Dashboard />
+      <Dashboard channelItems={channelItems} getChannels={getChannels} />
       {error && <span>{error}</span>}
     </div>
   );
