@@ -101,7 +101,6 @@ export default function AddChannelForm({
     loading: false,
     success: false,
     successMsg: "",
-    addedNotification: false,
   });
 
   const buttonSubmit = clsx({
@@ -110,11 +109,11 @@ export default function AddChannelForm({
 
   const handleClose = () => {
     setShowChannelForm(false);
-    setReqState({
-      error: false,
-      erroMsg: "",
-      success: false,
-    });
+    // setReqState({
+    //   ...ReqState,
+    //   error: false,
+    //   erroMsg: "",
+    // });
   };
 
   const handleChange = (e) => {
@@ -167,7 +166,6 @@ export default function AddChannelForm({
           loading: false,
           success: true,
           successMsg: "Channel added!",
-          addNotification: true,
         });
         getChannels();
         handleClose();
@@ -176,7 +174,7 @@ export default function AddChannelForm({
             success: false,
             successMsg: "",
           });
-        }, 5000);
+        }, 6000);
       } catch (error) {
         if (error.response.status === 500) {
           setReqState({
@@ -288,8 +286,8 @@ export default function AddChannelForm({
         ContentProps={{
           className: classes.alert,
         }}
-        open={ReqState.addNotification}
-        autoHideDuration={6000}
+        open={ReqState.success}
+        autoHideDuration={5000}
         message={ReqState.successMsg}
       />
     </div>
