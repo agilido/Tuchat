@@ -170,6 +170,7 @@ export default function LeftNavigation({ channelItems, getChannels }) {
   const allChannels = channelItems.filter(
     (channel) => channel.favorite !== true
   );
+
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -235,6 +236,7 @@ export default function LeftNavigation({ channelItems, getChannels }) {
           type="stars"
           items={starredChannels}
           open={open}
+          getChannels={getChannels}
         />
         {/* ALL CHANNELS */}
         <LeftNavigationSection
@@ -243,12 +245,13 @@ export default function LeftNavigation({ channelItems, getChannels }) {
           title="Channels"
           type="channel"
           items={allChannels}
+          id={allChannels.channelId}
           open={open}
+          getChannels={getChannels}
           setShowChannelForm={setShowAddChannelForm}
           showAddChannelForm={showAddChannelForm}
         ></LeftNavigationSection>
 
-        <Divider />
         {/* CONTACTS */}
         <LeftNavigationSection
           show={openContactList}

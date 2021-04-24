@@ -13,6 +13,7 @@ import ChatIcon from "@material-ui/icons/Chat";
 import PeopleIcon from "@material-ui/icons/People";
 // structure items
 import ListItem from "@material-ui/core/ListItem";
+import axios from "axios";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
@@ -41,6 +42,7 @@ export default function LeftNavigationSection({
   items,
   title,
   open,
+  getChannels,
   setShowChannelForm,
   showAddChannelForm,
 }) {
@@ -53,13 +55,31 @@ export default function LeftNavigationSection({
     setShowChannelForm(!showAddChannelForm);
   };
 
-  const starChannel = () => {
-    console.log("Channel added to favorites!");
-    // TODO:
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+    },
   };
-  const unstarChannel = () => {
-    console.log("Channel deleted from favorites!");
-    // TODO:
+
+  const starOrUnstarChannel = async (channId, favoriteStan) => {
+    try {
+      await axios.post(
+        "/api/channel/star",
+        {
+          channId,
+          favoriteStan,
+        },
+        config
+      );
+      getChannels();
+    } catch (error) {
+      console.log("Error: " + error);
+    }
+  };
+
+  const openChannel = (channId) => {
+    console.log(channId);
   };
 
   return (
@@ -101,7 +121,14 @@ export default function LeftNavigationSection({
           {items ? (
             items.map((item) => {
               return (
-                <ListItem dense button className={classes.nested}>
+                <ListItem
+                  onClick={() => {
+                    openChannel(item.channelId);
+                  }}
+                  dense
+                  button
+                  className={classes.nested}
+                >
                   {type === "channel" || type === "stars" ? "#" : null}
 
                   <ListItemText
@@ -125,7 +152,9 @@ export default function LeftNavigationSection({
                       <IconButton
                         className={classes.starSize}
                         aria-label="starChannel"
-                        onClick={starChannel}
+                        onClick={() => {
+                          starOrUnstarChannel(item.channelId, item.favorite);
+                        }}
                       >
                         <StarOutlineIcon />
                       </IconButton>
@@ -133,7 +162,9 @@ export default function LeftNavigationSection({
                       <IconButton
                         className={classes.starSize}
                         aria-label="unStarChannel"
-                        onClick={unstarChannel}
+                        onClick={() => {
+                          starOrUnstarChannel(item.channelId, item.favorite);
+                        }}
                       >
                         <StarIcon />
                       </IconButton>

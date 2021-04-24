@@ -50,3 +50,26 @@ exports.getChannels = async (req, res, next) => {
     }
   }
 };
+
+exports.starChannel = async (req, res, next) => {
+  const userId = req.user._id;
+  const channelId = req.body.channId;
+  const favoriteStan = req.body.favoriteStan;
+
+  if (userId && channelId) {
+    try {
+      const starChannels = await User.findOneAndUpdate(
+        { _id: userId, "channels.channelId": channelId },
+        {
+          $set: {
+            "channels.$.favorite": !favoriteStan,
+          },
+        },
+        { new: true }
+      );
+      return res.status(200).json(starChannels.channels);
+    } catch (error) {
+      return res.status(500).json({ err: error.message + "xD" });
+    }
+  }
+};
