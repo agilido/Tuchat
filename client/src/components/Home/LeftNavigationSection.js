@@ -125,6 +125,7 @@ export default function LeftNavigationSection({
                   onClick={() => {
                     openChannel(item.channelId);
                   }}
+                  key={item.channelId}
                   dense
                   button
                   className={classes.nested}
