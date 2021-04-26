@@ -32,4 +32,4 @@ const ChatSchema = new mongoose.Schema({
   ],
 });
 
-module.exports = mongoose.model("GroupChat", ChatSchema);
+module.exports = mongoose.model("Chat", ChatSchema);

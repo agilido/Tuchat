@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { Grid, IconButton, makeStyles, Paper } from "@material-ui/core";
+import { v4 as uuidv4 } from "uuid";
 
 import SendIcon from "@material-ui/icons/Send";
 
@@ -13,11 +14,6 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "25px",
     display: "flex",
     paddingRight: "5px",
-    // "&:focus": {
-    //   border: "blue 0.2px solid",
-    //   boxShadow: "0 0 1px 0 blue inset, 0 0 1px 0 gray",
-    //   transition: "all 0.1s ease-in-out",
-    // },
   },
   input: {
     width: "100%",
@@ -39,28 +35,65 @@ const useStyles = makeStyles((theme) => ({
     top: "9%",
   },
 }));
+
 export default function ChatInput() {
   const classes = useStyles();
+  const [message, setMessage] = useState("");
+
+  const handleChange = (e) => {
+    setMessage(e.target.value);
+  };
+
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+    },
+  };
+
+  const sendMessage = async (e) => {
+    e.preventDefault();
+    console.log("Message sending triggered");
+
+    const newMessage = {
+      _id: uuidv4(),
+      message: message,
+      time: new Date().getTime(),
+    };
+
+    if (message) {
+      console.log(message);
+
+      try {
+        // await axios.post(
+        //   "/api/channel/add",
+        //   {
+        //     channelData,
+        //   },
+        //   config
+        // );
+      } catch (error) {}
+    }
+  };
+
   return (
     <div className={classes.root}>
-      <Paper className={classes.paper}>
-        <input
-          className={classes.input}
-          type="text"
-          placeholder="Type something..."
-        />
-        <Grid className={classes.icons}>
-          <IconButton color="primary">😄</IconButton>
-          <IconButton color="primary">
-            <SendIcon fontSize="large"></SendIcon>
-          </IconButton>
-        </Grid>
-      </Paper>
-      {/* <input
-        className={classes.input}
-        type="text"
-        placeholder="Type something :)"
-      ></input> */}
+      <form onSubmit={sendMessage} autoComplete="off">
+        <Paper className={classes.paper}>
+          <input
+            className={classes.input}
+            type="text"
+            onChange={handleChange}
+            placeholder="Type something..."
+          />
+          <Grid className={classes.icons}>
+            <IconButton color="primary">😄</IconButton>
+            <IconButton type="submit" color="primary">
+              <SendIcon fontSize="large"></SendIcon>
+            </IconButton>
+          </Grid>
+        </Paper>
+      </form>
     </div>
   );
 }

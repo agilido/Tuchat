@@ -6,10 +6,12 @@ const {
   deleteChannel,
   getChannels,
   starChannel,
+  newMessage,
 } = require("../controllers/channel");
 
 router.route("/add").post(protect, addChannel);
 router.route("/get").get(protect, getChannels);
 router.route("/star").post(protect, starChannel);
+router.route("/newmessage").post(protect, newMessage);
 
 module.exports = router;
