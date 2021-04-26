@@ -15,6 +15,24 @@ const ChannelSchema = new mongoose.Schema({
       username: String,
     },
   ],
+  messagesByDate: [
+    {
+      _id: false,
+      date: String,
+      messages: [
+        {
+          _id: false,
+          messageId: String,
+          from: {
+            userId: String,
+            username: String,
+          },
+          message: String,
+          time: Number,
+        },
+      ],
+    },
+  ],
 });
 
 module.exports = mongoose.model("Channel", ChannelSchema);

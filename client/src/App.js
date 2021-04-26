@@ -8,13 +8,17 @@ import Register from "./components/Access/Register";
 import fpassword from "./components/Access/fpassword";
 import resetpassword from "./components/Access/resetpassword";
 import Home from "./components/Home/Home";
+import { SocketContext, socket } from "./context/socket";
+
 function App() {
   return (
     <Router>
       <div className="App">
         <CssBaseline />
         <Switch>
-          <PrivateRoute exact path="/" component={Home} />
+          <SocketContext.Provider value={socket}>
+            <PrivateRoute exact path="/" component={Home} />
+          </SocketContext.Provider>
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
           <Route exact path="/fpassword" component={fpassword} />

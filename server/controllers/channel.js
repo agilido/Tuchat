@@ -73,3 +73,7 @@ exports.starChannel = async (req, res, next) => {
     }
   }
 };
+exports.newMessage = async (req, res, next) => {
+  const userId = req.user._id;
+  const channelId = req.body.channId;
+};

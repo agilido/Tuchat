@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import "./styles.css";
 import Dashboard from "./Dashboard";
+import { SocketContext } from "../../context/socket";
 
 export const Home = () => {
   const [error, setError] = useState("");
@@ -31,6 +32,15 @@ export const Home = () => {
     };
   }, [history]);
 
+  // Socket.io
+  // const socket = useContext(SocketContext);
+  // const [joined, setJoined] = useState(false);
+
+  // useEffect(() => {
+  //   socket.emit("message", "User online");
+  // }, []);
+
+  // Get channels
   const [channelItems, setChannelItems] = useState([]);
 
   const config = {
@@ -56,8 +66,8 @@ export const Home = () => {
 
   useEffect(() => {
     getChannels();
-    console.log("refresh");
   }, []);
+
   return (
     <div>
       <Dashboard channelItems={channelItems} getChannels={getChannels} />

@@ -92,10 +92,6 @@ export default function LeftNavigation({ channelItems, getChannels }) {
 
   const [showAddChannelForm, setShowAddChannelForm] = useState(false);
 
-  const setShowAddChannelBox = () => {
-    setShowAddChannelForm(true);
-  };
-
   // <ToRefactor >
   const [openStarredList, setOpenStarredList] = useState(
     starredPosition ? JSON.parse(starredPosition) : true

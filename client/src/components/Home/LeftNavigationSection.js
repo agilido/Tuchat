@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 // icons
 import StarBorder from "@material-ui/icons/StarBorder";
@@ -78,8 +78,10 @@ export default function LeftNavigationSection({
     }
   };
 
+  const [selectState, setSelectState] = useState({});
+
   const openChannel = (channId) => {
-    console.log(channId);
+    console.log("channel id: " + channId);
   };
 
   return (

@@ -2,6 +2,8 @@ require("dotenv").config({ path: "./config.env" });
 const express = require("express");
 const errorHandler = require("./middleware/error");
 const app = express();
+const server = require("http").createServer(app);
+const io = require("socket.io")(server);
 
 const PORT = process.env.PORT || 5000;
 
@@ -16,18 +18,21 @@ app.use("/api/private", require("./routes/private"));
 
 app.use(errorHandler);
 
-// Socket.io
-const io = require("socket.io")(6000);
-io.on("connection", (socket) => {
-  socket.emit("chatmsg", "wussup");
-});
-
 app.get("/", function (req, res, next) {
   res.json({
     status: "Loaded!",
   });
 });
 
-app.listen(PORT, () => {
-  console.log("Listening!");
+server.listen(PORT, () => {
+  console.log("Listening on " + PORT);
+});
+
+// Socket.io
+io.on("connection", (socket) => {
+  console.log("User connected: " + socket.id);
+
+  socket.on("message", (data) => {
+    console.log(data);
+  });
 });
