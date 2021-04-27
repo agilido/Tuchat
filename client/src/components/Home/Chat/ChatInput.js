@@ -61,17 +61,21 @@ export default function ChatInput() {
       time: new Date().getTime(),
     };
 
+    const messageData = {};
+
     if (message) {
       console.log(message);
 
       try {
-        // await axios.post(
-        //   "/api/channel/add",
-        //   {
-        //     channelData,
-        //   },
-        //   config
-        // );
+        // await axios
+        //   .post(
+        //     "/api/channel/add",
+        //     {
+        //       channelData,
+        //     },
+        //     config
+        //   )
+        //   .then("");
       } catch (error) {}
     }
   };

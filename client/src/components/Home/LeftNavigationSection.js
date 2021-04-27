@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { ChannelContext } from "../../context/channel";
 import { makeStyles } from "@material-ui/core/styles";
 // icons
 import StarBorder from "@material-ui/icons/StarBorder";
@@ -78,10 +79,10 @@ export default function LeftNavigationSection({
     }
   };
 
-  const [selectState, setSelectState] = useState({});
+  const { setActiveChannel } = useContext(ChannelContext);
 
-  const openChannel = (channId) => {
-    console.log("channel id: " + channId);
+  const openChannel = (channelData) => {
+    setActiveChannel(channelData);
   };
 
   return (
@@ -125,7 +126,7 @@ export default function LeftNavigationSection({
               return (
                 <ListItem
                   onClick={() => {
-                    openChannel(item.channelId);
+                    openChannel(item);
                   }}
                   key={item.channelId}
                   dense

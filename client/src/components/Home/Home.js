@@ -3,7 +3,7 @@ import axios from "axios";
 import { useHistory } from "react-router-dom";
 import "./styles.css";
 import Dashboard from "./Dashboard";
-import { SocketContext } from "../../context/socket";
+import { ChannelContext } from "../../context/channel";
 
 export const Home = () => {
   const [error, setError] = useState("");
@@ -68,9 +68,15 @@ export const Home = () => {
     getChannels();
   }, []);
 
+  const [activeChannel, setActiveChannel] = useState(null);
+  useEffect(() => {
+    console.log(activeChannel);
+  }, [activeChannel]);
   return (
     <div>
-      <Dashboard channelItems={channelItems} getChannels={getChannels} />
+      <ChannelContext.Provider value={{ activeChannel, setActiveChannel }}>
+        <Dashboard channelItems={channelItems} getChannels={getChannels} />
+      </ChannelContext.Provider>
       {error && <span>{error}</span>}
     </div>
   );

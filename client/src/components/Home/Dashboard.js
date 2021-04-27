@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
@@ -16,7 +16,7 @@ import Grid from "@material-ui/core/Grid";
 import LeftNavigationSection from "./LeftNavigationSection";
 import ChannelHome from "./Channel/ChannelHome";
 import AddChannelForm from "./AddChannelForm";
-
+import { ChannelContext } from "../../context/channel";
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -167,6 +167,8 @@ export default function LeftNavigation({ channelItems, getChannels }) {
     (channel) => channel.favorite !== true
   );
 
+  const { activeChannel } = useContext(ChannelContext);
+
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -195,7 +197,7 @@ export default function LeftNavigation({ channelItems, getChannels }) {
               textAlign: "left",
             }}
           >
-            {"#Piwnicasdfgsfdgsdfg"}
+            {activeChannel ? activeChannel.channelName : null}
           </Typography>
           <Grid container justify="flex-end">
             <Button
