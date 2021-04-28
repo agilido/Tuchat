@@ -18,15 +18,15 @@ function App() {
         <Switch>
           <SocketContext.Provider value={socket}>
             <PrivateRoute exact path="/" component={Home} />
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/register" component={Register} />
+            <Route exact path="/fpassword" component={fpassword} />
+            <Route
+              exact
+              path="/resetpassword/:resetToken"
+              component={resetpassword}
+            />
           </SocketContext.Provider>
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/register" component={Register} />
-          <Route exact path="/fpassword" component={fpassword} />
-          <Route
-            exact
-            path="/resetpassword/:resetToken"
-            component={resetpassword}
-          />
         </Switch>
       </div>
     </Router>

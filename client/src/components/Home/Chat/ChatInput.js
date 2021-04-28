@@ -1,9 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { Grid, IconButton, makeStyles, Paper } from "@material-ui/core";
 import { v4 as uuidv4 } from "uuid";
+import { ChannelContext } from "../../../context/channel";
+import axios from "axios";
+import { UserContext } from "../../../context/user";
 
 import SendIcon from "@material-ui/icons/Send";
 import Picker from "emoji-picker-react";
+import { socket } from "../../../context/socket";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -57,33 +61,53 @@ export default function ChatInput() {
     },
   };
 
+  const { activeChannel } = useContext(ChannelContext);
+  const { currentUser } = useContext(UserContext);
+
   const sendMessage = async (e) => {
     e.preventDefault();
     console.log("Message sending triggered");
 
+    if (activeChannel) {
+      console.log("Channel name: " + activeChannel.channelName);
+    } else {
+      return console.log("Channel not selected");
+    }
+
     const newMessage = {
       _id: uuidv4(),
+      date: new Date().toLocaleDateString(),
+      messageId: uuidv4(),
       message: message,
       time: new Date().getTime(),
     };
-
-    const messageData = {};
+    const messageSocket = {
+      id: activeChannel.channelId,
+      date: new Date().toLocaleDateString(),
+      from: {
+        userId: currentUser.userId,
+        username: currentUser.username,
+      },
+      message: newMessage,
+    };
 
     if (message) {
       console.log(message);
 
       try {
-        // await axios
-        //   .post(
-        //     "/api/channel/add",
-        //     {
-        //       channelData,
-        //     },
-        //     config
-        //   )
-        //   .then("");
-        setMessage("");
-      } catch (error) {}
+        // await axios.post(
+        //   "/api/channel/newmessage",
+        //   {
+        //     channId: activeChannel.channelId,
+        //     newMessage,
+        //   },
+        //   config
+        // );
+        socket.emit("sendMessage", messageSocket);
+        return setMessage("");
+      } catch (error) {
+        return console.log("Error:" + error.error);
+      }
     }
   };
 

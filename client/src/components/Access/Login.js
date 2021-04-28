@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "./styles.css";
 import { TextField, Button, Typography } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
@@ -107,15 +107,21 @@ export default function Login({ history }) {
         },
         config
       );
+
       localStorage.setItem("authToken", data.token);
+      localStorage.setItem(
+        "us",
+        JSON.stringify({ userId: data.userId, username: data.username })
+      );
 
       history.push("/");
+
       setReqState({
         error: false,
         errorMsg: "",
       });
     } catch (error) {
-      if (error.response.status === 500) {
+      if (error) {
         setReqState({
           loading: false,
           error: true,

@@ -141,6 +141,8 @@ exports.resetpassword = async (req, res, next) => {
 const sendToken = (user, statusCode, res) => {
   const token = user.getSignedToken();
   const userId = user._id;
-  const userName = user.username;
-  res.status(statusCode).json({ success: true, token, userId, userName });
+  const username = user.username;
+  return res
+    .status(statusCode)
+    .json({ success: true, token, userId, username });
 };
