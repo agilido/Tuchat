@@ -1,10 +1,10 @@
-import { Typography } from "@material-ui/core";
 import React from "react";
+import Message from "./Message";
 
 export default function ChatMessages() {
   return (
     <div>
-      <Typography>asdasdasdasdasdasdasasdasdasdasdas</Typography>
+      <Message />
     </div>
   );
 }
