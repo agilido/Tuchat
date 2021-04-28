@@ -22,6 +22,7 @@ const ChannelSchema = new mongoose.Schema({
       messages: [
         {
           _id: false,
+          _id: String,
           messageId: String,
           from: {
             userId: String,

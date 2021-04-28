@@ -44,7 +44,7 @@ exports.getChannels = async (req, res, next) => {
   if (userId) {
     try {
       const channels = await User.findById(userId);
-      res.status(200).json(channels.channels);
+      return res.status(200).json(channels.channels);
     } catch (error) {
       return res.status(500).json(error.message);
     }
@@ -58,7 +58,7 @@ exports.starChannel = async (req, res, next) => {
 
   if (userId && channelId) {
     try {
-      const starChannels = await User.findOneAndUpdate(
+      await User.findOneAndUpdate(
         { _id: userId, "channels.channelId": channelId },
         {
           $set: {
@@ -67,7 +67,7 @@ exports.starChannel = async (req, res, next) => {
         },
         { new: true }
       );
-      return res.status(200).json(starChannels.channels);
+      return res.status(200).json({ msg: "Channel added to favorites" });
     } catch (error) {
       return res.status(500).json({ err: error.message + "xD" });
     }
@@ -75,5 +75,45 @@ exports.starChannel = async (req, res, next) => {
 };
 exports.newMessage = async (req, res, next) => {
   const userId = req.user._id;
+  const username = req.user.username;
+  const messageData = req.body.newMessage;
+
+  if (messageData) {
+    const channel = await getChannel(req, res);
+
+    const date = new Date().toLocaleDateString();
+
+    const channelMsgs = channel.messagesByDate;
+
+    const sameDateMessages = channelMsgs.find((chDate) => chDate.date === date);
+
+    messageData.from = { userId: userId, username: username };
+
+    if (sameDateMessages) {
+      sameDateMessages.messages.push(messageData);
+    } else {
+      const newDateMessages = {
+        date: date,
+
+        messages: [messageData],
+      };
+      channelMsgs.push(newDateMessages);
+    }
+
+    try {
+      await channel.save();
+      return res.status(200).json({ msg: "Message sent successfully" });
+    } catch (error) {
+      return res.status(500).json({ err: error.message });
+    }
+  }
+};
+const getChannel = async (req, res) => {
   const channelId = req.body.channId;
+  try {
+    const exactChannel = await Channel.findOne({ channelId: channelId });
+    return exactChannel;
+  } catch (error) {
+    return res.status(500).json({ err: error.message });
+  }
 };

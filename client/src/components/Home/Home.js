@@ -4,6 +4,7 @@ import { useHistory } from "react-router-dom";
 import "./styles.css";
 import Dashboard from "./Dashboard";
 import { ChannelContext } from "../../context/channel";
+import { UserContext } from "../../context/user";
 
 export const Home = () => {
   const [error, setError] = useState("");
@@ -23,6 +24,7 @@ export const Home = () => {
       };
       try {
         const { data } = await axios.get("/api/private", config);
+        console.log(data);
         setPrivateData(data.data);
       } catch (error) {
         localStorage.removeItem("authToken");
@@ -32,13 +34,11 @@ export const Home = () => {
     };
   }, [history]);
 
-  // Socket.io
-  // const socket = useContext(SocketContext);
-  // const [joined, setJoined] = useState(false);
+  const [currentUser, setCurrentUser] = useState({});
 
-  // useEffect(() => {
-  //   socket.emit("message", "User online");
-  // }, []);
+  useEffect(() => {
+    setCurrentUser(JSON.parse(localStorage.getItem("us")));
+  }, []);
 
   // Get channels
   const [channelItems, setChannelItems] = useState([]);
@@ -54,7 +54,6 @@ export const Home = () => {
     try {
       const { data } = await axios.get("/api/channel/get", config);
       if (data) {
-        console.log(data);
         setChannelItems(data);
       }
     } catch (error) {
@@ -69,13 +68,13 @@ export const Home = () => {
   }, []);
 
   const [activeChannel, setActiveChannel] = useState(null);
-  useEffect(() => {
-    console.log(activeChannel);
-  }, [activeChannel]);
+
   return (
     <div>
       <ChannelContext.Provider value={{ activeChannel, setActiveChannel }}>
-        <Dashboard channelItems={channelItems} getChannels={getChannels} />
+        <UserContext.Provider value={{ currentUser }}>
+          <Dashboard channelItems={channelItems} getChannels={getChannels} />
+        </UserContext.Provider>
       </ChannelContext.Provider>
       {error && <span>{error}</span>}
     </div>
