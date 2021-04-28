@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Grid, IconButton, makeStyles, Paper } from "@material-ui/core";
 import { v4 as uuidv4 } from "uuid";
 
 import SendIcon from "@material-ui/icons/Send";
+import Picker from "emoji-picker-react";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,6 +40,11 @@ const useStyles = makeStyles((theme) => ({
 export default function ChatInput() {
   const classes = useStyles();
   const [message, setMessage] = useState("");
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+
+  const onEmojiClick = (event, emojiObject) => {
+    setMessage(message + emojiObject.emoji);
+  };
 
   const handleChange = (e) => {
     setMessage(e.target.value);
@@ -76,28 +82,47 @@ export default function ChatInput() {
         //     config
         //   )
         //   .then("");
+        setMessage("");
       } catch (error) {}
     }
   };
 
   return (
-    <div className={classes.root}>
-      <form onSubmit={sendMessage} autoComplete="off">
-        <Paper className={classes.paper}>
-          <input
-            className={classes.input}
-            type="text"
-            onChange={handleChange}
-            placeholder="Type something..."
+    <>
+      <div className={classes.root}>
+        {showEmojiPicker ? (
+          <Picker
+            pickerStyle={{ position: "absolute", left: "70%", top: "-470%" }}
+            native={true}
+            onEmojiClick={onEmojiClick}
+            disableSkinTonePicker={true}
           />
-          <Grid className={classes.icons}>
-            <IconButton color="primary">😄</IconButton>
-            <IconButton type="submit" color="primary">
-              <SendIcon fontSize="large"></SendIcon>
-            </IconButton>
-          </Grid>
-        </Paper>
-      </form>
-    </div>
+        ) : null}
+        <form onSubmit={sendMessage} autoComplete="off">
+          <Paper className={classes.paper}>
+            <input
+              className={classes.input}
+              type="text"
+              onChange={handleChange}
+              value={message}
+              placeholder="Type something..."
+            />
+            <Grid className={classes.icons}>
+              <IconButton
+                onClick={() => {
+                  setShowEmojiPicker(!showEmojiPicker);
+                }}
+                color="primary"
+              >
+                😄
+              </IconButton>
+              <IconButton type="submit" color="primary">
+                <SendIcon fontSize="large"></SendIcon>
+              </IconButton>
+            </Grid>
+          </Paper>
+        </form>
+      </div>
+    </>
   );
 }
