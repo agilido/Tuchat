@@ -197,7 +197,7 @@ export default function LeftNavigation({ channelItems, getChannels }) {
               textAlign: "left",
             }}
           >
-            {activeChannel ? activeChannel.channelName : null}
+            {activeChannel ? activeChannel.name : null}
           </Typography>
           <Grid container justify="flex-end">
             <Button

@@ -108,6 +108,17 @@ exports.newMessage = async (req, res, next) => {
     }
   }
 };
+
+exports.getExactChannel = async (req, res) => {
+  const channelId = req.params.channelId;
+  try {
+    const exactChannel = await Channel.findOne({ channelId: channelId });
+    return res.status(200).json({ channel: exactChannel });
+  } catch (error) {
+    return res.status(500).json({ err: error.message });
+  }
+};
+
 const getChannel = async (req, res) => {
   const channelId = req.body.channId;
   try {

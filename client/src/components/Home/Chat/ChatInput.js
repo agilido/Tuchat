@@ -66,44 +66,52 @@ export default function ChatInput() {
 
   const sendMessage = async (e) => {
     e.preventDefault();
+
     console.log("Message sending triggered");
 
     if (activeChannel) {
-      console.log("Channel name: " + activeChannel.channelName);
+      console.log("Channel name: " + activeChannel.name);
     } else {
       return console.log("Channel not selected");
     }
-
-    const newMessage = {
-      _id: uuidv4(),
-      date: new Date().toLocaleDateString(),
-      messageId: uuidv4(),
-      message: message,
-      time: new Date().getTime(),
-    };
-    const messageSocket = {
-      id: activeChannel.channelId,
-      date: new Date().toLocaleDateString(),
-      from: {
-        userId: currentUser.userId,
-        username: currentUser.username,
-      },
-      message: newMessage,
-    };
-
     if (message) {
-      console.log(message);
+      let d = new Date();
+      let mm = d.getMonth() + 1;
+      let dd = d.getDate();
+      let yy = d.getFullYear();
+      const socketDate = yy + "-" + mm + "-" + dd;
+
+      const newMessage = {
+        _id: uuidv4(),
+        date: new Date().toLocaleDateString(),
+        messageId: uuidv4(),
+        message: message,
+        from: {
+          username: currentUser.username,
+          userId: currentUser.userId,
+        },
+        time: new Date().getTime(),
+      };
+
+      const messageSocket = {
+        channelId: activeChannel.channelId,
+        date: socketDate,
+        message: newMessage,
+      };
 
       try {
-        // await axios.post(
-        //   "/api/channel/newmessage",
-        //   {
-        //     channId: activeChannel.channelId,
-        //     newMessage,
-        //   },
-        //   config
-        // );
-        socket.emit("sendMessage", messageSocket);
+        await axios
+          .post(
+            "/api/channel/newmessage",
+            {
+              channId: activeChannel.channelId,
+              newMessage,
+            },
+            config
+          )
+          .then(() => {
+            socket.emit("sendMessage", messageSocket);
+          });
         return setMessage("");
       } catch (error) {
         return console.log("Error:" + error.error);
