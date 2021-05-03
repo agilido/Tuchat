@@ -8,7 +8,6 @@ import Register from "./components/Access/Register";
 import fpassword from "./components/Access/fpassword";
 import resetpassword from "./components/Access/resetpassword";
 import Home from "./components/Home/Home";
-import { SocketContext, socket } from "./context/socket";
 
 function App() {
   return (
@@ -16,17 +15,15 @@ function App() {
       <div className="App">
         <CssBaseline />
         <Switch>
-          <SocketContext.Provider value={socket}>
-            <PrivateRoute exact path="/" component={Home} />
-            <Route exact path="/login" component={Login} />
-            <Route exact path="/register" component={Register} />
-            <Route exact path="/fpassword" component={fpassword} />
-            <Route
-              exact
-              path="/resetpassword/:resetToken"
-              component={resetpassword}
-            />
-          </SocketContext.Provider>
+          <PrivateRoute exact path="/" component={Home} />
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/register" component={Register} />
+          <Route exact path="/fpassword" component={fpassword} />
+          <Route
+            exact
+            path="/resetpassword/:resetToken"
+            component={resetpassword}
+          />
         </Switch>
       </div>
     </Router>

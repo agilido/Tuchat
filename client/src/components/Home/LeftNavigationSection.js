@@ -78,13 +78,22 @@ export default function LeftNavigationSection({
       console.log("Error: " + error);
     }
   };
+  const { activeChannel, setActiveChannel } = useContext(ChannelContext);
 
-  const { setActiveChannel } = useContext(ChannelContext);
-
-  const openChannel = (channelData) => {
-    setActiveChannel(channelData);
+  const getActiveChannel = async (channelId) => {
+    // console.log(channelId);
+    try {
+      const { data } = await axios.get(`/api/channel/${channelId}`, config);
+      // console.log(data.channel);
+      if (data) {
+        setActiveChannel(data.channel);
+      }
+    } catch (error) {
+      return console.log(error.message);
+    }
   };
 
+  // setActiveChannel(channelData);
   return (
     <>
       <List>
@@ -126,7 +135,7 @@ export default function LeftNavigationSection({
               return (
                 <ListItem
                   onClick={() => {
-                    openChannel(item);
+                    getActiveChannel(item.channelId);
                   }}
                   key={item.channelId}
                   dense

@@ -1,8 +1,10 @@
+import React, { useEffect, useContext, useState } from "react";
 import { makeStyles } from "@material-ui/core";
-import React from "react";
 import ChatMessages from "./ChatMessages";
 import ChatInput from "./ChatInput";
-// showing communication happening (messages)
+
+import { socket } from "../../../context/socket";
+import { ChannelContext } from "../../../context/channel";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -13,13 +15,60 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     height: "100%",
   },
+  messageBox: {
+    display: "block",
+    width: "100%",
+    height: "70px",
+    overflow: "scroll",
+  },
 }));
 
 export default function ChatHome() {
   const classes = useStyles();
+  const { activeChannel } = useContext(ChannelContext);
+  const [messages, setMessages] = useState([]);
+  const [newMessage, setNewMessage] = useState("");
+
+  useEffect(() => {
+    setMessages(activeChannel.messagesByDate);
+  }, [activeChannel.channelId]);
+
+  useEffect(() => {
+    if (socket) {
+      socket.on("message", (msgData) => {
+        if (activeChannel.channelId) {
+          if (msgData.channelId === activeChannel.channelId) {
+            setNewMessage(msgData);
+          }
+        }
+      });
+      return () => socket.off("message");
+    }
+  }, [socket, messages]);
+
+  useEffect(() => {
+    if (newMessage) {
+      const latestMessage = messages[messages.length - 1];
+      if (latestMessage && latestMessage.date === newMessage.date) {
+        latestMessage.messages.push(newMessage.message);
+        messages.pop();
+        setMessages([latestMessage]);
+      } else if (!latestMessage || latestMessage.date !== newMessage.date) {
+        setMessages([
+          { date: newMessage.date, messages: [newMessage.message] },
+        ]);
+      }
+    }
+  }, [newMessage]);
+
   return (
     <div className={classes.root}>
-      <ChatMessages />
+      {messages
+        ? messages.map((msgs, index) => {
+            return <ChatMessages messages={msgs} key={index} />;
+          })
+        : "No channel selected"}
+
       <ChatInput />
     </div>
   );

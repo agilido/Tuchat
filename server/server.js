@@ -32,7 +32,15 @@ server.listen(PORT, () => {
 io.on("connection", (socket) => {
   console.log("User connected: " + socket.id);
 
+  socket.on("joinChannel", (userChannels) => {
+    userChannels.forEach((userChannels) => {
+      console.log("joined to:" + userChannels.channelName);
+      socket.join(userChannels.channelId);
+    });
+  });
+
   socket.on("sendMessage", (data) => {
-    console.log("Socket msg: " + data);
+    console.log("Socket msg: " + data.channelId);
+    io.to(data.channelId).emit("message", data);
   });
 });
