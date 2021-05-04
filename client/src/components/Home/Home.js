@@ -23,10 +23,7 @@ export const Home = () => {
         },
       };
       try {
-        const { data } = await axios.get("/api/private", config);
-        if (data) {
-          setPrivateData(data.data);
-        }
+        await axios.get("/api/private", config);
       } catch (error) {
         localStorage.removeItem("authToken");
         setError("Not authorized");
@@ -51,13 +48,14 @@ export const Home = () => {
     },
   };
 
+  const [activeChannel, setActiveChannel] = useState({});
+
   const getChannels = async () => {
     try {
       const { data } = await axios.get("/api/channel/get", config);
       if (data) {
         setChannelItems(data);
-        console.log(data);
-        socket.emit("joinChannel", data);
+        socket.emit("joinChannels", data);
       }
     } catch (error) {
       if (error.response.status === 500) {
@@ -65,19 +63,24 @@ export const Home = () => {
       }
     }
   };
-
   useEffect(() => {
     getChannels();
   }, []);
 
-  const [activeChannel, setActiveChannel] = useState({});
+  const leaveChannels = () => {
+    socket.emit("leaveChannels", channelItems);
+  };
 
   return (
     <div>
       <ChannelContext.Provider value={{ activeChannel, setActiveChannel }}>
         <UserContext.Provider value={{ currentUser }}>
           <SocketContext.Provider value={socket}>
-            <Dashboard channelItems={channelItems} getChannels={getChannels} />
+            <Dashboard
+              channelItems={channelItems}
+              getChannels={getChannels}
+              leaveChannels={leaveChannels}
+            />
           </SocketContext.Provider>
         </UserContext.Provider>
       </ChannelContext.Provider>

@@ -41,7 +41,6 @@ export default function ChatMessages({ messages }) {
       {messagesByDate.messages
         ? messagesByDate.messages.map((msgs, index) => {
             if (msgs) {
-              console.log(msgs);
               return (
                 <Message
                   key={index}
