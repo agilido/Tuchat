@@ -11,17 +11,23 @@ import { socket } from "../../../context/socket";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    position: "sticky",
-    top: "90%",
+    position: "fixed",
     margin: "1%",
+    width: "100%",
+    maxWidth: "64%",
+    [theme.breakpoints.down("md")]: {
+      maxWidth: "45%",
+    },
+    right: "21%",
+    bottom: "0",
+    padding: "20px",
   },
   paper: {
     borderRadius: "25px",
     display: "flex",
-    paddingRight: "5px",
   },
   input: {
-    width: "100%",
+    width: "89%",
     height: "70px",
     border: " white 1px solid",
     fontSize: "20px",
@@ -35,9 +41,10 @@ const useStyles = makeStyles((theme) => ({
     outline: "none",
   },
   icons: {
-    position: "absolute",
+    position: "relative",
     right: "1%",
-    top: "9%",
+    display: "flex",
+    justifyContent: "center",
   },
 }));
 
