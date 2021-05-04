@@ -4,6 +4,9 @@ import Message from "./Message";
 import { makeStyles } from "@material-ui/core";
 const useStyles = makeStyles((theme) => ({
   root: {
+    position: "static",
+  },
+  label: {
     color: "black",
     background: "white",
     width: "30%",
@@ -36,17 +39,13 @@ export default function ChatMessages({ messages }) {
   }, [messages]);
 
   return (
-    <div>
-      <div className={classes.root}>{dateLabel}</div>
+    <div className={classes.root}>
+      <div className={classes.label}>{dateLabel}</div>
       {messagesByDate.messages
         ? messagesByDate.messages.map((msgs, index) => {
             if (msgs) {
               return (
-                <Message
-                  key={index}
-                  from={msgs.from.username}
-                  text={msgs.message}
-                />
+                <Message key={index} from={msgs.from} text={msgs.message} />
               );
             } else {
               return null;
