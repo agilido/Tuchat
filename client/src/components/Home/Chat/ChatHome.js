@@ -52,17 +52,28 @@ export default function ChatHome() {
       if (latestMessage && latestMessage.date === newMessage.date) {
         latestMessage.messages.push(newMessage.message);
         messages.pop();
-        setMessages([latestMessage]);
+        // setMessages(...messages, [latestMessage]);
+        setMessages((prevState) => {
+          return [...prevState, latestMessage];
+        });
       } else if (!latestMessage || latestMessage.date !== newMessage.date) {
-        setMessages([
-          { date: newMessage.date, messages: [newMessage.message] },
-        ]);
+        // setMessages(...messages, [
+        //   { date: newMessage.date, messages: [newMessage.message] },
+        // ]);
+
+        setMessages((prevState) => {
+          return [
+            ...prevState,
+            { date: newMessage.date, messages: [newMessage.message] },
+          ];
+        });
       }
     }
   }, [newMessage]);
 
   return (
     <div className={classes.root}>
+      {activeChannel.channelId ? <p>#{activeChannel.name}</p> : null}
       {messages
         ? messages.map((msgs, index) => {
             return <ChatMessages messages={msgs} key={index} />;

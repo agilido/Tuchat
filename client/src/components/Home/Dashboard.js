@@ -80,7 +80,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function LeftNavigation({ channelItems, getChannels }) {
+export default function LeftNavigation({
+  channelItems,
+  getChannels,
+  leaveChannels,
+}) {
   const classes = useStyles();
 
   const data = localStorage.getItem("barPosition");
@@ -157,6 +161,7 @@ export default function LeftNavigation({ channelItems, getChannels }) {
 
   const handleLogout = () => {
     localStorage.removeItem("authToken");
+    leaveChannels();
     history.push("/login");
   };
 
@@ -197,7 +202,7 @@ export default function LeftNavigation({ channelItems, getChannels }) {
               textAlign: "left",
             }}
           >
-            {activeChannel ? activeChannel.name : null}
+            {"Tuchat"}
           </Typography>
           <Grid container justify="flex-end">
             <Button
