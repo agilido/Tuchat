@@ -18,6 +18,7 @@ export default function ChannelHome() {
   return (
     <div className={classes.root}>
       <ChatHome />
+
       <ChannelInfo />
     </div>
   );

@@ -11,15 +11,14 @@ import { socket } from "../../../context/socket";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    position: "fixed",
+    position: "absolute",
     margin: "1%",
     width: "100%",
-    maxWidth: "64%",
     [theme.breakpoints.down("md")]: {
-      maxWidth: "45%",
+      bottom: "-2%",
     },
-    right: "21%",
-    bottom: "0",
+    right: "-1.5%",
+    bottom: "-3%",
     padding: "20px",
   },
   paper: {
@@ -41,10 +40,15 @@ const useStyles = makeStyles((theme) => ({
     outline: "none",
   },
   icons: {
-    position: "relative",
-    right: "1%",
-    display: "flex",
-    justifyContent: "center",
+    position: "absolute",
+    top: "23%",
+    right: "3%",
+    [theme.breakpoints.down("md")]: {
+      marginRight: "3%",
+    },
+  },
+  thatOneTrickyElement: {
+    marginBottom: "3px",
   },
 }));
 
@@ -131,7 +135,7 @@ export default function ChatInput() {
       <div className={classes.root}>
         {showEmojiPicker ? (
           <Picker
-            pickerStyle={{ position: "absolute", left: "70%", top: "-470%" }}
+            pickerStyle={{ position: "absolute", left: "70%", top: "-275%" }}
             native={true}
             onEmojiClick={onEmojiClick}
             disableSkinTonePicker={true}
@@ -152,6 +156,7 @@ export default function ChatInput() {
                   setShowEmojiPicker(!showEmojiPicker);
                 }}
                 color="primary"
+                className={classes.thatOneTrickyElement}
               >
                 😄
               </IconButton>

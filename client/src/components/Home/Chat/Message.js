@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { makeStyles, Typography } from "@material-ui/core";
 
 import { UserContext } from "../../../context/user";
@@ -7,17 +7,19 @@ const useStyles = makeStyles((theme) => ({
     color: "black",
     marginLeft: "1%",
     marginRight: "1%",
-    fontSize: "18px",
   },
   currUserBox: {
     width: "max-content",
-    textAlign: "left",
+    textAlign: "right",
     margin: "2px",
-    padding: "10px",
     marginLeft: "auto",
+    paddingLeft: "20px",
+    paddingTop: "5px",
   },
   currMsgBody: {
     position: "relative",
+    display: "inline-block",
+    textAlign: "left",
     background: "#2592eb",
     color: "white",
     borderRadius: "12px",
@@ -43,11 +45,13 @@ const useStyles = makeStyles((theme) => ({
     width: "max-content",
     textAlign: "left",
     margin: "10px",
-    padding: "20px",
+    paddingLeft: "20px",
+    paddingTop: "5px",
   },
   otherMsgBody: {
     position: "relative",
     background: "white",
+    textAlign: "left",
     color: "black",
     borderRadius: "12px",
     borderBottomLeftRadius: 0,
@@ -68,7 +72,7 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: "40vw",
   },
   userLabel: {
-    fontSize: "15px",
+    fontSize: "14px",
     marginBottom: "4px",
     paddingLeft: "4px",
   },
@@ -77,18 +81,36 @@ const useStyles = makeStyles((theme) => ({
 export default function Message({ text, from, time }) {
   const classes = useStyles();
   const { currentUser } = useContext(UserContext);
+  const [timeStamp, setTimeStamp] = useState(null);
+  const [timeLabel, setTimeLabel] = useState(null);
+  useEffect(() => {
+    if (time) {
+      setTimeStamp(time);
+    }
+  }, [time]);
+
+  useEffect(() => {
+    const msgTime = new Date(timeStamp);
+    const hour = (msgTime.getHours() < 10 ? "0" : "") + msgTime.getHours();
+    const minute =
+      (msgTime.getMinutes() < 10 ? "0" : "") + msgTime.getMinutes();
+
+    const result = hour + ":" + minute;
+    setTimeLabel(result);
+  }, [timeStamp]);
 
   return (
     <div>
       <div className={classes.root}>
         {currentUser.userId === from.userId ? (
           <div className={classes.currUserBox}>
+            <p className={classes.userLabel}>You, {timeLabel}</p>
             <Typography className={classes.currMsgBody}>{text}</Typography>
           </div>
         ) : (
           <div className={classes.otherUserBox}>
             <p className={classes.userLabel}>
-              {from.username}, {time}
+              {from.username}, {timeLabel}
             </p>
             <Typography className={classes.otherMsgBody}>{text}</Typography>
           </div>

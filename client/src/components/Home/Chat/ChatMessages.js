@@ -6,11 +6,17 @@ const useStyles = makeStyles((theme) => ({
   root: {
     position: "static",
   },
-  label: {
+  dateLabel: {
     color: "black",
-    background: "white",
-    width: "30%",
-    marginLeft: "35%",
+    width: "99%",
+    lineHeight: "0.1em",
+    borderBottom: "1px solid #c9ccd1",
+    margin: "auto",
+    marginTop: "10px",
+    "& span": {
+      background: "#edf0f5",
+      padding: "10px",
+    },
   },
 }));
 
@@ -34,18 +40,34 @@ export default function ChatMessages({ messages }) {
     if (messages.date === today) {
       setDateLabel("Today");
     } else {
-      setDateLabel(messages.date);
+      let d = new Date(messages.date);
+      let yy = new Intl.DateTimeFormat("en", { year: "numeric" }).format(d);
+      let mm = new Intl.DateTimeFormat("en", { month: "long" }).format(d);
+      let dd = new Intl.DateTimeFormat("en", { day: "2-digit" }).format(d);
+
+      console.log(dd);
+      let day = dd < 10 ? dd.slice(1) : dd;
+
+      setDateLabel(`${day} ${mm} ${yy}`);
     }
   }, [messages]);
 
   return (
     <div className={classes.root}>
-      <div className={classes.label}>{dateLabel}</div>
+      <div className={classes.toolbar} />
+      <div className={classes.dateLabel}>
+        <span>{dateLabel}</span>
+      </div>
       {messagesByDate.messages
         ? messagesByDate.messages.map((msgs, index) => {
             if (msgs) {
               return (
-                <Message key={index} from={msgs.from} text={msgs.message} />
+                <Message
+                  key={index}
+                  from={msgs.from}
+                  text={msgs.message}
+                  time={msgs.time}
+                />
               );
             } else {
               return null;
