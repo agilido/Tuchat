@@ -1,5 +1,5 @@
 import React, { useEffect, useContext, useState } from "react";
-import { makeStyles } from "@material-ui/core";
+import { CardHeader, makeStyles, Toolbar, Typography } from "@material-ui/core";
 import ChatMessages from "./ChatMessages";
 import ChatInput from "./ChatInput";
 
@@ -11,19 +11,19 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
     color: "black",
     backgroundColor: "#edf0f5",
-    // background: "lightyellow",
     borderRadius: "12px",
     padding: "1%",
     width: "100%",
     height: "100%",
     maxWidth: "100%",
   },
-  messagesBox: {
-    position: "relative",
-    height: "100px",
-  },
-  scroll: {
-    height: "89.5%",
+
+  messageBox: {
+    height: "83%",
+    [theme.breakpoints.down("md")]: {
+      height: "80%",
+    },
+    marginTop: "60px",
     overflow: "scroll",
     overflowX: "hidden",
     "&::-webkit-scrollbar": {
@@ -40,6 +40,25 @@ const useStyles = makeStyles((theme) => ({
       borderRadius: "25px",
     },
     scrollbarWidth: "thin",
+  },
+  title: {
+    background: "#edf0f5",
+    textAlign: "left",
+    position: "absolute",
+    zIndex: "2",
+    display: "block",
+  },
+  toolbar: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-end",
+    background: "lightyellow",
+    position: "absolute",
+    zIndex: "1",
+    width: "90%",
+    padding: theme.spacing(0, 1),
+    // necessary for content to be below app bar
+    ...theme.mixins.toolbar,
   },
 }));
 
@@ -88,10 +107,16 @@ export default function ChatHome() {
   }, [newMessage]);
 
   return (
-    <>
+    <div className={classes.root}>
+      {activeChannel.channelId ? (
+        <CardHeader className={classes.title} title={activeChannel.name}>
+          <Toolbar>
+            <Typography variant="h6">{activeChannel.name}</Typography>
+          </Toolbar>
+        </CardHeader>
+      ) : null}
       <div className={classes.root}>
-        <div className={classes.scroll}>
-          {activeChannel.channelId ? <p>#{activeChannel.name}</p> : null}
+        <div className={classes.messageBox}>
           {messages
             ? messages.map((msgs, index) => {
                 return (
@@ -99,10 +124,12 @@ export default function ChatHome() {
                 );
               })
             : null}
+
           {!activeChannel.channelId && "No channel selected"}
+
           <ChatInput />
         </div>
       </div>
-    </>
+    </div>
   );
 }

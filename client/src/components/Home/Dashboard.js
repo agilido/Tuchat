@@ -200,10 +200,13 @@ export default function LeftNavigation({
             style={{
               width: "100%",
               textAlign: "left",
+              fontSize: "37px",
+              userSelect: "none",
             }}
           >
             {"Tuchat"}
           </Typography>
+
           <Grid container justify="flex-end">
             <Button
               variant="contained"
