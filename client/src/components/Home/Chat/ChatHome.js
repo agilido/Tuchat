@@ -5,6 +5,7 @@ import ChatInput from "./ChatInput";
 
 import { socket } from "../../../context/socket";
 import { ChannelContext } from "../../../context/channel";
+import { UserContext } from "../../../context/user";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -65,8 +66,10 @@ const useStyles = makeStyles((theme) => ({
 export default function ChatHome() {
   const classes = useStyles();
   const { activeChannel } = useContext(ChannelContext);
+  const { currentUser } = useContext(UserContext);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
+  const [newMessagesDots, setNewMessagesDots] = useState(false);
 
   useEffect(() => {
     setMessages(activeChannel.messagesByDate);
@@ -106,17 +109,58 @@ export default function ChatHome() {
     }
   }, [newMessage]);
 
+  const scrollDownAuto = () => {
+    const msgBox = document.querySelector("#messageBox");
+    msgBox.maxTop = msgBox.scrollHeight - msgBox.offsetHeight;
+
+    if (newMessage.message) {
+      // If not far away from the bottom scroll chat down on new message
+      if (msgBox.maxTop - msgBox.scrollTop <= msgBox.offsetHeight) {
+        msgBox.scrollTop = msgBox.scrollHeight;
+        setNewMessagesDots(false);
+
+        // If currentUser is sending message scroll to bottom
+      } else if (newMessage.message.from.userId === currentUser.userId) {
+        msgBox.scrollTop = msgBox.scrollHeight;
+        setNewMessagesDots(false);
+      } else if (newMessage.message.from.userId !== currentUser.userId) {
+        setNewMessagesDots(true);
+
+        function checkScrollHeight() {
+          // if scrolled to bottom remove newMessageDots
+          if (msgBox.scrollTop >= msgBox.scrollHeight - 1000) {
+            setNewMessagesDots(false);
+            msgBox.removeEventListener("scroll", checkScrollHeight);
+          }
+        }
+
+        msgBox.addEventListener("scroll", checkScrollHeight);
+      }
+    }
+  };
+  const scrollDown = () => {
+    const msgBox = document.querySelector("#messageBox");
+    msgBox.scrollTop = msgBox.scrollHeight;
+    setNewMessagesDots(false);
+  };
+  useEffect(() => {
+    console.log("lol");
+    scrollDownAuto();
+  }, [messages, newMessage]);
+
   return (
     <div className={classes.root}>
       {activeChannel.channelId ? (
-        <CardHeader className={classes.title} title={activeChannel.name}>
-          <Toolbar>
-            <Typography variant="h6">{activeChannel.name}</Typography>
-          </Toolbar>
-        </CardHeader>
+        <>
+          <CardHeader className={classes.title} title={activeChannel.name}>
+            <Toolbar>
+              <Typography variant="h6">{activeChannel.name}</Typography>
+            </Toolbar>
+          </CardHeader>
+        </>
       ) : null}
       <div className={classes.root}>
-        <div className={classes.messageBox}>
+        <div id="messageBox" className={classes.messageBox}>
           {messages
             ? messages.map((msgs, index) => {
                 return (
@@ -124,10 +168,16 @@ export default function ChatHome() {
                 );
               })
             : null}
+          <div id="scrollRef"></div>
 
-          {!activeChannel.channelId && "No channel selected"}
+          {!activeChannel.channelId && (
+            <Typography variant="h5">No channel selected</Typography>
+          )}
 
-          <ChatInput />
+          <ChatInput
+            scrollDown={scrollDown}
+            newMessagesDots={newMessagesDots}
+          />
         </div>
       </div>
     </div>

@@ -78,13 +78,11 @@ export default function LeftNavigationSection({
       console.log("Error: " + error);
     }
   };
-  const { activeChannel, setActiveChannel } = useContext(ChannelContext);
+  const { setActiveChannel } = useContext(ChannelContext);
 
   const getActiveChannel = async (channelId) => {
-    // console.log(channelId);
     try {
       const { data } = await axios.get(`/api/channel/${channelId}`, config);
-      // console.log(data.channel);
       if (data) {
         setActiveChannel(data.channel);
       }
@@ -93,7 +91,6 @@ export default function LeftNavigationSection({
     }
   };
 
-  // setActiveChannel(channelData);
   return (
     <>
       <List>

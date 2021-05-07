@@ -1,11 +1,13 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Grid, IconButton, makeStyles, Paper } from "@material-ui/core";
 import { v4 as uuidv4 } from "uuid";
 import { ChannelContext } from "../../../context/channel";
 import axios from "axios";
 import { UserContext } from "../../../context/user";
+import "../styles.css";
 
 import SendIcon from "@material-ui/icons/Send";
+import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import Picker from "emoji-picker-react";
 import { socket } from "../../../context/socket";
 
@@ -50,13 +52,25 @@ const useStyles = makeStyles((theme) => ({
   thatOneTrickyElement: {
     marginBottom: "3px",
   },
+  shape: {
+    background: "rgba(0, 61, 123, 0.05)",
+    "&:hover": {
+      background: "rgba(0, 61, 123, 0.1)",
+    },
+    width: 35,
+    height: 35,
+    position: "absolute",
+    left: "50%",
+    top: "-25%",
+    textAlign: "center",
+    animation: "dotPulse 1.5s ease-in-out 2 both",
+  },
 }));
 
-export default function ChatInput() {
+export default function ChatInput({ newMessagesDots, scrollDown }) {
   const classes = useStyles();
   const [message, setMessage] = useState("");
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-
   const onEmojiClick = (event, emojiObject) => {
     setMessage(message + emojiObject.emoji);
   };
@@ -64,6 +78,22 @@ export default function ChatInput() {
   const handleChange = (e) => {
     setMessage(e.target.value);
   };
+  // On ESC hide emoji picker
+  useEffect(() => {
+    document.addEventListener(
+      "keydown",
+      (event) => {
+        if (event.keyCode === 27) {
+          setShowEmojiPicker(false);
+        }
+      },
+      false
+    );
+
+    return () => {
+      document.removeEventListener("keydown", setShowEmojiPicker, false);
+    };
+  }, []);
 
   const config = {
     headers: {
@@ -133,6 +163,15 @@ export default function ChatInput() {
   return (
     <>
       <div className={classes.root}>
+        {newMessagesDots && (
+          <IconButton
+            onClick={scrollDown}
+            color="primary"
+            className={classes.shape}
+          >
+            <MoreHorizIcon></MoreHorizIcon>
+          </IconButton>
+        )}
         {showEmojiPicker ? (
           <Picker
             pickerStyle={{ position: "absolute", left: "70%", top: "-275%" }}

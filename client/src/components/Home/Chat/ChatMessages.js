@@ -12,10 +12,11 @@ const useStyles = makeStyles((theme) => ({
     lineHeight: "0.1em",
     borderBottom: "1px solid #c9ccd1",
     margin: "auto",
-    marginTop: "10px",
+    marginTop: "20px",
     "& span": {
       background: "#edf0f5",
-      padding: "10px",
+      paddingLeft: "10px",
+      paddingRight: "10px",
     },
   },
 }));
@@ -45,7 +46,6 @@ export default function ChatMessages({ messages }) {
       let mm = new Intl.DateTimeFormat("en", { month: "long" }).format(d);
       let dd = new Intl.DateTimeFormat("en", { day: "2-digit" }).format(d);
 
-      console.log(dd);
       let day = dd < 10 ? dd.slice(1) : dd;
 
       setDateLabel(`${day} ${mm} ${yy}`);

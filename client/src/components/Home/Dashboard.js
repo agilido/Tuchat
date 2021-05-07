@@ -198,6 +198,7 @@ export default function LeftNavigation({
             variant="h6"
             noWrap
             style={{
+              fontFamily: "Pacifico, cursive",
               width: "100%",
               textAlign: "left",
               fontSize: "37px",
