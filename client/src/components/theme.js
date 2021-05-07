@@ -8,11 +8,6 @@ const defaultTheme = createMuiTheme({
       main: "#FFFFFF",
     },
   },
-  typography: {
-    h6: {
-      fontFamily: "Pacifico, cursive",
-    },
-  },
 });
 
 export default defaultTheme;
