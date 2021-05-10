@@ -17,6 +17,7 @@ import LeftNavigationSection from "./LeftNavigationSection";
 import ChannelHome from "./Channel/ChannelHome";
 import AddChannelForm from "./AddChannelForm";
 import { ChannelContext } from "../../context/channel";
+import SearchBar from "./SearchBar";
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -49,6 +50,20 @@ const useStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
+    "&::-webkit-scrollbar": {
+      height: " 12px",
+      width: "12px",
+      background: "#000",
+    },
+    "&::-webkit-scrollbar": {
+      width: "5px",
+    },
+    "&::-webkit-scrollbar-thumb": {
+      width: "5px",
+      background: "#cdcdcd",
+      borderRadius: "25px",
+    },
+    scrollbarWidth: "thin",
   },
   drawerClose: {
     transition: theme.transitions.create("width", {
@@ -172,8 +187,6 @@ export default function LeftNavigation({
     (channel) => channel.favorite !== true
   );
 
-  const { activeChannel } = useContext(ChannelContext);
-
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -207,6 +220,8 @@ export default function LeftNavigation({
           >
             {"Tuchat"}
           </Typography>
+
+          <SearchBar channelItems={channelItems} getChannels={getChannels} />
 
           <Grid container justify="flex-end">
             <Button
@@ -259,15 +274,15 @@ export default function LeftNavigation({
           showAddChannelForm={showAddChannelForm}
         ></LeftNavigationSection>
 
-        {/* CONTACTS */}
+        {/* CONTACTS
         <LeftNavigationSection
           show={openContactList}
           setShow={setOpenContactList}
           title="Contacts"
           type="contacts"
-          items={["sAS", "sAS"]}
+          items={["sAS", "sAS", "sAS"]}
           open={open}
-        ></LeftNavigationSection>
+        ></LeftNavigationSection> */}
       </Drawer>
       <Grid container>
         <div className={classes.toolbar} />

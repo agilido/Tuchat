@@ -89,10 +89,6 @@ export default function ChatInput({ newMessagesDots, scrollDown }) {
       },
       false
     );
-
-    return () => {
-      document.removeEventListener("keydown", setShowEmojiPicker, false);
-    };
   }, []);
 
   const config = {

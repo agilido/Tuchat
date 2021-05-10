@@ -109,11 +109,6 @@ export default function AddChannelForm({
 
   const handleClose = () => {
     setShowChannelForm(false);
-    // setReqState({
-    //   ...ReqState,
-    //   error: false,
-    //   erroMsg: "",
-    // });
   };
 
   const handleChange = (e) => {
@@ -246,6 +241,9 @@ export default function AddChannelForm({
               value={channelInfo.description}
             />
           </DialogContent>
+
+          {/* adding members component https://material-ui.com/components/autocomplete/#checkboxes */}
+
           <DialogActions>
             {ReqState.success ? (
               <Typography

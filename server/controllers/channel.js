@@ -39,7 +39,18 @@ exports.addChannel = async (req, res, next) => {
   }
 };
 
-exports.getChannels = async (req, res, next) => {
+exports.getAllChannels = async (req, res, next) => {
+  try {
+    const channels = await Channel.find().select(
+      "channelId name description owner"
+    );
+    return res.status(200).json(channels);
+  } catch (error) {
+    return res.status(500).json(error.message);
+  }
+};
+
+exports.getUserChannels = async (req, res, next) => {
   const userId = req.user._id;
   if (userId) {
     try {
@@ -103,6 +114,46 @@ exports.newMessage = async (req, res, next) => {
     try {
       await channel.save();
       return res.status(200).json({ msg: "Message sent successfully" });
+    } catch (error) {
+      return res.status(500).json({ err: error.message });
+    }
+  }
+};
+exports.joinChannel = async (req, res) => {
+  const channelData = req.body.channelData;
+
+  const userId = req.user._id;
+  const username = req.user.username;
+
+  if (channelData && userId && username) {
+    try {
+      const userChannelsUpdate = await User.findOneAndUpdate(
+        { _id: userId },
+        {
+          $push: {
+            channels: channelData,
+          },
+        },
+        { new: true }
+      );
+      console.log(channelData.channelId);
+      const channelMembersUpdate = await Channel.findOneAndUpdate(
+        { channelId: channelData.channelId },
+        {
+          $push: {
+            members: {
+              userId: userId,
+              username: username,
+            },
+          },
+        },
+        { new: true }
+      );
+      const response = {
+        usrChannels: userChannelsUpdate.channels,
+        channelMembers: channelMembersUpdate.members,
+      };
+      return res.status(200).json(response);
     } catch (error) {
       return res.status(500).json({ err: error.message });
     }

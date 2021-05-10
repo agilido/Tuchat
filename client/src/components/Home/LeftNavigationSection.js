@@ -92,7 +92,7 @@ export default function LeftNavigationSection({
   };
 
   return (
-    <>
+    <div>
       <List>
         <ListItem button onClick={open ? switchShow : null}>
           <ListItemIcon>
@@ -192,6 +192,6 @@ export default function LeftNavigationSection({
           )}
         </List>
       </Collapse>
-    </>
+    </div>
   );
 }
