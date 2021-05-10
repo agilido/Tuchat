@@ -146,7 +146,7 @@ export default function ChatHome() {
   useEffect(() => {
     console.log("lol");
     scrollDownAuto();
-  }, [messages, newMessage]);
+  }, [messages]);
 
   return (
     <div className={classes.root}>
