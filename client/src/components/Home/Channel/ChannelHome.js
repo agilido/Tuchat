@@ -13,13 +13,14 @@ const useStyles = makeStyles({
     margin: "15px",
   },
 });
-export default function ChannelHome() {
+export default function ChannelHome({ getChannels }) {
   const classes = useStyles();
+
   return (
     <div className={classes.root}>
       <ChatHome />
 
-      <ChannelInfo />
+      <ChannelInfo getChannels={getChannels} />
     </div>
   );
 }

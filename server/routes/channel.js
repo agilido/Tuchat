@@ -10,6 +10,7 @@ const {
   starChannel,
   newMessage,
   joinChannel,
+  leaveChannel,
 } = require("../controllers/channel");
 
 router.route("/add").post(protect, addChannel);
@@ -18,6 +19,7 @@ router.route("/getall").get(protect, getAllChannels);
 router.route("/star").post(protect, starChannel);
 router.route("/newmessage").post(protect, newMessage);
 router.route("/joinchannel").post(protect, joinChannel);
+router.route("/leavechannel").post(protect, leaveChannel);
 
 router.route("/:channelId").get(protect, getExactChannel);
 

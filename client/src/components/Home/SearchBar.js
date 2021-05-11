@@ -151,6 +151,8 @@ export default function SearchBar({ getChannels, channelItems }) {
         config
       );
       getChannels();
+      setShowHintPanel(false);
+      setQuery("");
     } catch (error) {}
   };
 
@@ -240,7 +242,7 @@ export default function SearchBar({ getChannels, channelItems }) {
                           userSelect: "none",
                         }}
                       >
-                        {channelHint.name}
+                        # {channelHint.name}
                       </Typography>
                       <Typography
                         variant="body2"

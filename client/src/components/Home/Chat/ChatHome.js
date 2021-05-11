@@ -168,6 +168,11 @@ export default function ChatHome() {
                 );
               })
             : null}
+
+          {messages && messages.length === 0 && (
+            <Typography variant="h6">Say hello! 😄</Typography>
+          )}
+
           <div id="scrollRef"></div>
 
           {!activeChannel.channelId && (
