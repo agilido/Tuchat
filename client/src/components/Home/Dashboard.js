@@ -273,21 +273,11 @@ export default function LeftNavigation({
           setShowChannelForm={setShowAddChannelForm}
           showAddChannelForm={showAddChannelForm}
         ></LeftNavigationSection>
-
-        {/* CONTACTS
-        <LeftNavigationSection
-          show={openContactList}
-          setShow={setOpenContactList}
-          title="Contacts"
-          type="contacts"
-          items={["sAS", "sAS", "sAS"]}
-          open={open}
-        ></LeftNavigationSection> */}
       </Drawer>
       <Grid container>
         <div className={classes.toolbar} />
         <Grid container alignItems="flex-start">
-          <ChannelHome />
+          <ChannelHome getChannels={getChannels} />
         </Grid>
       </Grid>
       <AddChannelForm

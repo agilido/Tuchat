@@ -160,6 +160,35 @@ exports.joinChannel = async (req, res) => {
   }
 };
 
+exports.leaveChannel = async (req, res) => {
+  const userId = req.user.userId;
+  const activeChannel = req.body.activeChannel;
+  if (activeChannel && userId) {
+    try {
+      await User.findOneAndUpdate(
+        { _id: userId },
+        {
+          $pull: {
+            channels: { channelId: activeChannel.channelId },
+          },
+        }
+      );
+      await Channel.findOneAndUpdate(
+        { channelId: channelData.channelId },
+        {
+          $pull: {
+            members: { userId: userId },
+          },
+        }
+      );
+      return res.status(200).json({ response: "Channel left" });
+    } catch (error) {
+      return res.status(500).json({ err: error.message });
+    }
+  }
+  return res.status(500).json({ err: "Can't process that request" });
+};
+
 exports.getExactChannel = async (req, res) => {
   const channelId = req.params.channelId;
   try {

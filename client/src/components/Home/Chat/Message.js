@@ -50,6 +50,7 @@ const useStyles = makeStyles((theme) => ({
   },
   otherMsgBody: {
     position: "relative",
+    display: "inline-block",
     background: "white",
     textAlign: "left",
     color: "black",
