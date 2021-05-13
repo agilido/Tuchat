@@ -12,6 +12,7 @@ import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import GroupIcon from "@material-ui/icons/Group";
+import InfoRoundedIcon from "@material-ui/icons/InfoRounded";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import { socket } from "../../../context/socket";
 
@@ -56,11 +57,14 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "#aa647b",
     },
   },
+  disabledIcon: {
+    margin: "auto",
+  },
 }));
 export default function ChannelInfo({ getChannels }) {
   const classes = useStyles();
 
-  const { activeChannel } = useContext(ChannelContext);
+  const { activeChannel, setActiveChannel } = useContext(ChannelContext);
   const [showList, setShowList] = useState(true);
   const [showConfirmation, setShowConfirmation] = useState(false);
 
@@ -80,8 +84,14 @@ export default function ChannelInfo({ getChannels }) {
 
   const leaveChannel = async () => {
     try {
-      // await axios.post("api/channel/leavechannel", activeChannel, config);
-      socket.emit("leaveChannel", [activeChannel]);
+      socket.emit("leaveChannel", activeChannel);
+      await axios
+        .post("api/channel/leavechannel", activeChannel, config)
+        .then(() => {
+          setActiveChannel({});
+          getChannels();
+          setShowConfirmation(false);
+        });
     } catch (error) {
       if (error.response) {
         console.log(error.response);
@@ -91,7 +101,7 @@ export default function ChannelInfo({ getChannels }) {
 
   return (
     <Grid className={classes.root}>
-      {activeChannel.channelId && (
+      {activeChannel.channelId ? (
         <>
           <Grid
             container
@@ -171,6 +181,10 @@ export default function ChannelInfo({ getChannels }) {
             </DialogActions>
           </Dialog>
         </>
+      ) : (
+        <div className={classes.disabledIcon}>
+          <InfoRoundedIcon color="disabled" style={{ fontSize: 150 }} />
+        </div>
       )}
     </Grid>
   );

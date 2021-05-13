@@ -167,7 +167,7 @@ export default function ForgotPassword({ history }) {
       justify="center"
       style={{ minHeight: "100vh" }}
     >
-      <div className="loginBox">
+      <div className="registerBox">
         <div className="loginForm">
           <Typography className={classes.margin} component="h1" variant="h5">
             Reset Your Password

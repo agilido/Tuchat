@@ -219,7 +219,7 @@ export default function SearchBar({ getChannels, channelItems }) {
                     <div
                       className={classes.result}
                       onClick={
-                        currentUser.username === channelHint.owner.username ||
+                        currentUser.userId === channelHint.owner.userId ||
                         channelsIds.includes(channelHint.channelId)
                           ? () => {
                               getActiveChannel(channelHint.channelId);
@@ -227,7 +227,7 @@ export default function SearchBar({ getChannels, channelItems }) {
                           : null
                       }
                       style={
-                        currentUser.username === channelHint.owner.username ||
+                        currentUser.userId === channelHint.owner.userId ||
                         channelsIds.includes(channelHint.channelId)
                           ? { cursor: "pointer" }
                           : null
@@ -264,19 +264,19 @@ export default function SearchBar({ getChannels, channelItems }) {
                           joinChannel(channelHint.channelId, channelHint.name);
                         }}
                         disabled={
-                          currentUser.username === channelHint.owner.username ||
+                          currentUser.userId === channelHint.owner.userId ||
                           channelsIds.includes(channelHint.channelId)
                             ? true
                             : false
                         }
                         style={
-                          currentUser.username === channelHint.owner.username ||
+                          currentUser.userId === channelHint.owner.userId ||
                           channelsIds.includes(channelHint.channelId)
                             ? { cursor: "default", color: "grey" }
                             : null
                         }
                       >
-                        {currentUser.username === channelHint.owner.username ||
+                        {currentUser.userId === channelHint.owner.userId ||
                         channelsIds.includes(channelHint.channelId)
                           ? "Joined"
                           : "Join"}

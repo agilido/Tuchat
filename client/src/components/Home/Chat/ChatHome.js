@@ -1,7 +1,14 @@
 import React, { useEffect, useContext, useState } from "react";
-import { CardHeader, makeStyles, Toolbar, Typography } from "@material-ui/core";
+import {
+  CardHeader,
+  Grid,
+  makeStyles,
+  Toolbar,
+  Typography,
+} from "@material-ui/core";
 import ChatMessages from "./ChatMessages";
 import ChatInput from "./ChatInput";
+import QuestionAnswerRoundedIcon from "@material-ui/icons/QuestionAnswerRounded";
 
 import { socket } from "../../../context/socket";
 import { ChannelContext } from "../../../context/channel";
@@ -21,8 +28,11 @@ const useStyles = makeStyles((theme) => ({
 
   messageBox: {
     height: "83%",
+    [theme.breakpoints.down("lg")]: {
+      height: "78%",
+    },
     [theme.breakpoints.down("md")]: {
-      height: "80%",
+      height: "78%",
     },
     marginTop: "60px",
     overflow: "scroll",
@@ -49,17 +59,10 @@ const useStyles = makeStyles((theme) => ({
     zIndex: "2",
     display: "block",
   },
-  toolbar: {
+  disabledIcon: {
     display: "flex",
-    alignItems: "center",
-    justifyContent: "flex-end",
-    background: "lightyellow",
-    position: "absolute",
-    zIndex: "1",
-    width: "90%",
-    padding: theme.spacing(0, 1),
-    // necessary for content to be below app bar
-    ...theme.mixins.toolbar,
+    direction: "column",
+    margin: "auto",
   },
 }));
 
@@ -70,9 +73,10 @@ export default function ChatHome() {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [newMessagesDots, setNewMessagesDots] = useState(false);
-
+  const [firstTimeLoad, setFirstTimeLoad] = useState(false);
   useEffect(() => {
     setMessages(activeChannel.messagesByDate);
+    setFirstTimeLoad(true);
   }, [activeChannel.channelId]);
 
   useEffect(() => {
@@ -90,6 +94,7 @@ export default function ChatHome() {
 
   useEffect(() => {
     if (newMessage) {
+      setFirstTimeLoad(false);
       const latestMessage = messages[messages.length - 1];
       if (latestMessage && latestMessage.date === newMessage.date) {
         latestMessage.messages.push(newMessage.message);
@@ -111,9 +116,9 @@ export default function ChatHome() {
 
   const scrollDownAuto = () => {
     const msgBox = document.querySelector("#messageBox");
-    msgBox.maxTop = msgBox.scrollHeight - msgBox.offsetHeight;
 
-    if (newMessage.message) {
+    if (newMessage.message && msgBox) {
+      msgBox.maxTop = msgBox.scrollHeight - msgBox.offsetHeight;
       // If not far away from the bottom scroll chat down on new message
       if (msgBox.maxTop - msgBox.scrollTop <= msgBox.offsetHeight) {
         msgBox.scrollTop = msgBox.scrollHeight;
@@ -140,34 +145,52 @@ export default function ChatHome() {
   };
   const scrollDown = () => {
     const msgBox = document.querySelector("#messageBox");
-    msgBox.scrollTop = msgBox.scrollHeight;
+    msgBox && (msgBox.scrollTop = msgBox.scrollHeight);
     setNewMessagesDots(false);
   };
   useEffect(() => {
     console.log("lol");
     scrollDownAuto();
+    if (firstTimeLoad) {
+      setTimeout(() => {
+        scrollDown();
+      }, 20);
+    }
   }, [messages]);
 
   return (
     <div className={classes.root}>
       {activeChannel.channelId ? (
-        <>
-          <CardHeader className={classes.title} title={activeChannel.name}>
-            <Toolbar>
-              <Typography variant="h6">{activeChannel.name}</Typography>
-            </Toolbar>
-          </CardHeader>
-        </>
+        <CardHeader className={classes.title} title={activeChannel.name}>
+          <Toolbar>
+            <Typography variant="h6">{activeChannel.name}</Typography>
+          </Toolbar>
+        </CardHeader>
       ) : null}
-      <div className={classes.root}>
+      {!activeChannel.channelId && (
+        <Grid
+          style={{
+            color: "black",
+            borderRadius: "12px",
+            display: "flex",
+            direction: "column",
+            height: "100%",
+          }}
+        >
+          <QuestionAnswerRoundedIcon
+            color="disabled"
+            style={{ fontSize: 150 }}
+            className={classes.disabledIcon}
+          />
+        </Grid>
+      )}
+      {messages ? (
         <div id="messageBox" className={classes.messageBox}>
-          {messages
-            ? messages.map((msgs, index) => {
-                return (
-                  <ChatMessages key={index} messages={msgs} time={msgs.time} />
-                );
-              })
-            : null}
+          {messages.map((msgs, index) => {
+            return (
+              <ChatMessages key={index} messages={msgs} time={msgs.time} />
+            );
+          })}
 
           {messages && messages.length === 0 && (
             <Typography variant="h6">Say hello! 😄</Typography>
@@ -175,16 +198,12 @@ export default function ChatHome() {
 
           <div id="scrollRef"></div>
 
-          {!activeChannel.channelId && (
-            <Typography variant="h5">No channel selected</Typography>
-          )}
-
           <ChatInput
             scrollDown={scrollDown}
             newMessagesDots={newMessagesDots}
           />
         </div>
-      </div>
+      ) : null}
     </div>
   );
 }
