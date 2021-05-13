@@ -11,6 +11,12 @@ exports.addChannel = async (req, res, next) => {
     userId: userId,
     username: username,
   };
+  channelData.members = [
+    {
+      userId: userId,
+      username: username,
+    },
+  ];
 
   if (channelData && userId) {
     try {
@@ -161,8 +167,9 @@ exports.joinChannel = async (req, res) => {
 };
 
 exports.leaveChannel = async (req, res) => {
-  const userId = req.user.userId;
-  const activeChannel = req.body.activeChannel;
+  const userId = req.user._id;
+  const activeChannel = req.body;
+
   if (activeChannel && userId) {
     try {
       await User.findOneAndUpdate(
@@ -174,10 +181,13 @@ exports.leaveChannel = async (req, res) => {
         }
       );
       await Channel.findOneAndUpdate(
-        { channelId: channelData.channelId },
+        { channelId: activeChannel.channelId },
         {
           $pull: {
             members: { userId: userId },
+          },
+          $unset: {
+            "owner.userId": { userId: userId },
           },
         }
       );
@@ -186,7 +196,6 @@ exports.leaveChannel = async (req, res) => {
       return res.status(500).json({ err: error.message });
     }
   }
-  return res.status(500).json({ err: "Can't process that request" });
 };
 
 exports.getExactChannel = async (req, res) => {

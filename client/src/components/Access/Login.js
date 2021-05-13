@@ -16,6 +16,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import { makeStyles } from "@material-ui/core/styles";
 import { green } from "@material-ui/core/colors";
 import { Link } from "react-router-dom";
+import Logo from "./logo.png";
 import clsx from "clsx";
 import axios from "axios";
 
@@ -27,6 +28,7 @@ const useStyles = makeStyles((theme) => ({
   helper: {
     position: "absolute",
   },
+
   buttonSuccess: {
     backgroundColor: green[500],
     "&:hover": {
@@ -36,10 +38,44 @@ const useStyles = makeStyles((theme) => ({
   buttonProgress: {
     color: green[500],
     position: "absolute",
-    top: "74%",
+    top: "74.5%",
     left: "50%",
     marginTop: -12,
     marginLeft: -12,
+  },
+
+  loginBox: {
+    borderRadius: "5px",
+    background: "white",
+    position: "absolute",
+    marginLeft: "55%",
+    animation: "start-move 0.3s ease-in-out",
+    [theme.breakpoints.down("md")]: {
+      position: "fixed",
+      marginLeft: "30%",
+    },
+    [theme.breakpoints.down("sm")]: {
+      position: "fixed",
+      marginLeft: "0%",
+      background: "black",
+    },
+  },
+
+  logo: {
+    display: "flex",
+    alignItems: "center",
+    flexWrap: "wrap",
+    position: "absolute",
+    marginLeft: "10%",
+    userSelect: "none",
+    userDrag: "none",
+    [theme.breakpoints.down("sm")]: {
+      display: "none",
+    },
+    [theme.breakpoints.down("md")]: {
+      display: "none",
+    },
+    animation: "start-move 0.3s ease-in-out",
   },
 }));
 
@@ -148,15 +184,23 @@ export default function Login({ history }) {
       container
       spacing={0}
       alignItems="center"
-      justify="center"
+      // justify="center"
       style={{ minHeight: "100vh" }}
     >
-      <div className="loginBox">
-        {/* <Typography component="h1" variant="h4">
-              LOGO
-            </Typography> */}
-        <Grid></Grid>
+      <Grid className={classes.logo}>
+        <img src={Logo} draggable="false" alt="paper-plane" />
+        <span
+          style={{
+            fontFamily: "Pacifico, cursive",
+            fontSize: "7vw",
+            color: "white",
+          }}
+        >
+          Tuchat
+        </span>
+      </Grid>
 
+      <div className={classes.loginBox}>
         <div className="loginForm">
           <Typography className={classes.margin} component="h1" variant="h4">
             Log In
@@ -183,7 +227,6 @@ export default function Login({ history }) {
                   className={classes.textFld}
                   value={LoginData.login}
                   inputProps={{ tabIndex: "1" }}
-                  // helper text for an error
                 />
                 <FormHelperText
                   error={ReqState.error}

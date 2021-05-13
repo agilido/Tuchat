@@ -35,8 +35,6 @@ io.on("connection", (socket) => {
   socket.on("joinChannels", (userChannels) => {
     userChannels.forEach((userChannels) => {
       socket.join(userChannels.channelId);
-      // console.log("Joined to: " + userChannels.channelName);
-      console.log(userChannels);
     });
   });
 
@@ -45,9 +43,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("leaveChannel", (channel) => {
-    socket.leave(channel);
-    // TODO:
-    console.log(socket.id);
+    socket.leave(channel.channelId);
   });
 
   socket.on("sendMessage", (data) => {

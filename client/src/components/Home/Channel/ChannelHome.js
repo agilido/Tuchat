@@ -5,14 +5,21 @@ import ChatHome from "../Chat/ChatHome";
 import ChannelInfo from "./ChannelInfo";
 // importing Chat folder, putting all together for whole "Chatting Section"
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     flexGrow: 1,
     height: "90vh",
     margin: "15px",
+    marginBottom: "0",
+    [theme.breakpoints.down("lg")]: {
+      height: "87.7vh",
+    },
+    [theme.breakpoints.down("md")]: {
+      height: "90vh",
+    },
   },
-});
+}));
 export default function ChannelHome({ getChannels }) {
   const classes = useStyles();
 

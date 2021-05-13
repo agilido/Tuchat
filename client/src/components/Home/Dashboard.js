@@ -16,7 +16,7 @@ import Grid from "@material-ui/core/Grid";
 import LeftNavigationSection from "./LeftNavigationSection";
 import ChannelHome from "./Channel/ChannelHome";
 import AddChannelForm from "./AddChannelForm";
-import { ChannelContext } from "../../context/channel";
+import Logo from "../Access/logo.png";
 import SearchBar from "./SearchBar";
 const drawerWidth = 240;
 
@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     }),
   },
   menuButton: {
-    marginRight: 36,
+    marginRight: 20,
   },
   logoutButton: {
     margin: "10px",
@@ -207,6 +207,12 @@ export default function LeftNavigation({
           >
             <MenuIcon />
           </IconButton>
+          <img
+            src={Logo}
+            draggable="false"
+            alt="paper-plane"
+            style={{ height: "50px", marginRight: "2px" }}
+          />
           <Typography
             variant="h6"
             noWrap
