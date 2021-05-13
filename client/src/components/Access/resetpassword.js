@@ -110,11 +110,6 @@ export default function ResetPassword({ match }) {
       style={{ minHeight: "100vh" }}
     >
       <div className="registerBox">
-        {/* <Typography component="h1" variant="h4">
-              LOGO
-            </Typography> */}
-        <Grid></Grid>
-
         <div className="registerForm">
           <Typography className={classes.margin} component="h1" variant="h5">
             Change Your Password

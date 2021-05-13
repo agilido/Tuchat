@@ -39,10 +39,7 @@ const useStyles = makeStyles((theme) => ({
     overflowX: "hidden",
     "&::-webkit-scrollbar": {
       height: " 12px",
-      width: "12px",
-      background: "#000",
-    },
-    "&::-webkit-scrollbar": {
+      background: "0",
       width: "5px",
     },
     "&::-webkit-scrollbar-thumb": {
@@ -70,10 +67,13 @@ export default function ChatHome() {
   const classes = useStyles();
   const { activeChannel } = useContext(ChannelContext);
   const { currentUser } = useContext(UserContext);
+
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [newMessagesDots, setNewMessagesDots] = useState(false);
   const [firstTimeLoad, setFirstTimeLoad] = useState(false);
+
+  // Set messages as user opens a channel
   useEffect(() => {
     setMessages(activeChannel.messagesByDate);
     setFirstTimeLoad(true);
@@ -148,8 +148,8 @@ export default function ChatHome() {
     msgBox && (msgBox.scrollTop = msgBox.scrollHeight);
     setNewMessagesDots(false);
   };
+  // Scroll down when channel is first time opened
   useEffect(() => {
-    console.log("lol");
     scrollDownAuto();
     if (firstTimeLoad) {
       setTimeout(() => {

@@ -3,6 +3,10 @@ html {
   background-color: #003d7b;
 }
 
+a {
+  text-decoration: none;
+}
+
 .loginForm {
   display: flex;
   flex-direction: column;
@@ -49,74 +53,5 @@ html {
     -webkit-transform: translate3d(0, -5vh, 0);
     transform: translate3d(0, -5vh, 0) scale(1.2);
     opacity: 0;
-  }
-}
-
-/* SNIPPETS */
-@keyframes login-successful-fadeout {
-  0% {
-    -webkit-transform: scale(0.8);
-    transform: scale(0.8);
-    opacity: 1;
-  }
-  to {
-    -webkit-transform: scale(1.6);
-    transform: scale(1.6);
-    opacity: 0;
-  }
-}
-
-@keyframes bounce-in {
-  0% {
-    -webkit-transform: translateZ(0) scale(0.99);
-    transform: translateZ(0) scale(0.99);
-  }
-  50% {
-    -webkit-transform: translateZ(0) scale(1.005);
-    transform: translateZ(0) scale(1.005);
-  }
-  to {
-    -webkit-transform: translateZ(0) scale(1);
-    transform: translateZ(0) scale(1);
-  }
-}
-/* TODO: ERROR OPTION 2 SHAKE */
-@keyframes shake2 {
-  0%,
-  to {
-    -webkit-transform: rotate(0);
-    transform: rotate(0);
-  }
-  25% {
-    -webkit-transform: rotate(2deg);
-    transform: rotate(2deg);
-  }
-  75% {
-    -webkit-transform: rotate(-2deg);
-    transform: rotate(-2deg);
-  }
-}
-/* TODO: 'Shake' for an error  */
-@keyframes shake {
-  10%,
-  90% {
-    -webkit-transform: translate3d(-1px, 0, 0);
-    transform: translate3d(-1px, 0, 0);
-  }
-  20%,
-  80% {
-    -webkit-transform: translate3d(2px, 0, 0);
-    transform: translate3d(2px, 0, 0);
-  }
-  30%,
-  50%,
-  70% {
-    -webkit-transform: translate3d(-4px, 0, 0);
-    transform: translate3d(-4px, 0, 0);
-  }
-  40%,
-  60% {
-    -webkit-transform: translate3d(4px, 0, 0);
-    transform: translate3d(4px, 0, 0);
   }
 }

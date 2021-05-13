@@ -60,11 +60,9 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "4px",
   },
   result: {
-    // background: "red",
     width: "100%",
   },
   action: {
-    // background: "yellow",
     display: "flex",
     alignItems: "center",
     justifyContent: "right",
@@ -91,15 +89,10 @@ export default function SearchBar({ getChannels, channelItems }) {
   };
 
   useEffect(() => {
-    console.log(channelItems);
     if (channelItems) {
       setChannelsIds(channelItems.map((item) => item.channelId));
     }
   }, [channelItems]);
-
-  useEffect(() => {
-    console.log(channelsIds);
-  }, [channelsIds]);
 
   // On ESC hide emoji picker
 
@@ -145,14 +138,13 @@ export default function SearchBar({ getChannels, channelItems }) {
 
     console.log(channelData);
     try {
-      const res = await axios.post(
-        "/api/channel/joinchannel",
-        { channelData },
-        config
-      );
-      getChannels();
-      setShowHintPanel(false);
-      setQuery("");
+      await axios
+        .post("/api/channel/joinchannel", { channelData }, config)
+        .then(() => {
+          getChannels();
+          setShowHintPanel(false);
+          setQuery("");
+        });
     } catch (error) {}
   };
 

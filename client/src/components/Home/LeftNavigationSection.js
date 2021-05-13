@@ -78,6 +78,7 @@ export default function LeftNavigationSection({
       console.log("Error: " + error);
     }
   };
+
   const { setActiveChannel } = useContext(ChannelContext);
 
   const getActiveChannel = async (channelId) => {

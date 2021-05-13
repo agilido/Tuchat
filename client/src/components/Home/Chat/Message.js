@@ -82,8 +82,10 @@ const useStyles = makeStyles((theme) => ({
 export default function Message({ text, from, time }) {
   const classes = useStyles();
   const { currentUser } = useContext(UserContext);
+
   const [timeStamp, setTimeStamp] = useState(null);
   const [timeLabel, setTimeLabel] = useState(null);
+
   useEffect(() => {
     if (time) {
       setTimeStamp(time);

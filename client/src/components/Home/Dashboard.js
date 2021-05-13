@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
@@ -52,12 +52,10 @@ const useStyles = makeStyles((theme) => ({
     }),
     "&::-webkit-scrollbar": {
       height: " 12px",
-      width: "12px",
+      width: "5px",
       background: "#000",
     },
-    "&::-webkit-scrollbar": {
-      width: "5px",
-    },
+
     "&::-webkit-scrollbar-thumb": {
       width: "5px",
       background: "#cdcdcd",
@@ -92,6 +90,11 @@ const useStyles = makeStyles((theme) => ({
 
   nested: {
     paddingLeft: theme.spacing(4),
+  },
+  logoDisplay: {
+    [theme.breakpoints.down("sm")]: {
+      display: "none",
+    },
   },
 }));
 
@@ -212,6 +215,7 @@ export default function LeftNavigation({
             draggable="false"
             alt="paper-plane"
             style={{ height: "50px", marginRight: "2px" }}
+            className={classes.logoDisplay}
           />
           <Typography
             variant="h6"
@@ -223,6 +227,7 @@ export default function LeftNavigation({
               fontSize: "37px",
               userSelect: "none",
             }}
+            className={classes.logoDisplay}
           >
             {"Tuchat"}
           </Typography>

@@ -1,5 +1,5 @@
 import { Button, Grid, Typography } from "@material-ui/core";
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 
 import { ChannelContext } from "../../../context/channel";
@@ -32,6 +32,9 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: "15px",
     display: "flex",
     direction: "column",
+    [theme.breakpoints.down("sm")]: {
+      display: "none",
+    },
   },
   header: {
     marginTop: "29px",

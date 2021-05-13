@@ -22,7 +22,6 @@ exports.protect = async (req, res, next) => {
       return next(new ErrorResponse("No user found with this id", 404));
     }
     req.user = user;
-    console.log("verified");
 
     next();
   } catch (error) {

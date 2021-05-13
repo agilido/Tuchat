@@ -71,6 +71,7 @@ export default function ChatInput({ newMessagesDots, scrollDown }) {
   const classes = useStyles();
   const [message, setMessage] = useState("");
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+
   const onEmojiClick = (event, emojiObject) => {
     setMessage(message + emojiObject.emoji);
   };
@@ -78,6 +79,7 @@ export default function ChatInput({ newMessagesDots, scrollDown }) {
   const handleChange = (e) => {
     setMessage(e.target.value);
   };
+
   // On ESC hide emoji picker
   useEffect(() => {
     document.addEventListener(
@@ -106,11 +108,6 @@ export default function ChatInput({ newMessagesDots, scrollDown }) {
 
     console.log("Message sending triggered");
 
-    if (activeChannel) {
-      console.log("Channel name: " + activeChannel.name);
-    } else {
-      return console.log("Channel not selected");
-    }
     if (message) {
       let d = new Date();
       let mm = d.getMonth() + 1;

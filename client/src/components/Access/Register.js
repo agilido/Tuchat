@@ -20,7 +20,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import axios from "axios";
-// gitfix
+
 const useStyles = makeStyles((theme) => ({
   root: {
     position: "absolute",
@@ -145,7 +145,7 @@ export default function Register({ history }) {
 
     try {
       setReqState({ loading: true });
-      const { data } = await axios.post(
+      await axios.post(
         "/api/auth/register",
         {
           username: RegisterData.username,
@@ -160,7 +160,7 @@ export default function Register({ history }) {
         success: true,
       });
     } catch (error) {
-      if (error.response.status == 500) {
+      if (error.response.status === 500) {
         return setReqState({
           loading: false,
           error: true,
@@ -191,11 +191,6 @@ export default function Register({ history }) {
       style={{ minHeight: "100vh" }}
     >
       <div className="registerBox">
-        {/* <Typography component="h1" variant="h4">
-              LOGO
-            </Typography> */}
-        <Grid></Grid>
-
         <div className="registerForm">
           <Typography className={classes.margin} component="h1" variant="h4">
             Sign Up

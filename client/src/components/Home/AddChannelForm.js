@@ -207,9 +207,6 @@ export default function AddChannelForm({
 
   return (
     <div>
-      {/* <Button variant="outlined" color="primary" onClick={showAddChannelForm}>
-        Open dialog
-      </Button> */}
       <Dialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
@@ -222,7 +219,6 @@ export default function AddChannelForm({
           <DialogContent dividers>
             <TextField
               margin="normal"
-              id="standard-basic"
               label="Name"
               variant="outlined"
               required
@@ -233,7 +229,6 @@ export default function AddChannelForm({
             />
             <TextField
               margin="normal"
-              id="standard-basic"
               label="Description"
               variant="outlined"
               id="description"
@@ -241,8 +236,6 @@ export default function AddChannelForm({
               value={channelInfo.description}
             />
           </DialogContent>
-
-          {/* adding members component https://material-ui.com/components/autocomplete/#checkboxes */}
 
           <DialogActions>
             {ReqState.success ? (
