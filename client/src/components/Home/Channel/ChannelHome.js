@@ -3,7 +3,6 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import ChatHome from "../Chat/ChatHome";
 import ChannelInfo from "./ChannelInfo";
-// importing Chat folder, putting all together for whole "Chatting Section"
 
 const useStyles = makeStyles((theme) => ({
   root: {

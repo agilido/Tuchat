@@ -155,11 +155,12 @@ exports.joinChannel = async (req, res) => {
         },
         { new: true }
       );
-      const response = {
+      const data = {
         usrChannels: userChannelsUpdate.channels,
         channelMembers: channelMembersUpdate.members,
+        channelData: channelData,
       };
-      return res.status(200).json(response);
+      return res.status(200).json(data);
     } catch (error) {
       return res.status(500).json({ err: error.message });
     }

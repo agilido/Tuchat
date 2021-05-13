@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import "./styles.css";
 import { TextField, Button, Typography } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
@@ -17,7 +17,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import { green } from "@material-ui/core/colors";
 import { Link } from "react-router-dom";
 import Logo from "./logo.png";
-import clsx from "clsx";
 import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
@@ -93,9 +92,7 @@ export default function Login({ history }) {
     errorTxtMsg: "",
     loading: false,
   });
-  const buttonSubmit = clsx({
-    [classes.buttonSuccess]: ReqState.success,
-  });
+
   useEffect(() => {
     if (localStorage.getItem("authToken")) {
       history.push("/");
@@ -184,7 +181,6 @@ export default function Login({ history }) {
       container
       spacing={0}
       alignItems="center"
-      // justify="center"
       style={{ minHeight: "100vh" }}
     >
       <Grid className={classes.logo}>

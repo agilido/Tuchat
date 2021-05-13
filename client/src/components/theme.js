@@ -3,7 +3,7 @@ const defaultTheme = createMuiTheme({
   palette: {
     primary: {
       main: "#003D7B",
-    }, //#003D7B
+    },
     secondary: {
       main: "#FFFFFF",
     },

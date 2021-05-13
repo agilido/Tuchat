@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import "./styles.css";
@@ -8,9 +8,9 @@ import { UserContext } from "../../context/user";
 import { SocketContext, socket } from "../../context/socket";
 export const Home = () => {
   const [error, setError] = useState("");
-  const [PrivateData, setPrivateData] = useState("");
 
   let history = useHistory();
+
   useEffect(() => {
     if (localStorage.getItem("authToken")) {
       history.push("/");
@@ -63,6 +63,7 @@ export const Home = () => {
       }
     }
   };
+
   useEffect(() => {
     getChannels();
   }, []);

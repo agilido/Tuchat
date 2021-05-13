@@ -137,7 +137,7 @@ export default function ForgotPassword({ history }) {
       });
     } catch (error) {
       localStorage.removeItem("authToken");
-      if (error.response.status == 500) {
+      if (error.response.status === 500) {
         setReqState({
           loading: false,
           error: true,
@@ -194,7 +194,6 @@ export default function ForgotPassword({ history }) {
                   onChange={handleChange("email")}
                   className={classes.textFld}
                   value={fpasswordData.email}
-                  // helper text for an error
                 />
                 <FormHelperText
                   error={ReqState.error}
