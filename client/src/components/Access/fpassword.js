@@ -137,11 +137,12 @@ export default function ForgotPassword({ history }) {
       });
     } catch (error) {
       localStorage.removeItem("authToken");
-      if (error.response.status === 500) {
+      if (error.response.status === 500 && error.data) {
+        console.log(error.data.error);
         setReqState({
           loading: false,
           error: true,
-          errorTxtMsg: "Unable to connect to server",
+          errorTxtMsg: error.data.error.data.error,
         });
       } else {
         setReqState({
