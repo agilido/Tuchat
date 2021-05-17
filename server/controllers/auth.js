@@ -1,6 +1,6 @@
 const crypto = require("crypto");
 const User = require("../models/User");
-const ErrorResponse = require("../utils/ErrorResponse");
+const ErrorResponse = require("../utils/errorResponse");
 const sendEmail = require("../utils/sendEmail");
 
 function emailIsValid(email) {
