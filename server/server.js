@@ -18,10 +18,8 @@ app.use("/api/private", require("./routes/private"));
 
 app.use(errorHandler);
 
-app.get("/", function (req, res, next) {
-  res.json({
-    status: "Loaded!",
-  });
+app.get("/", function (req, res) {
+  res.send("Running!");
 });
 
 server.listen(PORT, () => {
