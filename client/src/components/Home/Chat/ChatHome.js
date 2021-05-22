@@ -10,6 +10,7 @@ import ChatMessages from "./ChatMessages";
 import ChatInput from "./ChatInput";
 import QuestionAnswerRoundedIcon from "@material-ui/icons/QuestionAnswerRounded";
 
+// Context
 import { socket } from "../../../context/socket";
 import { ChannelContext } from "../../../context/channel";
 import { UserContext } from "../../../context/user";
@@ -79,6 +80,7 @@ export default function ChatHome() {
     setFirstTimeLoad(true);
   }, [activeChannel.channelId]);
 
+  // Set new message on socket event arrival
   useEffect(() => {
     if (socket) {
       socket.on("message", (msgData) => {
@@ -92,10 +94,13 @@ export default function ChatHome() {
     }
   }, [socket, messages]);
 
+  // If newMessage is present add it to the current state of messages
   useEffect(() => {
     if (newMessage) {
       setFirstTimeLoad(false);
       const latestMessage = messages[messages.length - 1];
+
+      // if previous message exists and date is the same add new message to the latestMessage
       if (latestMessage && latestMessage.date === newMessage.date) {
         latestMessage.messages.push(newMessage.message);
         messages.pop();
@@ -103,6 +108,7 @@ export default function ChatHome() {
         setMessages((prevState) => {
           return [...prevState, latestMessage];
         });
+        // if previous message doesn't exist or date is not the same, create new object with new date
       } else if (!latestMessage || latestMessage.date !== newMessage.date) {
         setMessages((prevState) => {
           return [
@@ -148,6 +154,7 @@ export default function ChatHome() {
     msgBox && (msgBox.scrollTop = msgBox.scrollHeight);
     setNewMessagesDots(false);
   };
+
   // Scroll down when channel is first time opened
   useEffect(() => {
     scrollDownAuto();

@@ -154,22 +154,24 @@ export default function Login({ history }) {
         errorMsg: "",
       });
     } catch (error) {
-      if (error) {
+      if (error.response.status === 401) {
         setReqState({
           loading: false,
           error: true,
-          errorTxtMsg: "Unable to connect to server",
+          errorTxtMsg: "Invalid credentials",
         });
       } else {
+        console.log(error.response);
+
         setReqState({
           loading: false,
           error: true,
-          errorMsg: error.response.data.error,
+          errorTxtMsg: error.response.statusText,
         });
         setTimeout(() => {
           setReqState({
             error: false,
-            errorMsg: "",
+            errorTxtMsg: "",
           });
         }, 5000);
       }

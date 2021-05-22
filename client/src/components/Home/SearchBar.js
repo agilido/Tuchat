@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { fade, makeStyles } from "@material-ui/core/styles";
+// Context
 import { ChannelContext } from "../../context/channel";
 import { UserContext } from "../../context/user";
 

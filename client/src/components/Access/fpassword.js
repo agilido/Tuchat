@@ -74,6 +74,7 @@ export default function ForgotPassword({ history }) {
     [classes.buttonSuccess]: ReqState.success,
   });
 
+  // Redirect if logged in
   useEffect(() => {
     if (localStorage.getItem("authToken")) {
       history.push("/");
