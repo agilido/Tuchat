@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useContext } from "react";
 import { ChannelContext } from "../../context/channel";
 import { makeStyles } from "@material-ui/core/styles";
 // icons

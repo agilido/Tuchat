@@ -3,6 +3,7 @@ import axios from "axios";
 import { useHistory } from "react-router-dom";
 import "./styles.css";
 import Dashboard from "./Dashboard";
+// Context
 import { ChannelContext } from "../../context/channel";
 import { UserContext } from "../../context/user";
 import { SocketContext, socket } from "../../context/socket";

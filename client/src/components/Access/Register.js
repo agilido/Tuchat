@@ -78,6 +78,7 @@ export default function Register({ history }) {
     [classes.buttonSuccess]: ReqState.success,
   });
 
+  // Redirect if logged in
   useEffect(() => {
     if (localStorage.getItem("authToken")) {
       history.push("/");
@@ -158,6 +159,7 @@ export default function Register({ history }) {
         error: false,
         loading: false,
         success: true,
+        successMsg: "Registered successfully!",
       });
     } catch (error) {
       if (error.response.status === 500) {

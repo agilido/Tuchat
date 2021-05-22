@@ -105,6 +105,7 @@ export default function LeftNavigation({
 }) {
   const classes = useStyles();
 
+  // Bar localStorage position memory
   const data = localStorage.getItem("barPosition");
   const starredPosition = localStorage.getItem("starredPosition");
   const channelsPosition = localStorage.getItem("channelsPosition");
