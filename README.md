@@ -34,12 +34,12 @@ Backend
 # Screenshots
 
 <div align="center"> 
-    <img width="500" src="./static/tuchat-login.png">
-    <img width="500" src="./static/register.png">
-    <img width="500" src="./static/forgot.png">
-    <img width="500" src="./static/tuchat-home.png">
-    <img width="500" src="./static/search.png">
-    <img width="500" src="./static/add.png">
-    <img width="500" src="./static/added.png">
-    <img width="500" src="./static/leave.png">s
+    <img src="./static/tuchat-login.png">
+    <img src="./static/register.png">
+    <img src="./static/forgot.png">
+    <img src="./static/tuchat-home.png">
+    <img src="./static/search.png">
+    <img src="./static/add.png">
+    <img src="./static/added.png">
+    <img src="./static/leave.png">
 </div>
