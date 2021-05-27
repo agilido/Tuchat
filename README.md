@@ -35,7 +35,7 @@ Backend
 
 <p align="center">
 <div align="center"> 
-    <img width="500" src="./static/tuchat-login.png">
-    <img width="500" src="./static/tuchat-home.png">
+    <img src="./static/tuchat-login.png">
+    <img src="./static/tuchat-home.png">
     </div>
 </p>
